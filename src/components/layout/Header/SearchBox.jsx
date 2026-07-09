@@ -1,9 +1,10 @@
 import { FiSearch, FiShoppingCart, FiUser } from "react-icons/fi";
+import Container from "@/components/common/Container";
 
 export default function SearchBox() {
   return (
     <div className="border-b border-gray-200">
-      <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-6 px-4">
+      <Container className="flex h-18 items-center justify-between gap-6">
         {/* Logo */}
         <h1 className="text-3xl font-bold text-red-600">NovaShop</h1>
 
@@ -13,8 +14,8 @@ export default function SearchBox() {
             <FiSearch className="text-gray-500" size={20} />
 
             <input
-              placeholder="جستجوی کالا..."
               type="text"
+              placeholder="جستجوی کالا..."
               className="w-full bg-transparent px-3 py-3 outline-none"
             />
           </div>
@@ -22,15 +23,21 @@ export default function SearchBox() {
 
         {/* Actions */}
         <div className="flex items-center gap-4">
-          <button className="rounded-lg border px-4 py-2 hover:bg-gray-100">
-            <FiUser />
+          <button
+            className="rounded-lg border border-gray-300 p-2 transition hover:bg-gray-100"
+            aria-label="ورود"
+          >
+            <FiUser size={20} />
           </button>
 
-          <button className="rounded-lg border px-4 py-2 hover:bg-gray-100">
-            <FiShoppingCart />
+          <button
+            className="rounded-lg border border-gray-300 p-2 transition hover:bg-gray-100"
+            aria-label="سبد خرید"
+          >
+            <FiShoppingCart size={20} />
           </button>
         </div>
-      </div>
+      </Container>
     </div>
   );
 }
