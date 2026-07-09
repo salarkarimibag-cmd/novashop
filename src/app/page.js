@@ -1,5 +1,6 @@
 import Header from "@/components/layout/Header";
 import Hero from "@/components/home/Hero";
+import Categories from "@/components/home/Categories";
 import { ProductList } from "@/components/home/Products";
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
 
       <main>
         <Hero />
+        <Categories />
         <ProductList />
       </main>
     </>
