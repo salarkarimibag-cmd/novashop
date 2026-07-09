@@ -36,6 +36,7 @@ export default function HeroSlider() {
                 src={slide.image}
                 alt={slide.title}
                 fill
+                sizes="(max-width: 768px) 100vw, 75vw"
                 priority={slide.id === 1}
                 className="object-cover"
               />
