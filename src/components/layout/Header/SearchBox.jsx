@@ -13,8 +13,8 @@ export default function SearchBox() {
             <FiSearch className="text-gray-500" size={20} />
 
             <input
-              type="text"
               placeholder="جستجوی کالا..."
+              type="text"
               className="w-full bg-transparent px-3 py-3 outline-none"
             />
           </div>
