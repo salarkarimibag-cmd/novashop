@@ -1,12 +1,12 @@
 import { FiSearch, FiShoppingCart, FiUser } from "react-icons/fi";
 import Container from "@/components/common/Container";
-
+import Logo from "@/components/common/Logo";
 export default function SearchBox() {
   return (
     <div className="border-b border-gray-200">
       <Container className="flex h-18 items-center justify-between gap-6">
         {/* Logo */}
-        <h1 className="text-3xl font-bold text-red-600">NovaShop</h1>
+        <Logo />
 
         {/* Search */}
         <div className="flex-1">
