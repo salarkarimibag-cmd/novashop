@@ -5,6 +5,8 @@ import SpecialOffers from "@/components/home/SpecialOffers";
 import { Features } from "@/components/home/Features";
 import { BrandSlider } from "@/components/home/Brands";
 import NewArrivals from "@/components/home/NewArrivals";
+import BestSellers from "@/components/home/BestSellers";
+
 export default function Home() {
   return (
     <>
@@ -16,6 +18,8 @@ export default function Home() {
         <NewArrivals />
 
         <SpecialOffers />
+
+        <BestSellers />
 
         <ProductList />
 

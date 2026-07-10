@@ -6,6 +6,7 @@ const products = [
     oldPrice: 3200000,
     discount: 22,
     rating: 4.8,
+    bestSeller:true,
     image: "/products/product1.jpg",
   },
   {
@@ -15,6 +16,7 @@ const products = [
     oldPrice: 2300000,
     discount: 18,
     rating: 4.6,
+    bestSeller:true,
     image: "/products/product2.jpg",
   },
 ];
