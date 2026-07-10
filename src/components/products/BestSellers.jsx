@@ -12,19 +12,24 @@ import products from "@/data/products";
 import ProductCard from "@/components/home/Products/ProductCard";
 
 export default function BestSellers() {
-  const bestProducts = products.filter((product) => product.bestSeller);
-
+  const bestSellers = products.filter((product) => product.bestSeller);
+  if (!bestSellers.length) return null;
   return (
     <section className="my-12">
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-2xl font-bold">پرفروش‌ترین محصولات</h2>
+        <div>
+          <h2 className="text-2xl font-bold">پرفروش‌ترین محصولات</h2>
 
+          <p className="mt-2 text-sm text-gray-500">
+            محبوب‌ترین محصولات فروشگاه
+          </p>
+        </div>
         <div className="flex gap-2">
-          <button className="best-prev flex h-10 w-10 items-center justify-center rounded-full border bg-white">
+          <button className="best-prev flex h-10 w-10 items-center justify-center rounded-full border bg-white transition hover:bg-black hover:text-white">
             <ChevronRight size={20} />
           </button>
 
-          <button className="best-next flex h-10 w-10 items-center justify-center rounded-full border bg-white">
+          <button className="best-next flex h-10 w-10 items-center justify-center rounded-full border bg-white transition hover:bg-black hover:text-white">
             <ChevronLeft size={20} />
           </button>
         </div>
@@ -32,6 +37,7 @@ export default function BestSellers() {
 
       <Swiper
         modules={[Navigation, Autoplay]}
+        loop={bestSellers.length > 4}
         navigation={{
           prevEl: ".best-prev",
           nextEl: ".best-next",
@@ -56,7 +62,7 @@ export default function BestSellers() {
           },
         }}
       >
-        {bestProducts.map((product) => (
+        {bestSellers.map((product) => (
           <SwiperSlide key={product.id}>
             <ProductCard product={product} />
           </SwiperSlide>

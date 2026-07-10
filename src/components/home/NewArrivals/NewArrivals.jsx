@@ -4,8 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-import newArrivals from "@/data/newArrivals";
+import products from "@/data/products";
 
 import NewArrivalCard from "./NewArrivalCard";
 
@@ -14,6 +13,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 export default function NewArrivals() {
+  const newArrivals = products.filter((product) => product.isNew);
   return (
     <section className="mt-16">
       <div className="mb-8 flex items-center justify-between">
