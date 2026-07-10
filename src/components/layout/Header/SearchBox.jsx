@@ -1,6 +1,8 @@
-import { FiSearch, FiShoppingCart, FiUser } from "react-icons/fi";
+
 import Container from "@/components/common/Container";
 import Logo from "@/components/common/Logo";
+import CartButton from "@/components/cart/CartButton";
+import { Search, User } from "lucide-react";
 export default function SearchBox() {
   return (
     <div className="border-b border-gray-200">
@@ -11,7 +13,7 @@ export default function SearchBox() {
         {/* Search */}
         <div className="flex-1">
           <div className="flex items-center rounded-xl bg-gray-100 px-4">
-            <FiSearch className="text-gray-500" size={20} />
+            <Search className="text-gray-500" size={20} />
 
             <input
               type="text"
@@ -27,15 +29,10 @@ export default function SearchBox() {
             className="rounded-lg border border-gray-300 p-2 transition hover:bg-gray-100"
             aria-label="ورود"
           >
-            <FiUser size={20} />
+            <User size={20} />
           </button>
 
-          <button
-            className="rounded-lg border border-gray-300 p-2 transition hover:bg-gray-100"
-            aria-label="سبد خرید"
-          >
-            <FiShoppingCart size={20} />
-          </button>
+          <CartButton />
         </div>
       </Container>
     </div>
