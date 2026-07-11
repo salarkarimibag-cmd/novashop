@@ -2,9 +2,8 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
-
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
+import { useMemo } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -12,7 +11,10 @@ import products from "@/data/products";
 import ProductCard from "@/components/home/Products/ProductCard";
 
 export default function BestSellers() {
-  const bestSellers = products.filter((product) => product.bestSeller);
+  const bestSellers = useMemo(
+    () => products.filter((product) => product.bestSeller),
+    [],
+  );
   if (!bestSellers.length) return null;
   return (
     <section className="my-12">

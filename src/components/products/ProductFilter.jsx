@@ -1,63 +1,43 @@
 "use client";
 
+import brands from "@/data/brands";
+import Image from "next/image";
+import useFilterStore from "@/store/filterStore";
 export default function ProductFilter() {
+  const { selectedBrands, toggleBrand } = useFilterStore();
   return (
-    <div className="rounded-2xl border bg-white p-5">
-      <h2 className="mb-5 text-lg font-bold">فیلتر محصولات</h2>
+    <div className="rounded-2xl border bg-white p-5 shadow-sm">
+      <h3 className="mb-5 text-lg font-bold">فیلتر محصولات</h3>
 
-      <div className="mb-5">
-        <label className="mb-2 block text-sm">جستجو</label>
-
-        <input
-          type="text"
-          placeholder="نام محصول..."
-          className="
-w-full
-rounded-xl
-border
-px-3
-py-2
-outline-none
-"
-        />
-      </div>
-
-      <div className="mb-5">
-        <h3 className="mb-3 font-semibold">دسته‌بندی</h3>
-
-        <label className="block">
-          <input type="checkbox" />
-          کفش
-        </label>
-
-        <label className="block">
-          <input type="checkbox" />
-          ساعت
-        </label>
-
-        <label className="block">
-          <input type="checkbox" />
-          لباس
-        </label>
-      </div>
-
+      {/* Brands */}
       <div>
-        <h3 className="mb-3 font-semibold">برند</h3>
+        <h4 className="mb-3 font-semibold">برند</h4>
 
-        <label className="block">
-          <input type="checkbox" />
-          Nike
-        </label>
+        <div className="space-y-3">
+          {brands.map((brand) => (
+            <label
+              key={brand.id}
+              className="flex cursor-pointer items-center gap-3"
+            >
+              <input
+                type="checkbox"
+                checked={selectedBrands.includes(brand.name)}
+                onChange={() => toggleBrand(brand.name)}
+                className="h-4 w-4 accent-black"
+              />
 
-        <label className="block">
-          <input type="checkbox" />
-          Adidas
-        </label>
+              <Image
+                src={brand.logo}
+                alt={brand.name}
+                width={28}
+                height={28}
+                className="object-contain"
+              />
 
-        <label className="block">
-          <input type="checkbox" />
-          Puma
-        </label>
+              <span>{brand.name}</span>
+            </label>
+          ))}
+        </div>
       </div>
     </div>
   );
