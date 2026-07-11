@@ -1,13 +1,15 @@
 "use client";
 
 import useFilterStore from "@/store/filterStore";
+import useFilteredProducts from "@/hooks/useFilteredProducts";
 
 export default function ProductSort() {
   const { sort, setSort } = useFilterStore();
+  const filteredProducts = useFilteredProducts();
 
   return (
     <div className="mb-6 flex items-center justify-between">
-      <p className="font-semibold">محصولات</p>
+      <p className="font-semibold">{filteredProducts.length} محصول</p>
 
       <select
         value={sort}

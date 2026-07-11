@@ -15,7 +15,12 @@ export default function BestSellers() {
     () => products.filter((product) => product.bestSeller),
     [],
   );
-  if (!bestSellers.length) return null;
+  if (!bestSellers.length)
+    return (
+      <section className="my-12 text-center text-gray-400">
+        محصول پرفروشی یافت نشد.
+      </section>
+    );
   return (
     <section className="my-12">
       <div className="mb-6 flex items-center justify-between">
