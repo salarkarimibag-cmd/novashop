@@ -1,15 +1,18 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import useCartStore from "@/store/cartStore";
 import useCart from "@/hooks/useCart";
 import useCheckoutStore from "@/store/checkoutStore";
 import { SHIPPING_PRICES } from "@/constants/shipping";
 import Button from "@/components/ui/Button";
 import OrderItems from "./OrderItems";
+import useOrderStore from "@/store/orderStore";
 export default function OrderSummary() {
   const { items } = useCart();
-
+  const router = useRouter();
   const { shippingMethod, shippingAddress, paymentMethod } = useCheckoutStore();
-
+  const addOrder = useOrderStore((state) => state.addOrder);
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
@@ -20,6 +23,8 @@ export default function OrderSummary() {
   const discount = 0;
 
   const total = subtotal + shipping - discount;
+  const clearCart = useCartStore((state) => state.clearCart);
+  const clearCheckout = useCheckoutStore((state) => state.clearCheckout);
   const handleSubmitOrder = () => {
     if (!items.length) {
       alert("سبد خرید شما خالی است");
@@ -43,14 +48,23 @@ export default function OrderSummary() {
     const order = {
       id: Date.now(),
       items,
+      status: "در انتظار پردازش",
       shippingAddress,
       shippingMethod,
       paymentMethod,
       total,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
 
     console.log(order);
+
+    addOrder(order);
+
+    clearCart();
+
+    clearCheckout();
+
+    router.push("/order-success");
   };
 
   return (
