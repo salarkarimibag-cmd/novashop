@@ -1,6 +1,10 @@
-import CheckoutForm from "@/components/checkout/CheckoutForm";
-import ShippingMethod from "@/components/checkout/ShippingMethod";
-import OrderSummary from "@/components/checkout/OrderSummary";
+import {
+  CheckoutForm,
+  ShippingMethod,
+  PaymentMethod,
+  OrderSummary,
+  OrderItems,
+} from "@/components/checkout";
 
 export default function CheckoutPage() {
   return (
@@ -11,7 +15,11 @@ export default function CheckoutPage() {
         <section className="space-y-8 lg:col-span-2">
           <CheckoutForm />
 
+          <OrderItems />
+
           <ShippingMethod />
+
+          <PaymentMethod />
         </section>
 
         <aside>

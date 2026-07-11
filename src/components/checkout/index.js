@@ -1,3 +1,10 @@
+import {
+  CheckoutForm,
+  ShippingMethod,
+  PaymentMethod,
+  OrderSummary,
+} from "@/components/checkout";
+
 export { default as CheckoutForm } from "./CheckoutForm";
 export { default as ShippingAddress } from "./ShippingAddress";
 export { default as ShippingMethod } from "./ShippingMethod";

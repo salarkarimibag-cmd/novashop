@@ -8,7 +8,6 @@ import Input from "@/components/ui/Input/Input";
 import Textarea from "@/components/ui/Textarea/Textarea";
 
 export default function CheckoutForm() {
-  const cities = iranCities[formik.values.province] || [];
   const formik = useFormik({
     initialValues: {
       fullName: "",
@@ -25,6 +24,7 @@ export default function CheckoutForm() {
       console.log(values);
     },
   });
+  const cities = iranCities[formik.values.province] || [];
 
   return (
     <form

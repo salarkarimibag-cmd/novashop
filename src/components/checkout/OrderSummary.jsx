@@ -1,18 +1,24 @@
 "use client";
 
 import useCart from "@/hooks/useCart";
+import useCheckoutStore from "@/store/checkoutStore";
+import { SHIPPING_PRICES } from "@/constants/shipping";
 
 export default function OrderSummary() {
   const { items } = useCart();
 
-  const totalPrice = items.reduce(
+  const { shippingMethod } = useCheckoutStore();
+
+  const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
 
-  const shipping = totalPrice > 5000000 ? 0 : 150000;
+  const shipping = SHIPPING_PRICES[shippingMethod] ?? 0;
 
-  const finalPrice = totalPrice + shipping;
+  const discount = 0;
+
+  const total = subtotal + shipping - discount;
 
   return (
     <div className="sticky top-6 rounded-2xl border bg-white p-6 shadow-sm">
@@ -26,7 +32,7 @@ export default function OrderSummary() {
 
         <div className="flex justify-between">
           <span>جمع خرید</span>
-          <span>{totalPrice.toLocaleString()} تومان</span>
+          <span>{subtotal.toLocaleString()} تومان</span>
         </div>
 
         <div className="flex justify-between">
@@ -37,12 +43,18 @@ export default function OrderSummary() {
           </span>
         </div>
 
+        <div className="flex justify-between">
+          <span>تخفیف</span>
+
+          <span>{discount.toLocaleString()} تومان</span>
+        </div>
+
         <hr />
 
         <div className="flex justify-between text-lg font-bold">
           <span>مبلغ قابل پرداخت</span>
 
-          <span>{finalPrice.toLocaleString()} تومان</span>
+          <span>{total.toLocaleString()} تومان</span>
         </div>
       </div>
 
