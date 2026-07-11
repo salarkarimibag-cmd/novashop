@@ -5,11 +5,15 @@ import checkoutSchema from "@/validations/checkoutSchema";
 import Select from "@/components/ui/Select";
 import iranCities from "@/data/iranCities";
 import Input from "@/components/ui/Input/Input";
+import Button from "@/components/ui/Button";
 import Textarea from "@/components/ui/Textarea/Textarea";
+import useCheckoutStore from "@/store/checkoutStore";
 
 export default function CheckoutForm() {
+  const { shippingAddress, setShippingAddress } = useCheckoutStore();
+
   const formik = useFormik({
-    initialValues: {
+    initialValues: shippingAddress || {
       fullName: "",
       phone: "",
       province: "",
@@ -18,10 +22,13 @@ export default function CheckoutForm() {
       postalCode: "",
     },
 
+    enableReinitialize: true,
+
     validationSchema: checkoutSchema,
 
     onSubmit: (values) => {
-      console.log(values);
+      setShippingAddress(values);
+      alert("اطلاعات گیرنده ذخیره شد");
     },
   });
   const cities = iranCities[formik.values.province] || [];
@@ -56,7 +63,12 @@ export default function CheckoutForm() {
           label="استان"
           name="province"
           value={formik.values.province}
-          onChange={formik.handleChange}
+          onChange={(e) => {
+            const province = e.target.value;
+
+            formik.setFieldValue("province", province);
+            formik.setFieldValue("city", "");
+          }}
           onBlur={formik.handleBlur}
           error={formik.touched.province && formik.errors.province}
         >
@@ -109,6 +121,9 @@ export default function CheckoutForm() {
           error={formik.touched.postalCode && formik.errors.postalCode}
         />
       </div>
+      <Button type="submit" className="mt-6">
+        ذخیره اطلاعات گیرنده
+      </Button>
     </form>
   );
 }

@@ -3,11 +3,12 @@
 import useCart from "@/hooks/useCart";
 import useCheckoutStore from "@/store/checkoutStore";
 import { SHIPPING_PRICES } from "@/constants/shipping";
-
+import Button from "@/components/ui/Button";
+import OrderItems from "./OrderItems";
 export default function OrderSummary() {
   const { items } = useCart();
 
-  const { shippingMethod } = useCheckoutStore();
+  const { shippingMethod, shippingAddress, paymentMethod } = useCheckoutStore();
 
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -19,10 +20,43 @@ export default function OrderSummary() {
   const discount = 0;
 
   const total = subtotal + shipping - discount;
+  const handleSubmitOrder = () => {
+    if (!items.length) {
+      alert("سبد خرید شما خالی است");
+      return;
+    }
+
+    if (
+      !shippingAddress.fullName ||
+      !shippingAddress.phone ||
+      !shippingAddress.address
+    ) {
+      alert("لطفاً اطلاعات گیرنده را کامل کنید");
+      return;
+    }
+
+    if (!paymentMethod) {
+      alert("لطفاً روش پرداخت را انتخاب کنید");
+      return;
+    }
+
+    const order = {
+      id: Date.now(),
+      items,
+      shippingAddress,
+      shippingMethod,
+      paymentMethod,
+      total,
+      createdAt: new Date(),
+    };
+
+    console.log(order);
+  };
 
   return (
     <div className="sticky top-6 rounded-2xl border bg-white p-6 shadow-sm">
       <h2 className="mb-6 text-xl font-bold">خلاصه سفارش</h2>
+      <OrderItems />
 
       <div className="space-y-4 text-sm">
         <div className="flex justify-between">
@@ -58,9 +92,9 @@ export default function OrderSummary() {
         </div>
       </div>
 
-      <button className="mt-6 w-full rounded-xl bg-black py-3 text-white transition hover:bg-gray-800">
-        ثبت سفارش
-      </button>
+      <Button onClick={handleSubmitOrder} className="mt-6 w-full">
+        ثبت سفارش نهایی
+      </Button>
     </div>
   );
 }
