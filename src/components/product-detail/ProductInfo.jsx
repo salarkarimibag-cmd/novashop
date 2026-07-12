@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { Star, Heart, ShoppingCart } from "lucide-react";
+
 import useCartStore from "@/store/cartStore";
+import useWishlistStore from "@/store/wishlistStore";
+
 export default function ProductInfo({ product }) {
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0]);
 
@@ -12,6 +15,20 @@ export default function ProductInfo({ product }) {
 
   const addItem = useCartStore((state) => state.addItem);
 
+  const addWishlist = useWishlistStore((state) => state.addWishlist);
+  const removeWishlist = useWishlistStore((state) => state.removeWishlist);
+  const isInWishlist = useWishlistStore((state) => state.isInWishlist);
+
+  const liked = isInWishlist(product.id);
+
+  const handleWishlist = () => {
+    if (liked) {
+      removeWishlist(product.id);
+    } else {
+      addWishlist(product);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* عنوان */}
@@ -20,6 +37,7 @@ export default function ProductInfo({ product }) {
 
         <div className="mt-3 flex items-center gap-2 text-yellow-500">
           <Star size={18} fill="currentColor" />
+
           <span>{product.rating}</span>
 
           <span className="text-gray-500">({product.reviews} نظر)</span>
@@ -117,8 +135,13 @@ export default function ProductInfo({ product }) {
           افزودن به سبد خرید
         </button>
 
-        <button className="rounded-xl border p-4 transition hover:bg-gray-100">
-          <Heart size={22} />
+        <button
+          onClick={handleWishlist}
+          className={`rounded-xl border p-4 transition ${
+            liked ? "bg-red-50 text-red-500" : "hover:bg-gray-100"
+          }`}
+        >
+          <Heart size={22} fill={liked ? "currentColor" : "none"} />
         </button>
       </div>
     </div>
