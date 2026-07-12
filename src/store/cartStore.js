@@ -36,7 +36,9 @@ const useCartStore = create(
           });
         }
       },
-
+      addToCart: (product) => {
+        get().addItem(product);
+      },
       removeItem: (id) => {
         set({
           items: get().items.filter((item) => item.id !== id),
@@ -79,6 +81,7 @@ const useCartStore = create(
     }),
     {
       name: "nova-cart",
+      skipHydration: true,
     },
   ),
 );

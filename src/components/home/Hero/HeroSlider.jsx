@@ -26,7 +26,7 @@ export default function HeroSlider() {
         clickable: true,
       }}
       navigation
-      className="h-full rounded-2xl"
+      className="h-96 rounded-2xl"
     >
       {heroData.map((slide) => (
         <SwiperSlide key={slide.id}>

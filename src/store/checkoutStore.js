@@ -51,6 +51,7 @@ const useCheckoutStore = create(
 
     {
       name: "nova-checkout",
+       skipHydration: true,
     },
   ),
 );

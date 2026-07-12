@@ -24,6 +24,11 @@ const navLinks = [
     title: "کنسول بازی",
     href: "/products/console",
   },
+  {
+    id: 6,
+    title: "علاقه‌مندی‌ها",
+    href: "/wishlist",
+  },
 ];
 
 export default navLinks;

@@ -1,6 +1,6 @@
 import TopHeader from "./TopHeader";
 import SearchBox from "./SearchBox";
-import Navbar from "../Navbar";
+import Navbar from "@/components/layout/Navbar";
 
 export default function Header() {
   return (

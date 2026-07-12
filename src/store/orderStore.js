@@ -37,6 +37,7 @@ const useOrderStore = create(
 
     {
       name: "nova-orders",
+       skipHydration: true,
     },
   ),
 );

@@ -1,7 +1,24 @@
+"use client";
+
 import Image from "next/image";
 import { FaHeart, FaStar, FaShoppingCart } from "react-icons/fa";
 
+import useWishlistStore from "@/store/wishlistStore";
+
 export default function ProductCard({ product }) {
+  const { addToWishlist, removeFromWishlist, isInWishlist } =
+    useWishlistStore();
+
+  const liked = isInWishlist(product.id);
+
+  const handleWishlist = () => {
+    if (liked) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
+  };
+
   return (
     <div className="group overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
       {/* Image */}
@@ -14,8 +31,20 @@ export default function ProductCard({ product }) {
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
 
-        <button className="absolute right-3 top-3 rounded-full bg-white p-2 shadow-md transition hover:text-red-500">
-          <FaHeart size={18} />
+        {/* Wishlist Button */}
+        <button
+          type="button"
+          aria-label={
+            liked ? "حذف از علاقه‌مندی‌ها" : "افزودن به علاقه‌مندی‌ها"
+          }
+          onClick={handleWishlist}
+          className={`absolute right-3 top-3 rounded-full bg-white p-2 shadow-md transition-all duration-300 ${
+            liked
+              ? "scale-110 text-red-500"
+              : "text-gray-400 hover:scale-110 hover:text-red-500"
+          }`}
+        >
+          <FaHeart size={18} className={liked ? "fill-current" : ""} />
         </button>
 
         <span className="absolute left-3 top-3 rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white">
@@ -29,6 +58,7 @@ export default function ProductCard({ product }) {
 
         <div className="flex items-center gap-1 text-amber-500">
           <FaStar />
+
           <span className="text-sm font-medium text-gray-700">
             {product.rating}
           </span>
