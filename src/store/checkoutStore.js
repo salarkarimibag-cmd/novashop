@@ -1,21 +1,23 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+const initialAddress = {
+  fullName: "",
+  phone: "",
+  province: "",
+  city: "",
+  address: "",
+  postalCode: "",
+};
+
 const useCheckoutStore = create(
   persist(
     (set) => ({
-      shippingAddress: {
-        fullName: "",
-        phone: "",
-        province: "",
-        city: "",
-        address: "",
-        postalCode: "",
-      },
+      shippingAddress: initialAddress,
 
       shippingMethod: "normal",
 
-      paymentMethod: null,
+      paymentMethod: "online",
 
       setShippingAddress: (data) =>
         set({
@@ -32,26 +34,24 @@ const useCheckoutStore = create(
           paymentMethod: method,
         }),
 
+      clearAddress: () =>
+        set({
+          shippingAddress: initialAddress,
+        }),
+
       clearCheckout: () =>
         set({
-          shippingAddress: {
-            fullName: "",
-            phone: "",
-            province: "",
-            city: "",
-            address: "",
-            postalCode: "",
-          },
+          shippingAddress: initialAddress,
 
           shippingMethod: "normal",
 
-          paymentMethod: null,
+          paymentMethod: "online",
         }),
     }),
 
     {
       name: "nova-checkout",
-       skipHydration: true,
+      skipHydration: true,
     },
   ),
 );

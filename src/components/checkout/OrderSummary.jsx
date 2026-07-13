@@ -1,18 +1,34 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+import Button from "@/components/ui/Button";
+
 import useCartStore from "@/store/cartStore";
 import useCart from "@/hooks/useCart";
 import useCheckoutStore from "@/store/checkoutStore";
-import { SHIPPING_PRICES } from "@/constants/shipping";
-import Button from "@/components/ui/Button";
-import OrderItems from "./OrderItems";
 import useOrderStore from "@/store/orderStore";
+
+import { SHIPPING_PRICES } from "@/constants/shipping";
+
 export default function OrderSummary() {
-  const { items } = useCart();
   const router = useRouter();
-  const { shippingMethod, shippingAddress, paymentMethod } = useCheckoutStore();
+
+  const { items, totalQuantity } = useCart();
+
+  const shippingAddress = useCheckoutStore((state) => state.shippingAddress);
+
+  const shippingMethod = useCheckoutStore((state) => state.shippingMethod);
+
+  const paymentMethod = useCheckoutStore((state) => state.paymentMethod);
+
+  const clearCheckout = useCheckoutStore((state) => state.clearCheckout);
+
   const addOrder = useOrderStore((state) => state.addOrder);
+
+  const clearCart = useCartStore((state) => state.clearCart);
+
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
@@ -23,32 +39,35 @@ export default function OrderSummary() {
   const discount = 0;
 
   const total = subtotal + shipping - discount;
-  const clearCart = useCartStore((state) => state.clearCart);
-  const clearCheckout = useCheckoutStore((state) => state.clearCheckout);
+
   const handleSubmitOrder = () => {
     if (!items.length) {
-      alert("سبد خرید شما خالی است");
+      toast.error("سبد خرید شما خالی است");
+
       return;
     }
 
     if (
+      !shippingAddress ||
       !shippingAddress.fullName ||
       !shippingAddress.phone ||
       !shippingAddress.address
     ) {
-      alert("لطفاً اطلاعات گیرنده را کامل کنید");
+      toast.error("اطلاعات گیرنده را کامل کنید");
+
       return;
     }
 
     if (!paymentMethod) {
-      alert("لطفاً روش پرداخت را انتخاب کنید");
+      toast.error("روش پرداخت را انتخاب کنید");
+
       return;
     }
 
     const order = {
       id: Date.now(),
       items,
-      status: "در انتظار پردازش",
+      status: "pending",
       shippingAddress,
       shippingMethod,
       paymentMethod,
@@ -56,13 +75,13 @@ export default function OrderSummary() {
       createdAt: new Date().toISOString(),
     };
 
-    console.log(order);
-
     addOrder(order);
 
     clearCart();
 
     clearCheckout();
+
+    toast.success("سفارش با موفقیت ثبت شد");
 
     router.push("/order-success");
   };
@@ -70,16 +89,17 @@ export default function OrderSummary() {
   return (
     <div className="sticky top-6 rounded-2xl border bg-white p-6 shadow-sm">
       <h2 className="mb-6 text-xl font-bold">خلاصه سفارش</h2>
-      <OrderItems />
 
       <div className="space-y-4 text-sm">
         <div className="flex justify-between">
           <span>تعداد کالا</span>
-          <span>{items.length}</span>
+
+          <span>{totalQuantity}</span>
         </div>
 
         <div className="flex justify-between">
           <span>جمع خرید</span>
+
           <span>{subtotal.toLocaleString()} تومان</span>
         </div>
 
