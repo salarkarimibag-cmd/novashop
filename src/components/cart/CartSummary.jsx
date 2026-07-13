@@ -6,9 +6,14 @@ import useCart from "@/hooks/useCart";
 
 export default function CartSummary() {
   const { totalPrice, totalQuantity } = useCart();
+  const handleClick = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
 
   return (
-    <div className="border-t bg-white p-5">
+    <div className="rounded-2xl bg-white p-5 shadow-sm">
       <div className="mb-3 flex items-center justify-between">
         <span className="text-gray-500">تعداد کالا</span>
 
@@ -25,14 +30,19 @@ export default function CartSummary() {
 
       <Link
         href="/cart"
+        onClick={handleClick}
         className="mb-3 block rounded-xl bg-black py-3 text-center text-white transition hover:bg-gray-800"
       >
         مشاهده سبد خرید
       </Link>
 
-      <button className="w-full rounded-xl border py-3 transition hover:bg-gray-100">
+      <Link
+        href="/checkout"
+        onClick={handleClick}
+        className="block w-full rounded-xl bg-indigo-600 py-3 text-center text-white transition hover:bg-indigo-700"
+      >
         ادامه فرآیند خرید
-      </button>
+      </Link>
     </div>
   );
 }
