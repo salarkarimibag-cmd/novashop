@@ -3,7 +3,13 @@
 import Link from "next/link";
 import { CheckCircle } from "lucide-react";
 
+import useOrderStore from "@/store/orderStore";
+
 export default function OrderSuccessPage() {
+  const orders = useOrderStore((state) => state.orders);
+
+  const lastOrder = orders[orders.length - 1];
+
   return (
     <main className="flex min-h-[70vh] items-center justify-center px-4">
       <div className="w-full max-w-md rounded-2xl border bg-white p-8 text-center shadow-sm">
@@ -17,7 +23,32 @@ export default function OrderSuccessPage() {
           سفارش شما دریافت شد و پس از آماده‌سازی ارسال خواهد شد.
         </p>
 
+        {lastOrder && (
+          <div className="mb-6 rounded-xl bg-gray-50 p-4 text-right text-sm">
+            <div className="mb-2 flex justify-between">
+              <span>شماره سفارش</span>
+
+              <span className="font-bold">#{lastOrder.id}</span>
+            </div>
+
+            <div className="flex justify-between">
+              <span>مبلغ</span>
+
+              <span className="font-bold">
+                {lastOrder.total.toLocaleString("fa-IR")} تومان
+              </span>
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-col gap-3">
+          <Link
+            href="/orders"
+            className="rounded-xl bg-indigo-600 py-3 text-white transition hover:bg-indigo-700"
+          >
+            مشاهده سفارش‌ها
+          </Link>
+
           <Link
             href="/products"
             className="rounded-xl bg-black py-3 text-white transition hover:bg-gray-800"
