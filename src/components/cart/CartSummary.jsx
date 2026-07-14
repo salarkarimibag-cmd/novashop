@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import useCart from "@/hooks/useCart";
 
-export default function CartSummary() {
+export default function CartSummary({ onClose }) {
   const { totalPrice, totalQuantity } = useCart();
   const handleClick = () => {
     if (onClose) {

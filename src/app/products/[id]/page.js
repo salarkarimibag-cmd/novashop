@@ -6,7 +6,8 @@ import ProductTabs from "@/components/product/ProductTabs";
 import RelatedProducts from "@/components/product/RelatedProducts";
 
 export default async function ProductPage({ params }) {
-  const product = products.find((item) => item.id === Number(params.id));
+  const { id } = await params;
+  const product = products.find((item) => item.id === Number(id));
 
   if (!product) {
     return (
