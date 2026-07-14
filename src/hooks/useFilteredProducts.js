@@ -6,7 +6,8 @@ import products from "@/data/products";
 import useFilterStore from "@/store/filterStore";
 
 export default function useFilteredProducts() {
-  const { selectedBrands, selectedCategories, sort } = useFilterStore();
+  const { selectedBrands, selectedCategories, sort, priceRange } =
+    useFilterStore();
 
   return useMemo(() => {
     let filtered = products.filter((product) => {
@@ -17,7 +18,10 @@ export default function useFilteredProducts() {
         selectedCategories.length === 0 ||
         selectedCategories.includes(product.category);
 
-      return brandMatch && categoryMatch;
+      const priceMatch =
+        product.price >= priceRange.min && product.price <= priceRange.max;
+
+      return brandMatch && categoryMatch && priceMatch;
     });
 
     switch (sort) {
@@ -35,5 +39,5 @@ export default function useFilteredProducts() {
     }
 
     return filtered;
-  }, [selectedBrands, selectedCategories, sort]);
+  }, [selectedBrands, selectedCategories, sort, priceRange]);
 }
