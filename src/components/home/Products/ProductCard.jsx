@@ -9,7 +9,9 @@ import useWishlistStore from "@/store/wishlistStore";
 import { toast } from "sonner";
 export default function ProductCard({ product }) {
   const addToCart = useCartStore((state) => state.addItem);
+  const items = useCartStore((state) => state.items);
 
+  const isInCart = items.some((item) => item.id === product.id);
   const { addToWishlist, removeFromWishlist, isInWishlist } =
     useWishlistStore();
 
@@ -105,9 +107,14 @@ export default function ProductCard({ product }) {
         {/* Button */}
         <div className="mt-auto pt-5">
           {product.inStock !== false ? (
-            <Button onClick={handleAddToCart} className="w-full">
+            <Button
+              onClick={handleAddToCart}
+              variant={isInCart ? "success" : "default"}
+              className="w-full"
+            >
               <FaShoppingCart />
-              افزودن به سبد خرید
+
+              {isInCart ? "✓ به سبد خرید اضافه شد" : "افزودن به سبد خرید"}
             </Button>
           ) : (
             <Button disabled variant="secondary" className="w-full">
