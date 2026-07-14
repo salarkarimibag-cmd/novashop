@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,22 +6,24 @@ export default function SearchItem({ product, onSelect }) {
     <Link
       href={`/products/${product.id}`}
       onClick={onSelect}
-      className="flex items-center gap-3 p-3 transition hover:bg-gray-50"
+      className="flex items-center gap-4 border-b p-4 transition hover:bg-gray-50"
     >
-      <div className="relative h-14 w-14 overflow-hidden rounded-lg bg-gray-100">
+      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-gray-100">
         <Image
           src={product.image}
           alt={product.title}
           fill
-          sizes="56px"
-          className="object-contain p-1"
+          className="object-cover"
+          sizes="64px"
         />
       </div>
 
-      <div className="min-w-0 flex-1">
-        <p className="line-clamp-1 text-sm font-medium">{product.title}</p>
+      <div className="flex-1">
+        <h3 className="font-semibold">{product.title}</h3>
 
-        <p className="mt-1 text-sm font-bold text-indigo-600">
+        <p className="mt-1 text-sm text-gray-500">{product.brand}</p>
+
+        <p className="mt-2 text-sm font-bold text-red-600">
           {product.price.toLocaleString("fa-IR")} تومان
         </p>
       </div>

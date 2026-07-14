@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { Search, User } from "lucide-react";
-
+import useDebounce from "@/hooks/useDebounce";
 import Container from "@/components/common/Container";
 import Logo from "@/components/common/Logo";
 import CartButton from "@/components/cart/CartButton";
@@ -14,9 +14,11 @@ import products from "@/data/products";
 
 export default function SearchBox() {
   const [query, setQuery] = useState("");
-
+  const searchRef = useRef(null);
+  const [open, setOpen] = useState(false);
+  const debouncedQuery = useDebounce(query, 500);
   const filteredProducts = useMemo(() => {
-    const search = query.trim().toLowerCase();
+    const search = debouncedQuery.trim().toLowerCase();
 
     if (!search) return [];
 
@@ -26,14 +28,27 @@ export default function SearchBox() {
         product.brand.toLowerCase().includes(search) ||
         product.category.toLowerCase().includes(search),
     );
-  }, [query]);
+  }, [debouncedQuery]);
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="border-b border-gray-200">
       <Container className="flex h-20 items-center justify-between gap-6">
         <Logo />
 
-        <div className="relative flex-1">
+        <div ref={searchRef} className="relative flex-1">
           <div className="flex items-center rounded-xl bg-gray-100 px-4 transition focus-within:ring-2 focus-within:ring-indigo-500">
             <Search size={20} className="text-gray-500" />
 
@@ -41,16 +56,25 @@ export default function SearchBox() {
               type="search"
               placeholder="جستجوی کالا..."
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => setOpen(true)}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setOpen(true);
+              }}
               className="w-full bg-transparent px-3 py-3 text-sm outline-none"
             />
           </div>
 
-          <SearchDropdown
-            products={filteredProducts}
-            query={query}
-            onSelect={() => setQuery("")}
-          />
+          {open && (
+            <SearchDropdown
+              products={filteredProducts}
+              query={query}
+              onSelect={() => {
+                setQuery("");
+                setOpen(false);
+              }}
+            />
+          )}
         </div>
 
         <div className="flex items-center gap-4">
