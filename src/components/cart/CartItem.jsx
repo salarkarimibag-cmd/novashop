@@ -10,7 +10,7 @@ export default function CartItem({ item }) {
   const { increaseQuantity, decreaseQuantity, removeItem } = useCart();
 
   const handleRemove = () => {
-    removeItem(item.id);
+    removeItem(item.id, item.selectedColor, item.selectedSize);
 
     toast.error("محصول از سبد خرید حذف شد");
   };
@@ -40,6 +40,13 @@ export default function CartItem({ item }) {
           <span className="mt-1 text-xs text-gray-500">{item.brand}</span>
         )}
 
+        {/* Variant */}
+        <div className="mt-2 flex gap-3 text-xs text-gray-500">
+          {item.selectedColor && <span>رنگ: {item.selectedColor}</span>}
+
+          {item.selectedSize && <span>سایز: {item.selectedSize}</span>}
+        </div>
+
         <p className="mt-2 text-sm text-gray-500">
           {item.price.toLocaleString("fa-IR")} تومان
         </p>
@@ -52,7 +59,9 @@ export default function CartItem({ item }) {
           {/* Quantity */}
           <div className="flex items-center overflow-hidden rounded-xl border bg-white">
             <button
-              onClick={() => decreaseQuantity(item.id)}
+              onClick={() =>
+                decreaseQuantity(item.id, item.selectedColor, item.selectedSize)
+              }
               className="p-2 transition hover:bg-gray-100"
               aria-label="کاهش تعداد"
             >
@@ -64,7 +73,9 @@ export default function CartItem({ item }) {
             </span>
 
             <button
-              onClick={() => increaseQuantity(item.id)}
+              onClick={() =>
+                increaseQuantity(item.id, item.selectedColor, item.selectedSize)
+              }
               className="p-2 transition hover:bg-gray-100"
               aria-label="افزایش تعداد"
             >
