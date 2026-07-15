@@ -3,19 +3,25 @@ import { persist } from "zustand/middleware";
 
 const useOrderStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       orders: [],
 
       addOrder: (order) =>
         set((state) => ({
           orders: [
-            ...state.orders,
             {
               ...order,
               status: "pending",
             },
+            ...state.orders,
           ],
         })),
+
+      getOrders: () => {
+        return get().orders;
+      },
+
+      getOrderById: (id) => get().orders.find((order) => order.id === id),
 
       updateOrderStatus: (id, status) =>
         set((state) => ({
@@ -29,15 +35,21 @@ const useOrderStore = create(
           ),
         })),
 
+      removeOrder: (id) =>
+        set((state) => ({
+          orders: state.orders.filter((order) => order.id !== id),
+        })),
+
       clearOrders: () =>
         set({
           orders: [],
         }),
     }),
+    
 
     {
       name: "nova-orders",
-       skipHydration: true,
+      skipHydration: true,
     },
   ),
 );
