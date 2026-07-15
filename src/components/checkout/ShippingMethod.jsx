@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { Truck, Zap, Package } from "lucide-react";
 
 import useCheckoutStore from "@/store/checkoutStore";
@@ -12,31 +13,32 @@ export default function ShippingMethod() {
     (state) => state.setShippingMethod,
   );
 
-  const methods = [
-    {
-      id: "normal",
-      title: "ارسال عادی",
-      price: SHIPPING_PRICES.normal,
-      icon: Truck,
-      time: "۳ تا ۵ روز کاری",
-    },
-
-    {
-      id: "express",
-      title: "ارسال سریع",
-      price: SHIPPING_PRICES.express,
-      icon: Zap,
-      time: "۱ تا ۲ روز کاری",
-    },
-
-    {
-      id: "pickup",
-      title: "تحویل حضوری",
-      price: SHIPPING_PRICES.pickup,
-      icon: Package,
-      time: "امروز",
-    },
-  ];
+  const methods = useMemo(
+    () => [
+      {
+        id: "normal",
+        title: "ارسال عادی",
+        price: SHIPPING_PRICES.normal,
+        icon: Truck,
+        time: "۳ تا ۵ روز کاری",
+      },
+      {
+        id: "express",
+        title: "ارسال سریع",
+        price: SHIPPING_PRICES.express,
+        icon: Zap,
+        time: "۱ تا ۲ روز کاری",
+      },
+      {
+        id: "pickup",
+        title: "تحویل حضوری",
+        price: SHIPPING_PRICES.pickup,
+        icon: Package,
+        time: "امروز",
+      },
+    ],
+    [],
+  );
 
   return (
     <div className="rounded-2xl border bg-white p-6 shadow-sm">
@@ -51,6 +53,7 @@ export default function ShippingMethod() {
           return (
             <label
               key={method.id}
+              htmlFor={method.id}
               className={`
                 flex cursor-pointer items-center justify-between
                 rounded-xl border p-4 transition
@@ -59,8 +62,10 @@ export default function ShippingMethod() {
             >
               <div className="flex items-center gap-4">
                 <input
+                  id={method.id}
                   type="radio"
                   name="shippingMethod"
+                  value={method.id}
                   checked={active}
                   onChange={() => setShippingMethod(method.id)}
                   className="h-4 w-4 accent-black"
@@ -78,7 +83,7 @@ export default function ShippingMethod() {
               <span className="font-bold">
                 {method.price === 0
                   ? "رایگان"
-                  : `${method.price.toLocaleString()} تومان`}
+                  : `${method.price.toLocaleString("fa-IR")} تومان`}
               </span>
             </label>
           );

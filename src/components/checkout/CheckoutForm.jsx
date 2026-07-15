@@ -2,16 +2,22 @@
 
 import { useFormik } from "formik";
 import { toast } from "sonner";
-
 import checkoutSchema from "@/validations/checkoutSchema";
-
 import Select from "@/components/ui/Select";
 import Input from "@/components/ui/Input/Input";
 import Textarea from "@/components/ui/Textarea/Textarea";
 import Button from "@/components/ui/Button";
-
 import iranCities from "@/data/iranCities";
 import useCheckoutStore from "@/store/checkoutStore";
+
+const initialAddress = {
+  fullName: "",
+  phone: "",
+  province: "",
+  city: "",
+  address: "",
+  postalCode: "",
+};
 
 export default function CheckoutForm() {
   const shippingAddress = useCheckoutStore((state) => state.shippingAddress);
@@ -21,21 +27,23 @@ export default function CheckoutForm() {
   );
 
   const formik = useFormik({
-    initialValues: shippingAddress || {
-      fullName: "",
-      phone: "",
-      province: "",
-      city: "",
-      address: "",
-      postalCode: "",
-    },
+    initialValues: shippingAddress || initialAddress,
 
     enableReinitialize: true,
 
     validationSchema: checkoutSchema,
 
     onSubmit: (values) => {
-      setShippingAddress(values);
+      const cleanedValues = {
+        fullName: values.fullName.trim(),
+        phone: values.phone.trim(),
+        province: values.province,
+        city: values.city,
+        address: values.address.trim(),
+        postalCode: values.postalCode.trim(),
+      };
+
+      setShippingAddress(cleanedValues);
 
       toast.success("اطلاعات گیرنده ذخیره شد");
     },
@@ -63,6 +71,8 @@ export default function CheckoutForm() {
         <Input
           label="شماره موبایل"
           name="phone"
+          type="tel"
+          inputMode="numeric"
           value={formik.values.phone}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -110,7 +120,7 @@ export default function CheckoutForm() {
 
       <Textarea
         className="mt-5"
-        label="آدرس"
+        label="آدرس کامل"
         rows={4}
         name="address"
         value={formik.values.address}
@@ -123,14 +133,15 @@ export default function CheckoutForm() {
         className="mt-5"
         label="کد پستی"
         name="postalCode"
+        inputMode="numeric"
         value={formik.values.postalCode}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         error={formik.touched.postalCode && formik.errors.postalCode}
       />
 
-      <Button type="submit" className="mt-6">
-        ذخیره اطلاعات گیرنده
+      <Button type="submit" disabled={formik.isSubmitting} className="mt-6">
+        {formik.isSubmitting ? "در حال ذخیره..." : "ذخیره اطلاعات گیرنده"}
       </Button>
     </form>
   );

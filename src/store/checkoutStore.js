@@ -1,28 +1,35 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-const initialAddress = {
+const createInitialAddress = () => ({
   fullName: "",
   phone: "",
   province: "",
   city: "",
   address: "",
   postalCode: "",
-};
+});
 
 const useCheckoutStore = create(
   persist(
     (set) => ({
-      shippingAddress: initialAddress,
+      shippingAddress: createInitialAddress(),
 
       shippingMethod: "normal",
 
       paymentMethod: "online",
 
+      discountCode: "",
+
+      note: "",
+
       setShippingAddress: (data) =>
-        set({
-          shippingAddress: data,
-        }),
+        set((state) => ({
+          shippingAddress: {
+            ...state.shippingAddress,
+            ...data,
+          },
+        })),
 
       setShippingMethod: (method) =>
         set({
@@ -34,18 +41,32 @@ const useCheckoutStore = create(
           paymentMethod: method,
         }),
 
+      setDiscountCode: (code) =>
+        set({
+          discountCode: code,
+        }),
+
+      setNote: (note) =>
+        set({
+          note,
+        }),
+
       clearAddress: () =>
         set({
-          shippingAddress: initialAddress,
+          shippingAddress: createInitialAddress(),
         }),
 
       clearCheckout: () =>
         set({
-          shippingAddress: initialAddress,
+          shippingAddress: createInitialAddress(),
 
           shippingMethod: "normal",
 
           paymentMethod: "online",
+
+          discountCode: "",
+
+          note: "",
         }),
     }),
 

@@ -1,21 +1,20 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-
 import Button from "@/components/ui/Button";
-
-import useCartStore from "@/store/cartStore";
 import useCart from "@/hooks/useCart";
 import useCheckoutStore from "@/store/checkoutStore";
 import useOrderStore from "@/store/orderStore";
-
 import { SHIPPING_PRICES } from "@/constants/shipping";
 
 export default function OrderSummary() {
   const router = useRouter();
 
-  const { items, totalQuantity } = useCart();
+  const [loading, setLoading] = useState(false);
+
+  const { items, totalQuantity, clearCart } = useCart();
 
   const shippingAddress = useCheckoutStore((state) => state.shippingAddress);
 
@@ -26,8 +25,6 @@ export default function OrderSummary() {
   const clearCheckout = useCheckoutStore((state) => state.clearCheckout);
 
   const addOrder = useOrderStore((state) => state.addOrder);
-
-  const clearCart = useCartStore((state) => state.clearCart);
 
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -41,37 +38,45 @@ export default function OrderSummary() {
   const total = subtotal + shipping - discount;
 
   const handleSubmitOrder = () => {
+    if (loading) return;
+
     if (!items.length) {
       toast.error("سبد خرید شما خالی است");
-
       return;
     }
 
     if (
-      !shippingAddress ||
-      !shippingAddress.fullName ||
-      !shippingAddress.phone ||
-      !shippingAddress.address
+      !shippingAddress?.fullName ||
+      !shippingAddress?.phone ||
+      !shippingAddress?.address
     ) {
       toast.error("اطلاعات گیرنده را کامل کنید");
-
       return;
     }
 
-    if (!paymentMethod) {
-      toast.error("روش پرداخت را انتخاب کنید");
-
-      return;
-    }
+    setLoading(true);
 
     const order = {
-      id: Date.now(),
-      items,
+      id: crypto.randomUUID(),
+
+      items: [...items],
+
       status: "pending",
+
       shippingAddress,
+
       shippingMethod,
+
       paymentMethod,
+
+      subtotal,
+
+      shipping,
+
+      discount,
+
       total,
+
       createdAt: new Date().toISOString(),
     };
 
@@ -93,28 +98,29 @@ export default function OrderSummary() {
       <div className="space-y-4 text-sm">
         <div className="flex justify-between">
           <span>تعداد کالا</span>
-
           <span>{totalQuantity}</span>
         </div>
 
         <div className="flex justify-between">
           <span>جمع خرید</span>
 
-          <span>{subtotal.toLocaleString()} تومان</span>
+          <span>{subtotal.toLocaleString("fa-IR")} تومان</span>
         </div>
 
         <div className="flex justify-between">
           <span>هزینه ارسال</span>
 
           <span>
-            {shipping === 0 ? "رایگان" : `${shipping.toLocaleString()} تومان`}
+            {shipping === 0
+              ? "رایگان"
+              : `${shipping.toLocaleString("fa-IR")} تومان`}
           </span>
         </div>
 
         <div className="flex justify-between">
           <span>تخفیف</span>
 
-          <span>{discount.toLocaleString()} تومان</span>
+          <span>{discount.toLocaleString("fa-IR")} تومان</span>
         </div>
 
         <hr />
@@ -122,12 +128,16 @@ export default function OrderSummary() {
         <div className="flex justify-between text-lg font-bold">
           <span>مبلغ قابل پرداخت</span>
 
-          <span>{total.toLocaleString()} تومان</span>
+          <span>{total.toLocaleString("fa-IR")} تومان</span>
         </div>
       </div>
 
-      <Button onClick={handleSubmitOrder} className="mt-6 w-full">
-        ثبت سفارش نهایی
+      <Button
+        onClick={handleSubmitOrder}
+        disabled={loading}
+        className="mt-6 w-full"
+      >
+        {loading ? "در حال ثبت..." : "ثبت سفارش نهایی"}
       </Button>
     </div>
   );
