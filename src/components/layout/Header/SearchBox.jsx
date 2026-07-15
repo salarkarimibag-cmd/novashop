@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Search, User } from "lucide-react";
 import useDebounce from "@/hooks/useDebounce";
@@ -9,32 +9,24 @@ import Logo from "@/components/common/Logo";
 import CartButton from "@/components/cart/CartButton";
 import WishlistButton from "@/components/wishlist/WishlistButton";
 import SearchDropdown from "./SearchDropdown";
-
-import products from "@/data/products";
+import useFilterStore from "@/store/filterStore";
+import useSearchProducts from "@/hooks/useSearchProducts";
 
 export default function SearchBox() {
   const [query, setQuery] = useState("");
   const searchRef = useRef(null);
   const [open, setOpen] = useState(false);
   const debouncedQuery = useDebounce(query, 500);
-  const filteredProducts = useMemo(() => {
-    const search = debouncedQuery.trim().toLowerCase();
-
-    if (!search) return [];
-
-    return products.filter(
-      (product) =>
-        product.title.toLowerCase().includes(search) ||
-        product.brand.toLowerCase().includes(search) ||
-        product.category.toLowerCase().includes(search),
-    );
-  }, [debouncedQuery]);
+  const setSearchQuery = useFilterStore((state) => state.setSearchQuery);
+  const filteredProducts = useSearchProducts(debouncedQuery);
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
+    const handleClickOutside = (event) => {
+      if (!searchRef.current) return;
+
+      if (!searchRef.current.contains(event.target)) {
         setOpen(false);
       }
-    }
+    };
 
     document.addEventListener("mousedown", handleClickOutside);
 
@@ -42,6 +34,9 @@ export default function SearchBox() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  useEffect(() => {
+    setSearchQuery(debouncedQuery);
+  }, [debouncedQuery, setSearchQuery]);
 
   return (
     <div className="border-b border-gray-200">
@@ -56,10 +51,20 @@ export default function SearchBox() {
               type="search"
               placeholder="جستجوی کالا..."
               value={query}
-              onFocus={() => setOpen(true)}
+              onFocus={() => {
+                if (query.trim()) {
+                  setOpen(true);
+                }
+              }}
               onChange={(e) => {
-                setQuery(e.target.value);
-                setOpen(true);
+                const value = e.target.value;
+
+                setQuery(value);
+                setOpen(Boolean(value.trim()));
+
+                if (!value.trim()) {
+                  setSearchQuery("");
+                }
               }}
               className="w-full bg-transparent px-3 py-3 text-sm outline-none"
             />
@@ -71,6 +76,7 @@ export default function SearchBox() {
               query={query}
               onSelect={() => {
                 setQuery("");
+                setSearchQuery("");
                 setOpen(false);
               }}
             />

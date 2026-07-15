@@ -6,10 +6,12 @@ import products from "@/data/products";
 import useFilterStore from "@/store/filterStore";
 
 export default function useFilteredProducts() {
-  const { selectedBrands, selectedCategories, sort, priceRange } =
+  const { selectedBrands, selectedCategories, sort, priceRange, searchQuery } =
     useFilterStore();
 
   return useMemo(() => {
+    const search = searchQuery.trim().toLowerCase();
+
     let filtered = products.filter((product) => {
       const brandMatch =
         selectedBrands.length === 0 || selectedBrands.includes(product.brand);
@@ -21,7 +23,13 @@ export default function useFilteredProducts() {
       const priceMatch =
         product.price >= priceRange.min && product.price <= priceRange.max;
 
-      return brandMatch && categoryMatch && priceMatch;
+      const searchMatch =
+        !search ||
+        product.title.toLowerCase().includes(search) ||
+        product.brand.toLowerCase().includes(search) ||
+        product.category.toLowerCase().includes(search);
+
+      return brandMatch && categoryMatch && priceMatch && searchMatch;
     });
 
     switch (sort) {
@@ -39,5 +47,5 @@ export default function useFilteredProducts() {
     }
 
     return filtered;
-  }, [selectedBrands, selectedCategories, sort, priceRange]);
+  }, [selectedBrands, selectedCategories, sort, priceRange, searchQuery]);
 }

@@ -5,6 +5,8 @@ const useFilterStore = create((set) => ({
   selectedCategories: [],
   sort: "newest",
 
+  searchQuery: "",
+
   priceRange: {
     min: 0,
     max: Infinity,
@@ -26,6 +28,11 @@ const useFilterStore = create((set) => ({
 
   setSort: (sort) => set({ sort }),
 
+  setSearchQuery: (searchQuery) =>
+    set({
+      searchQuery,
+    }),
+
   setPriceRange: (min, max) =>
     set({
       priceRange: {
@@ -39,6 +46,7 @@ const useFilterStore = create((set) => ({
       selectedBrands: [],
       selectedCategories: [],
       sort: "newest",
+      searchQuery: "",
       priceRange: {
         min: 0,
         max: Infinity,
