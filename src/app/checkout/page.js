@@ -8,8 +8,8 @@ import {
   OrderItems,
 } from "@/components/checkout";
 
-import useCart from "@/hooks/useCart";
 import EmptyCart from "@/components/cart/EmptyCart";
+import useCart from "@/hooks/useCart";
 
 export default function CheckoutPage() {
   const { items } = useCart();
