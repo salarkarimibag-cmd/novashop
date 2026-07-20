@@ -27,7 +27,7 @@ const navLinks = [
   {
     id: 6,
     title: "علاقه‌مندی‌ها",
-    href: "/wishlist",
+    href: "/account/wishlist",
   },
 ];
 

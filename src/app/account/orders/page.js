@@ -1,6 +1,5 @@
 "use client";
-
-import { OrderCard } from "@/components/orders";
+import { OrderCard } from "@/components/account/orders";
 import useOrders from "@/hooks/useOrders";
 
 export default function OrdersPage() {

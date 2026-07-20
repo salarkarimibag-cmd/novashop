@@ -34,17 +34,17 @@ export default function AddressForm() {
   });
 
   const cities = iranCities[formik.values.province] || [];
-
+  console.log({
+    Button,
+    Input,
+    Select,
+    Textarea,
+  });
   return (
     <div className="rounded-2xl border bg-white p-6 shadow-sm">
-      <h2 className="mb-6 text-xl font-bold">
-        افزودن آدرس جدید
-      </h2>
+      <h2 className="mb-6 text-xl font-bold">افزودن آدرس جدید</h2>
 
-      <form
-        onSubmit={formik.handleSubmit}
-        className="space-y-5"
-      >
+      <form onSubmit={formik.handleSubmit} className="space-y-5">
         <Input
           label="نام گیرنده"
           name="fullName"
@@ -77,10 +77,7 @@ export default function AddressForm() {
           <option value="">انتخاب استان</option>
 
           {Object.keys(iranCities).map((province) => (
-            <option
-              key={province}
-              value={province}
-            >
+            <option key={province} value={province}>
               {province}
             </option>
           ))}
@@ -97,10 +94,7 @@ export default function AddressForm() {
           <option value="">انتخاب شهر</option>
 
           {cities.map((city) => (
-            <option
-              key={city}
-              value={city}
-            >
+            <option key={city} value={city}>
               {city}
             </option>
           ))}
@@ -125,10 +119,7 @@ export default function AddressForm() {
           error={formik.touched.postalCode && formik.errors.postalCode}
         />
 
-        <Button
-          type="submit"
-          className="w-full"
-        >
+        <Button type="submit" className="w-full">
           ذخیره آدرس
         </Button>
       </form>

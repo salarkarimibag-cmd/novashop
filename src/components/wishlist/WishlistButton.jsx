@@ -9,7 +9,7 @@ export default function WishlistButton() {
 
   return (
     <Link
-      href="/wishlist"
+      href="/account/wishlist"
       className="relative rounded-lg border border-gray-300 p-2 transition hover:bg-gray-100"
       aria-label="علاقه‌مندی‌ها"
     >

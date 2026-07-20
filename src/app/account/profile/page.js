@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
 import useAuthStore from "@/store/authStore";
-import { ProfileInfo, ProfileForm } from "@/components/profile";
+import { ProfileInfo, ProfileForm } from "@/components/account/profile";
 
 export default function ProfilePage() {
   const router = useRouter();

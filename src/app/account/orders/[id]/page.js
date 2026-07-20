@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import useOrderStore from "@/store/orderStore";
-import OrderTimeline from "@/components/orders/OrderTimeline";
-import OrderStatus from "@/components/orders/OrderStatus";
+import OrderTimeline from "@/components/account/orders/OrderTimeline";
+import OrderStatus from "@/components/account/orders/OrderStatus";
 import { ORDER_STATUS } from "@/constants/orderStatus";
 import { SHIPPING_PRICES } from "@/constants/shipping";
 

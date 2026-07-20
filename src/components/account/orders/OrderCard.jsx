@@ -11,10 +11,12 @@ export default function OrderCard({ order }) {
       {/* Header */}
       <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h2 className="font-bold">سفارش #{order.id.slice(0, 8)}</h2>
+          <h2 className="font-bold">سفارش #{String(order.id).slice(0, 8)}</h2>
 
           <p className="mt-1 text-sm text-gray-500">
-            {new Date(order.createdAt).toLocaleDateString("fa-IR")}
+            {order.createdAt
+              ? new Date(order.createdAt).toLocaleDateString("fa-IR")
+              : "تاریخ نامشخص"}
           </p>
         </div>
 

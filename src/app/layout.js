@@ -12,7 +12,7 @@ const vazir = Vazirmatn({
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="fa" dir="rtl">
+    <html lang="fa" data-scroll-behavior="smooth" dir="rtl">
       <body className={vazir.className}>
         <HydrationProvider>
           <Header />
