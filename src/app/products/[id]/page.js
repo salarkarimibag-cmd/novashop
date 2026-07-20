@@ -1,9 +1,9 @@
 import products from "@/data/products";
 
-import ProductGallery from "@/components/product/ProductGallery";
-import ProductInfo from "@/components/product/ProductInfo";
-import ProductTabs from "@/components/product/ProductTabs";
-import RelatedProducts from "@/components/product/RelatedProducts";
+import ProductGallery from "@/components/product-detail/ProductGallery";
+import ProductInfo from "@/components/product-detail/ProductInfo";
+import ProductTabs from "@/components/product-detail/ProductTabs";
+import RelatedProducts from "@/components/product-detail/RelatedProducts";
 
 export default async function ProductPage({ params }) {
   const { id } = await params;
