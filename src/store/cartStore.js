@@ -3,6 +3,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+const getProductId = (product) => String(product._id || product.id);
+
 const useCartStore = create(
   persist(
     (set, get) => ({
@@ -12,9 +14,11 @@ const useCartStore = create(
       addItem: (product) => {
         const items = get().items;
 
+        const productId = getProductId(product);
+
         const existingItem = items.find(
           (item) =>
-            item.id === product.id &&
+            getProductId(item) === productId &&
             item.selectedColor === product.selectedColor &&
             item.selectedSize === product.selectedSize,
         );
@@ -22,7 +26,7 @@ const useCartStore = create(
         if (existingItem) {
           set({
             items: items.map((item) =>
-              item.id === product.id &&
+              getProductId(item) === productId &&
               item.selectedColor === product.selectedColor &&
               item.selectedSize === product.selectedSize
                 ? {
@@ -53,18 +57,18 @@ const useCartStore = create(
           items: state.items.filter(
             (item) =>
               !(
-                item.id === id &&
+                getProductId(item) === String(id) &&
                 item.selectedColor === color &&
                 item.selectedSize === size
               ),
           ),
         })),
 
-      // Increase
+      // Increase quantity
       increaseQuantity: (id, color, size) =>
         set((state) => ({
           items: state.items.map((item) =>
-            item.id === id &&
+            getProductId(item) === String(id) &&
             item.selectedColor === color &&
             item.selectedSize === size
               ? {
@@ -75,11 +79,11 @@ const useCartStore = create(
           ),
         })),
 
-      // Decrease
+      // Decrease quantity
       decreaseQuantity: (id, color, size) =>
         set((state) => ({
           items: state.items.map((item) =>
-            item.id === id &&
+            getProductId(item) === String(id) &&
             item.selectedColor === color &&
             item.selectedSize === size
               ? {
@@ -90,11 +94,11 @@ const useCartStore = create(
           ),
         })),
 
-      // Update manually
+      // Update quantity
       updateQuantity: (id, color, size, quantity) =>
         set((state) => ({
           items: state.items.map((item) =>
-            item.id === id &&
+            getProductId(item) === String(id) &&
             item.selectedColor === color &&
             item.selectedSize === size
               ? {
@@ -109,16 +113,16 @@ const useCartStore = create(
       findItem: (id, color, size) =>
         get().items.find(
           (item) =>
-            item.id === id &&
+            getProductId(item) === String(id) &&
             item.selectedColor === color &&
             item.selectedSize === size,
         ),
 
-      // Check item exists
+      // Check exists
       hasItem: (id, color, size) =>
         get().items.some(
           (item) =>
-            item.id === id &&
+            getProductId(item) === String(id) &&
             item.selectedColor === color &&
             item.selectedSize === size,
         ),
@@ -129,7 +133,7 @@ const useCartStore = create(
           items: [],
         }),
 
-      // Total quantity
+      // Total items
       getTotalItems: () =>
         get().items.reduce((total, item) => total + item.quantity, 0),
 

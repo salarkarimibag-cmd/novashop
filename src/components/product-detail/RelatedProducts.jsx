@@ -1,6 +1,6 @@
 "use client";
 
-import products from "@/data/products";
+import { useEffect, useState } from "react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
@@ -9,11 +9,32 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import RelatedProductCard from "./RelatedProductCard";
+import { getProducts } from "@/services/productService";
 
-export default function RelatedProducts({ currentProductId }) {
-  const relatedProducts = products.filter(
-    (item) => item.id !== currentProductId,
-  );
+export default function RelatedProducts({ currentProductId, category }) {
+  const [relatedProducts, setRelatedProducts] = useState([]);
+
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const data = await getProducts();
+
+        const products = data.products.filter(
+          (item) => item._id !== currentProductId && item.category === category,
+        );
+
+        setRelatedProducts(products);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadProducts();
+  }, [currentProductId, category]);
+
+  if (relatedProducts.length === 0) {
+    return null;
+  }
 
   return (
     <section className="mt-20">
@@ -45,7 +66,7 @@ export default function RelatedProducts({ currentProductId }) {
         }}
       >
         {relatedProducts.map((product) => (
-          <SwiperSlide key={product.id}>
+          <SwiperSlide key={product._id}>
             <RelatedProductCard product={product} />
           </SwiperSlide>
         ))}

@@ -1,24 +1,32 @@
 "use client";
 
 import useFilterStore from "@/store/filterStore";
-import useFilteredProducts from "@/hooks/useFilteredProducts";
 
 export default function ProductSort() {
   const { sort, setSort } = useFilterStore();
-  const filteredProducts = useFilteredProducts();
 
   return (
     <div className="mb-6 flex items-center justify-between">
-      <p className="font-semibold">{filteredProducts.length} محصول</p>
+      <h2 className="text-lg font-bold">
+        محصولات
+      </h2>
 
       <select
         value={sort}
         onChange={(e) => setSort(e.target.value)}
-        className="rounded-xl border px-4 py-2"
+        className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm"
       >
-        <option value="newest">جدیدترین</option>
-        <option value="cheap">ارزان‌ترین</option>
-        <option value="expensive">گران‌ترین</option>
+        <option value="newest">
+          جدیدترین
+        </option>
+
+        <option value="cheap">
+          ارزان‌ترین
+        </option>
+
+        <option value="expensive">
+          گران‌ترین
+        </option>
       </select>
     </div>
   );

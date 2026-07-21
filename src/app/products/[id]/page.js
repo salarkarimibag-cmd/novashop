@@ -1,36 +1,45 @@
-import products from "@/data/products";
+import { notFound } from "next/navigation";
+
+import { getProductById } from "@/services/productService";
 
 import ProductGallery from "@/components/product-detail/ProductGallery";
 import ProductInfo from "@/components/product-detail/ProductInfo";
-import ProductTabs from "@/components/product-detail/ProductTabs";
+import ProductDescription from "@/components/product-detail/ProductDescription";
+import ProductSpecifications from "@/components/product-detail/ProductSpecifications";
 import RelatedProducts from "@/components/product-detail/RelatedProducts";
 
-export default async function ProductPage({ params }) {
+export default async function ProductDetailPage({ params }) {
   const { id } = await params;
-  const product = products.find((item) => item.id === Number(id));
+
+  let product;
+
+  try {
+    const data = await getProductById(id);
+    product = data.product;
+  } catch {
+    notFound();
+  }
 
   if (!product) {
-    return (
-      <main className="container mx-auto px-4 py-20">
-        <h1 className="text-center text-2xl font-bold">محصول پیدا نشد</h1>
-      </main>
-    );
+    notFound();
   }
 
   return (
     <main className="container mx-auto px-4 py-10">
-      {/* Gallery + Info */}
       <div className="grid gap-10 lg:grid-cols-2">
-        <ProductGallery product={product} />
-
+        <ProductGallery images={product.images ?? []} />
         <ProductInfo product={product} />
       </div>
 
-      {/* Tabs */}
-      <ProductTabs product={product} />
+      <div className="mt-12 space-y-8">
+        <ProductDescription description={product.description ?? ""} />
+        <ProductSpecifications specifications={product.specifications ?? []} />
+      </div>
 
-      {/* Related Products */}
-      <RelatedProducts currentProductId={product.id} />
+      <RelatedProducts
+        currentProductId={product._id}
+        category={product.category ?? ""}
+      />
     </main>
   );
 }

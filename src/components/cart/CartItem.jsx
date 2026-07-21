@@ -10,7 +10,7 @@ export default function CartItem({ item }) {
   const { increaseQuantity, decreaseQuantity, removeItem } = useCart();
 
   const handleRemove = () => {
-    removeItem(item.id, item.selectedColor, item.selectedSize);
+    removeItem(item._id, item.selectedColor, item.selectedSize);
 
     toast.error("محصول از سبد خرید حذف شد");
   };
@@ -22,7 +22,7 @@ export default function CartItem({ item }) {
       {/* Image */}
       <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-gray-100">
         <Image
-          src={item.image}
+          src={item.images?.[0] || "/placeholder.png"}
           alt={item.title}
           fill
           sizes="96px"
@@ -60,7 +60,7 @@ export default function CartItem({ item }) {
           <div className="flex items-center overflow-hidden rounded-xl border bg-white">
             <button
               onClick={() =>
-                decreaseQuantity(item.id, item.selectedColor, item.selectedSize)
+                decreaseQuantity(item._id, item.selectedColor, item.selectedSize)
               }
               className="p-2 transition hover:bg-gray-100"
               aria-label="کاهش تعداد"
@@ -74,7 +74,7 @@ export default function CartItem({ item }) {
 
             <button
               onClick={() =>
-                increaseQuantity(item.id, item.selectedColor, item.selectedSize)
+                increaseQuantity(item._id, item.selectedColor, item.selectedSize)
               }
               className="p-2 transition hover:bg-gray-100"
               aria-label="افزایش تعداد"

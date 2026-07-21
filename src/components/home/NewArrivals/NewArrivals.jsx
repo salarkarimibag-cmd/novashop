@@ -68,7 +68,7 @@ export default function NewArrivals() {
         className="pb-12"
       >
         {newArrivals.map((product) => (
-          <SwiperSlide key={product.id}>
+          <SwiperSlide key={product._id}>
             <NewArrivalCard product={product} />
           </SwiperSlide>
         ))}

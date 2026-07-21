@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function SearchItem({ product, onSelect }) {
   return (
     <Link
-      href={`/products/${product.id}`}
+      href={`/products/${product._id}`}
       onClick={onSelect}
       className="flex items-center gap-4 border-b p-4 transition hover:bg-gray-50"
     >

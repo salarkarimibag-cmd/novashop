@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Star, Heart, ShoppingCart, Check } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+
 import useCartStore from "@/store/cartStore";
 import useWishlistStore from "@/store/wishlistStore";
 
@@ -29,20 +30,18 @@ export default function ProductInfo({ product }) {
     (state) => state.removeFromWishlist,
   );
 
-  const wishlistItems = useWishlistStore((state) => state.items);
-
-  const liked = wishlistItems.some((item) => item.id === product.id);
+  const liked = useWishlistStore((state) => state.isInWishlist(product._id));
 
   const isInCart = cartItems.some(
     (item) =>
-      item.id === product.id &&
+      item.id === product._id &&
       item.selectedColor === selectedColor &&
       item.selectedSize === selectedSize,
   );
 
   const handleWishlist = () => {
     if (liked) {
-      removeFromWishlist(product.id);
+      removeFromWishlist(product._id);
 
       toast.info("از علاقه‌مندی‌ها حذف شد");
     } else {
@@ -53,6 +52,11 @@ export default function ProductInfo({ product }) {
   };
 
   const handleAddToCart = () => {
+    if (product.inStock === false) {
+      toast.error("این محصول موجود نیست");
+      return;
+    }
+
     if (isInCart) {
       router.push("/cart");
       return;
@@ -83,29 +87,43 @@ export default function ProductInfo({ product }) {
   return (
     <div className="space-y-6">
       {/* Title */}
+
       <div>
         <h1 className="text-3xl font-bold">{product.title}</h1>
 
         <div className="mt-3 flex items-center gap-2 text-yellow-500">
           <Star size={18} fill="currentColor" />
 
-          <span>{product.rating}</span>
+          <span>{product.rating || 0}</span>
 
-          <span className="text-gray-500">({product.reviews} نظر)</span>
+          <span className="text-gray-500">({product.reviews || 0} نظر)</span>
         </div>
+
+        {product.brand && (
+          <p className="mt-2 text-sm text-gray-500">برند: {product.brand}</p>
+        )}
       </div>
 
       {/* Price */}
+
       <div>
         <div className="flex items-center gap-3">
           <span className="text-3xl font-bold text-red-600">
-            {product.price.toLocaleString()} تومان
+            {product.price.toLocaleString("fa-IR")} تومان
           </span>
 
           {product.oldPrice && (
             <span className="text-lg text-gray-400 line-through">
-              {product.oldPrice.toLocaleString()}
+              {product.oldPrice.toLocaleString("fa-IR")} تومان
             </span>
+          )}
+        </div>
+
+        <div className="mt-3">
+          {product.inStock !== false ? (
+            <span className="text-sm text-green-600">✓ موجود در انبار</span>
+          ) : (
+            <span className="text-sm text-red-500">ناموجود</span>
           )}
         </div>
       </div>
@@ -122,10 +140,10 @@ export default function ProductInfo({ product }) {
                 key={color}
                 onClick={() => setSelectedColor(color)}
                 className={`
-                  h-10 w-10 rounded-full border-2 transition
+                  h-10 w-10 rounded-full border transition
                   ${
                     selectedColor === color
-                      ? "border-black scale-110"
+                      ? "ring-2 ring-black ring-offset-2 scale-110"
                       : "border-gray-300"
                   }
                 `}
@@ -151,11 +169,13 @@ export default function ProductInfo({ product }) {
                 onClick={() => setSelectedSize(size)}
                 className={`
                 rounded-lg border px-4 py-2 transition
+
                 ${
                   selectedSize === size
                     ? "bg-black text-white border-black"
-                    : "border-gray-300"
+                    : "border-gray-300 hover:border-black"
                 }
+
                 `}
               >
                 {size}
@@ -178,10 +198,12 @@ export default function ProductInfo({ product }) {
             −
           </button>
 
-          <span className="w-12 text-center">{quantity}</span>
+          <span className="w-12 text-center font-bold">{quantity}</span>
 
           <button
-            onClick={() => setQuantity((q) => q + 1)}
+            onClick={() =>
+              setQuantity((q) => Math.min(q + 1, product.stock || 10))
+            }
             className="px-4 py-2 text-xl"
           >
             +

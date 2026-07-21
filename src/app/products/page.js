@@ -1,11 +1,12 @@
 import ProductFilter from "@/components/products/ProductFilter";
 import ProductGrid from "@/components/products/ProductGrid";
 import ProductSort from "@/components/products/ProductSort";
-
-
+import { getProducts } from "@/services/productService";
 
 export default async function ProductsPage({ searchParams }) {
   const search = (await searchParams)?.search || "";
+
+  const { products } = await getProducts();
 
   return (
     <main className="container mx-auto px-4 py-10">
@@ -20,7 +21,8 @@ export default async function ProductsPage({ searchParams }) {
 
         <section className="lg:col-span-3">
           <ProductSort />
-          <ProductGrid />
+
+          <ProductGrid products={products} />
         </section>
       </div>
     </main>

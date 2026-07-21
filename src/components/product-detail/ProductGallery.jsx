@@ -13,17 +13,22 @@ import "swiper/css/thumbs";
 export default function ProductGallery({ product }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
+  const images = product.images?.length > 0 ? product.images : [product.image];
+
   return (
     <div className="space-y-4">
-      {/* تصویر اصلی */}
+      {/* Main Gallery */}
       <Swiper
         modules={[Navigation, Thumbs]}
         navigation
-        thumbs={{ swiper: thumbsSwiper }}
-        className="rounded-2xl border"
+        thumbs={{
+          swiper: thumbsSwiper,
+        }}
+        spaceBetween={10}
+        className="overflow-hidden rounded-2xl border bg-white"
       >
-        {product.images.map((image, index) => (
-          <SwiperSlide key={index}>
+        {images.map((image, index) => (
+          <SwiperSlide key={image + index}>
             <div className="relative aspect-square">
               <Image
                 src={image}
@@ -31,30 +36,35 @@ export default function ProductGallery({ product }) {
                 fill
                 priority={index === 0}
                 sizes="(max-width:768px) 100vw, 50vw"
-                className="rounded-2xl object-cover"
+                className="rounded-2xl object-contain p-4"
               />
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
 
-      {/* تصاویر کوچک */}
+      {/* Thumbnails */}
       <Swiper
         onSwiper={setThumbsSwiper}
         modules={[Thumbs]}
         watchSlidesProgress
         spaceBetween={12}
         slidesPerView={4}
+        breakpoints={{
+          640: {
+            slidesPerView: 5,
+          },
+        }}
       >
-        {product.images.map((image, index) => (
-          <SwiperSlide key={index}>
-            <div className="relative aspect-square cursor-pointer overflow-hidden rounded-xl border">
+        {images.map((image, index) => (
+          <SwiperSlide key={image + index}>
+            <div className="relative aspect-square cursor-pointer overflow-hidden rounded-xl border bg-white hover:border-indigo-500">
               <Image
                 src={image}
                 alt={`${product.title}-${index}`}
                 fill
                 sizes="100px"
-                className="object-cover"
+                className="object-contain p-1"
               />
             </div>
           </SwiperSlide>
