@@ -3,61 +3,119 @@
 import ProductCard from "@/components/home/Products/ProductCard";
 import useFilterStore from "@/store/filterStore";
 
-export default function ProductGrid({ products }) {
-  const { selectedBrands, selectedCategories, sort, priceRange, searchQuery } =
-    useFilterStore();
+export default function ProductGrid({ products = [] }) {
+  const selectedBrands = useFilterStore((state) => state.selectedBrands);
+
+  const selectedCategories = useFilterStore(
+    (state) => state.selectedCategories,
+  );
+
+  const sort = useFilterStore((state) => state.sort);
+
+  const priceRange = useFilterStore((state) => state.priceRange);
+
+  const searchQuery = useFilterStore((state) => state.searchQuery);
 
   let filteredProducts = [...products];
 
-  const search = searchQuery.trim().toLowerCase();
+  // =====================
+  // Search
+  // =====================
+
+  if (searchQuery.trim()) {
+    const search = searchQuery.trim().toLowerCase();
+
+    filteredProducts = filteredProducts.filter(
+      (product) =>
+        product.title?.toLowerCase().includes(search) ||
+        product.brand?.toLowerCase().includes(search),
+    );
+  }
+
+  // =====================
+  // Brand
+  // =====================
+
+  if (selectedBrands.length > 0) {
+    filteredProducts = filteredProducts.filter((product) =>
+      selectedBrands.includes(product.brand),
+    );
+  }
+
+  // =====================
+  // Category
+  // =====================
+
+  if (selectedCategories.length > 0) {
+    filteredProducts = filteredProducts.filter((product) =>
+      selectedCategories.includes(product.category),
+    );
+  }
+
+  // =====================
+  // Price
+  // =====================
 
   filteredProducts = filteredProducts.filter((product) => {
-    const brandMatch =
-      selectedBrands.length === 0 || selectedBrands.includes(product.brand);
+    const price = product.discountPrice || product.price || 0;
 
-    const categoryMatch =
-      selectedCategories.length === 0 ||
-      selectedCategories.includes(product.category);
-
-    const priceMatch =
-      product.price >= priceRange.min && product.price <= priceRange.max;
-
-    const searchMatch =
-      !search ||
-      product.title.toLowerCase().includes(search) ||
-      product.brand?.toLowerCase().includes(search) ||
-      product.category?.toLowerCase().includes(search);
-
-    return brandMatch && categoryMatch && priceMatch && searchMatch;
+    return price >= priceRange[0] && price <= priceRange[1];
   });
 
-  switch (sort) {
-    case "cheap":
-      filteredProducts.sort((a, b) => a.price - b.price);
-      break;
+  // =====================
+  // Sort
+  // =====================
 
-    case "expensive":
-      filteredProducts.sort((a, b) => b.price - a.price);
-      break;
+  if (sort === "cheap") {
+    filteredProducts.sort(
+      (a, b) => (a.discountPrice || a.price) - (b.discountPrice || b.price),
+    );
+  }
 
-    case "newest":
-    default:
-      filteredProducts.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-      );
+  if (sort === "expensive") {
+    filteredProducts.sort(
+      (a, b) => (b.discountPrice || b.price) - (a.discountPrice || a.price),
+    );
+  }
+
+  if (sort === "newest") {
+    filteredProducts.sort(
+      (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0),
+    );
+  }
+
+  // Empty
+
+  if (filteredProducts.length === 0) {
+    return (
+      <div
+        className="
+      rounded-2xl
+      border
+      bg-white
+      p-10
+      text-center
+      text-gray-500
+      "
+      >
+        محصولی پیدا نشد
+      </div>
+    );
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+    <div
+      className="
+      grid
+      gap-6
+      sm:grid-cols-2
+      lg:grid-cols-3
+      xl:grid-cols-4
+      "
+    >
       {filteredProducts.map((product) => (
-        <ProductCard key={product._id} product={product} />
+        <ProductCard key={product.id || product._id} product={product} />
       ))}
-
-      {filteredProducts.length === 0 && (
-        <p className="col-span-full text-center text-gray-500">
-          محصولی پیدا نشد
-        </p>
-      )}
     </div>
   );
 }

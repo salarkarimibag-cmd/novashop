@@ -33,7 +33,7 @@ export default function WishlistList() {
   return (
     <div className="space-y-6">
       {items.map((item) => (
-        <WishlistItem key={item.id} item={item} />
+        <WishlistItem key={item.id || item._id} item={item} />
       ))}
     </div>
   );

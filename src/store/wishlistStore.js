@@ -18,7 +18,7 @@ const useWishlistStore = create(
 
         const exists = items.some((item) => getProductId(item) === productId);
 
-        if (exists) return;
+        if (!productId || exists) return;
 
         set({
           items: [...items, product],

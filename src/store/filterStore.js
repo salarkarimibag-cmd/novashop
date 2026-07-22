@@ -2,15 +2,14 @@ import { create } from "zustand";
 
 const useFilterStore = create((set) => ({
   selectedBrands: [],
+
   selectedCategories: [],
+
   sort: "newest",
 
-  searchQuery: "",
+  priceRange: [0, 100000000],
 
-  priceRange: {
-    min: 0,
-    max: Infinity,
-  },
+  searchQuery: "",
 
   toggleBrand: (brand) =>
     set((state) => ({
@@ -26,31 +25,28 @@ const useFilterStore = create((set) => ({
         : [...state.selectedCategories, category],
     })),
 
-  setSort: (sort) => set({ sort }),
-
-  setSearchQuery: (searchQuery) =>
+  setSort: (sort) =>
     set({
-      searchQuery,
+      sort,
     }),
 
-  setPriceRange: (min, max) =>
+  setPriceRange: (range) =>
     set({
-      priceRange: {
-        min,
-        max,
-      },
+      priceRange: range,
     }),
 
-  resetFilters: () =>
+  setSearchQuery: (query) =>
+    set({
+      searchQuery: query,
+    }),
+
+  clearFilters: () =>
     set({
       selectedBrands: [],
       selectedCategories: [],
       sort: "newest",
+      priceRange: [0, 100000000],
       searchQuery: "",
-      priceRange: {
-        min: 0,
-        max: Infinity,
-      },
     }),
 }));
 

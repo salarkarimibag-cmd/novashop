@@ -20,19 +20,19 @@ export default function RelatedProducts({ currentProductId, category }) {
         const data = await getProducts();
 
         const products = data.products.filter(
-          (item) => item._id !== currentProductId && item.category === category,
+          (item) => item.id !== currentProductId && item.category === category,
         );
 
         setRelatedProducts(products);
       } catch (error) {
-        console.error(error);
+        console.error("Failed loading related products:", error);
       }
     }
 
     loadProducts();
   }, [currentProductId, category]);
 
-  if (relatedProducts.length === 0) {
+  if (!relatedProducts.length) {
     return null;
   }
 
@@ -54,19 +54,22 @@ export default function RelatedProducts({ currentProductId, category }) {
           0: {
             slidesPerView: 1.2,
           },
+
           640: {
             slidesPerView: 2,
           },
+
           768: {
             slidesPerView: 3,
           },
+
           1280: {
             slidesPerView: 4,
           },
         }}
       >
         {relatedProducts.map((product) => (
-          <SwiperSlide key={product._id}>
+          <SwiperSlide key={product.id}>
             <RelatedProductCard product={product} />
           </SwiperSlide>
         ))}

@@ -13,7 +13,7 @@ export default function SearchDropdown({ products, query, onSelect }) {
         <>
           {products.slice(0, 5).map((product) => (
             <SearchItem
-              key={product._id}
+              key={product.id || product._id}
               product={product}
               onSelect={onSelect}
             />

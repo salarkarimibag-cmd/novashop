@@ -11,6 +11,8 @@ import useWishlistStore from "@/store/wishlistStore";
 export default function ProductInfo({ product }) {
   const router = useRouter();
 
+  const productId = product.id || product._id;
+
   const [selectedColor, setSelectedColor] = useState(
     product.colors?.[0] || null,
   );
@@ -20,62 +22,77 @@ export default function ProductInfo({ product }) {
   const [quantity, setQuantity] = useState(1);
 
   // Cart
+
   const addItem = useCartStore((state) => state.addItem);
+
   const cartItems = useCartStore((state) => state.items);
 
   // Wishlist
+
   const addToWishlist = useWishlistStore((state) => state.addToWishlist);
 
   const removeFromWishlist = useWishlistStore(
     (state) => state.removeFromWishlist,
   );
 
-  const liked = useWishlistStore((state) => state.isInWishlist(product._id));
+  const liked = useWishlistStore((state) => state.isInWishlist(productId));
 
   const isInCart = cartItems.some(
     (item) =>
-      item.id === product._id &&
+      item.id === productId &&
       item.selectedColor === selectedColor &&
       item.selectedSize === selectedSize,
   );
 
   const handleWishlist = () => {
     if (liked) {
-      removeFromWishlist(product._id);
+      removeFromWishlist(productId);
 
       toast.info("از علاقه‌مندی‌ها حذف شد");
     } else {
-      addToWishlist(product);
+      addToWishlist({
+        ...product,
+        id: productId,
+      });
 
       toast.success("به علاقه‌مندی‌ها اضافه شد");
     }
   };
 
   const handleAddToCart = () => {
-    if (product.inStock === false) {
+    if (product.stock <= 0) {
       toast.error("این محصول موجود نیست");
+
       return;
     }
 
     if (isInCart) {
       router.push("/cart");
+
       return;
     }
 
     if (product.colors?.length && !selectedColor) {
       toast.error("لطفا رنگ محصول را انتخاب کنید");
+
       return;
     }
 
     if (product.sizes?.length && !selectedSize) {
       toast.error("لطفا سایز محصول را انتخاب کنید");
+
       return;
     }
 
     addItem({
       ...product,
+
+      id: productId,
+
       quantity,
+
       selectedColor,
+
       selectedSize,
     });
 
@@ -83,6 +100,11 @@ export default function ProductInfo({ product }) {
       description: product.title,
     });
   };
+
+  const finalPrice =
+    product.discountPrice && product.discountPrice < product.price
+      ? product.discountPrice
+      : product.price;
 
   return (
     <div className="space-y-6">
@@ -108,19 +130,19 @@ export default function ProductInfo({ product }) {
 
       <div>
         <div className="flex items-center gap-3">
-          <span className="text-3xl font-bold text-red-600">
-            {product.price.toLocaleString("fa-IR")} تومان
-          </span>
-
-          {product.oldPrice && (
+          {product.discountPrice && product.discountPrice < product.price && (
             <span className="text-lg text-gray-400 line-through">
-              {product.oldPrice.toLocaleString("fa-IR")} تومان
+              {product.price.toLocaleString("fa-IR")} تومان
             </span>
           )}
+
+          <span className="text-3xl font-bold text-red-600">
+            {finalPrice.toLocaleString("fa-IR")} تومان
+          </span>
         </div>
 
         <div className="mt-3">
-          {product.inStock !== false ? (
+          {product.stock > 0 ? (
             <span className="text-sm text-green-600">✓ موجود در انبار</span>
           ) : (
             <span className="text-sm text-red-500">ناموجود</span>
@@ -140,13 +162,15 @@ export default function ProductInfo({ product }) {
                 key={color}
                 onClick={() => setSelectedColor(color)}
                 className={`
-                  h-10 w-10 rounded-full border transition
-                  ${
-                    selectedColor === color
-                      ? "ring-2 ring-black ring-offset-2 scale-110"
-                      : "border-gray-300"
-                  }
-                `}
+                    h-10 w-10 rounded-full border transition
+
+                    ${
+                      selectedColor === color
+                        ? "ring-2 ring-black ring-offset-2 scale-110"
+                        : "border-gray-300"
+                    }
+
+                    `}
                 style={{
                   backgroundColor: color,
                 }}
@@ -168,15 +192,15 @@ export default function ProductInfo({ product }) {
                 key={size}
                 onClick={() => setSelectedSize(size)}
                 className={`
-                rounded-lg border px-4 py-2 transition
+                    rounded-lg border px-4 py-2 transition
 
-                ${
-                  selectedSize === size
-                    ? "bg-black text-white border-black"
-                    : "border-gray-300 hover:border-black"
-                }
+                    ${
+                      selectedSize === size
+                        ? "bg-black text-white border-black"
+                        : "border-gray-300 hover:border-black"
+                    }
 
-                `}
+                    `}
               >
                 {size}
               </button>
@@ -202,7 +226,7 @@ export default function ProductInfo({ product }) {
 
           <button
             onClick={() =>
-              setQuantity((q) => Math.min(q + 1, product.stock || 10))
+              setQuantity((q) => Math.min(q + 1, product.stock || 1))
             }
             className="px-4 py-2 text-xl"
           >
@@ -217,8 +241,9 @@ export default function ProductInfo({ product }) {
         <button
           onClick={handleAddToCart}
           className={`
-          flex flex-1 items-center justify-center gap-2
-          rounded-xl px-6 py-4 text-white transition
+          flex flex-1 items-center justify-center
+          gap-2 rounded-xl px-6 py-4
+          text-white transition
 
           ${
             isInCart

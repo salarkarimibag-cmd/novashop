@@ -15,7 +15,11 @@ export default async function ProductDetailPage({ params }) {
 
   try {
     const data = await getProductById(id);
-    product = data.product;
+
+    product = {
+      id: data.product._id,
+      ...data.product,
+    };
   } catch {
     notFound();
   }
@@ -28,16 +32,18 @@ export default async function ProductDetailPage({ params }) {
     <main className="container mx-auto px-4 py-10">
       <div className="grid gap-10 lg:grid-cols-2">
         <ProductGallery images={product.images ?? []} />
+
         <ProductInfo product={product} />
       </div>
 
       <div className="mt-12 space-y-8">
         <ProductDescription description={product.description ?? ""} />
+
         <ProductSpecifications specifications={product.specifications ?? []} />
       </div>
 
       <RelatedProducts
-        currentProductId={product._id}
+        currentProductId={product.id}
         category={product.category ?? ""}
       />
     </main>
