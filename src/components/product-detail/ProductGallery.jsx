@@ -10,10 +10,11 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 
-export default function ProductGallery({ product }) {
+export default function ProductGallery({ images = [], title = "Product" }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
-  const images = product.images?.length > 0 ? product.images : [product.image];
+  const galleryImages =
+    images.length > 0 ? images : ["/images/placeholder.png"];
 
   return (
     <div className="space-y-4">
@@ -22,17 +23,17 @@ export default function ProductGallery({ product }) {
         modules={[Navigation, Thumbs]}
         navigation
         thumbs={{
-          swiper: thumbsSwiper,
+          swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
         }}
         spaceBetween={10}
         className="overflow-hidden rounded-2xl border bg-white"
       >
-        {images.map((image, index) => (
-          <SwiperSlide key={image + index}>
+        {galleryImages.map((image, index) => (
+          <SwiperSlide key={`${image}-${index}`}>
             <div className="relative aspect-square">
               <Image
                 src={image}
-                alt={product.title}
+                alt={title}
                 fill
                 priority={index === 0}
                 sizes="(max-width:768px) 100vw, 50vw"
@@ -56,12 +57,12 @@ export default function ProductGallery({ product }) {
           },
         }}
       >
-        {images.map((image, index) => (
-          <SwiperSlide key={image + index}>
+        {galleryImages.map((image, index) => (
+          <SwiperSlide key={`thumb-${image}-${index}`}>
             <div className="relative aspect-square cursor-pointer overflow-hidden rounded-xl border bg-white hover:border-indigo-500">
               <Image
                 src={image}
-                alt={`${product.title}-${index}`}
+                alt={`${title}-${index + 1}`}
                 fill
                 sizes="100px"
                 className="object-contain p-1"
