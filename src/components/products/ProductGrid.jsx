@@ -1,6 +1,5 @@
 "use client";
-
-import ProductCard from "@/components/home/Products/ProductCard";
+import ProductCard from "@/components/products/ProductCard";
 
 export default function ProductGrid({ products = [] }) {
   if (!products.length) {

@@ -5,7 +5,7 @@ import CartItem from "./CartItem";
 
 export default function CartList() {
   const { items } = useCart();
-
+  console.log(items);
   return (
     <div>
       {items.map((item) => (
@@ -14,6 +14,3 @@ export default function CartList() {
     </div>
   );
 }
-
-
-

@@ -10,7 +10,7 @@ import useWishlistStore from "@/store/wishlistStore";
 
 export default function ProductInfo({ product }) {
   const router = useRouter();
-
+  const getProductId = (item) => String(item._id || item.id);
   const productId = product.id || product._id;
 
   const [selectedColor, setSelectedColor] = useState(
@@ -39,11 +39,10 @@ export default function ProductInfo({ product }) {
 
   const isInCart = cartItems.some(
     (item) =>
-      item.id === productId &&
+      getProductId(item) === String(productId) &&
       item.selectedColor === selectedColor &&
       item.selectedSize === selectedSize,
   );
-
   const handleWishlist = () => {
     if (liked) {
       removeFromWishlist(productId);
@@ -86,14 +85,8 @@ export default function ProductInfo({ product }) {
 
     addItem({
       ...product,
-
-      id: productId,
-
-      quantity,
-
-      selectedColor,
-
-      selectedSize,
+      id: product._id,
+      quantity: 1,
     });
 
     toast.success("محصول به سبد خرید اضافه شد", {

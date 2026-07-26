@@ -14,12 +14,7 @@ export default async function ProductDetailPage({ params }) {
   let product;
 
   try {
-    const data = await getProductById(id);
-
-    product = {
-      id: data.product._id,
-      ...data.product,
-    };
+    product = await getProductById(id);
   } catch {
     notFound();
   }
@@ -39,11 +34,11 @@ export default async function ProductDetailPage({ params }) {
       <div className="mt-12 space-y-8">
         <ProductDescription description={product.description ?? ""} />
 
-        <ProductSpecifications specifications={product.specifications ?? []} />
+        <ProductSpecifications specifications={product.specifications ?? {}} />
       </div>
 
       <RelatedProducts
-        currentProductId={product.id}
+        currentProductId={product._id}
         category={product.category ?? ""}
       />
     </main>

@@ -1,7 +1,9 @@
 "use client";
 
-import brands from "@/data/brands";
-import categories from "@/data/categories";
+import { useEffect, useState } from "react";
+
+import { getBrands } from "@/services/brandService";
+import { getCategories } from "@/services/categoryService";
 
 import useFilterStore from "@/store/filterStore";
 
@@ -17,7 +19,25 @@ export default function ProductFilter() {
     setPriceRange,
     clearFilters,
   } = useFilterStore();
+  const [brands, setBrands] = useState([]);
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    async function loadFilters() {
+      try {
+        const [brandData, categoryData] = await Promise.all([
+          getBrands(),
+          getCategories(),
+        ]);
 
+        setBrands(brandData.brands);
+        setCategories(categoryData.categories);
+      } catch (error) {
+        console.error("خطا در دریافت فیلترها:", error);
+      }
+    }
+
+    loadFilters();
+  }, []);
   return (
     <aside
       className="
@@ -53,26 +73,17 @@ export default function ProductFilter() {
         <div className="space-y-3">
           {brands.map((brand) => (
             <label
-              key={brand.id}
-              className="
-              flex
-              cursor-pointer
-              items-center
-              gap-3
-              "
+              key={brand}
+              className="flex cursor-pointer items-center gap-3"
             >
               <input
                 type="checkbox"
-                checked={selectedBrands.includes(brand.name)}
-                onChange={() => toggleBrand(brand.name)}
-                className="
-                h-4
-                w-4
-                accent-black
-                "
+                checked={selectedBrands.includes(brand)}
+                onChange={() => toggleBrand(brand)}
+                className="h-4 w-4 accent-black"
               />
 
-              <span>{brand.name}</span>
+              <span>{brand}</span>
             </label>
           ))}
         </div>
@@ -86,26 +97,17 @@ export default function ProductFilter() {
         <div className="space-y-3">
           {categories.map((category) => (
             <label
-              key={category.id}
-              className="
-              flex
-              cursor-pointer
-              items-center
-              gap-3
-              "
+              key={category}
+              className="flex cursor-pointer items-center gap-3"
             >
               <input
                 type="checkbox"
-                checked={selectedCategories.includes(category.title)}
-                onChange={() => toggleCategory(category.title)}
-                className="
-                h-4
-                w-4
-                accent-black
-                "
+                checked={selectedCategories.includes(category)}
+                onChange={() => toggleCategory(category)}
+                className="h-4 w-4 accent-black"
               />
 
-              <span>{category.title}</span>
+              <span>{category}</span>
             </label>
           ))}
         </div>

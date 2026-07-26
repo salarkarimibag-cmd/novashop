@@ -50,5 +50,7 @@ export async function getProductById(id) {
     throw new Error("محصول پیدا نشد");
   }
 
-  return response.json();
+  const data = await response.json();
+
+  return data.product;
 }
