@@ -1,6 +1,6 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer/Footer";
-import { HydrationProvider } from "@/components/providers";
+import { HydrationProvider, AuthProvider } from "@/components/providers";
 import { Toaster } from "sonner";
 import { Vazirmatn } from "next/font/google";
 import "./globals.css";
@@ -15,13 +15,15 @@ export default function RootLayout({ children }) {
     <html lang="fa" data-scroll-behavior="smooth" dir="rtl">
       <body className={vazir.className}>
         <HydrationProvider>
-          <Header />
+          <AuthProvider>
+            <Header />
 
-          <main className="min-h-screen bg-gray-50">{children}</main>
+            <main className="min-h-screen bg-gray-50">{children}</main>
 
-          <Footer />
+            <Footer />
 
-          <Toaster position="top-center" richColors dir="rtl" />
+            <Toaster position="top-center" richColors dir="rtl" />
+          </AuthProvider>
         </HydrationProvider>
       </body>
     </html>

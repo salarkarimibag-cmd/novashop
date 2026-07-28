@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import useAuthStore from "@/store/authStore";
 import useCartStore from "@/store/cartStore";
@@ -9,29 +9,37 @@ import useOrderStore from "@/store/orderStore";
 import useAddressStore from "@/store/addressStore";
 import useWishlistStore from "@/store/wishlistStore";
 
+const HydrationContext = createContext(false);
+
+export function useHydration() {
+  return useContext(HydrationContext);
+}
+
 export default function HydrationProvider({ children }) {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     async function hydrate() {
-      await Promise.all([
-        useAuthStore.persist.rehydrate(),
-        useCartStore.persist.rehydrate(),
-        useCheckoutStore.persist.rehydrate(),
-        useOrderStore.persist.rehydrate(),
-        useAddressStore.persist.rehydrate(),
-        useWishlistStore.persist.rehydrate(),
-      ]);
-
-      setHydrated(true);
+      try {
+        await Promise.all([
+          useAuthStore.persist.rehydrate(),
+          useCartStore.persist.rehydrate(),
+          useCheckoutStore.persist.rehydrate(),
+          useOrderStore.persist.rehydrate(),
+          useAddressStore.persist.rehydrate(),
+          useWishlistStore.persist.rehydrate(),
+        ]);
+      } finally {
+        setHydrated(true);
+      }
     }
 
     hydrate();
   }, []);
 
-  if (!hydrated) {
-    return null;
-  }
-
-  return children;
+  return (
+    <HydrationContext.Provider value={hydrated}>
+      {hydrated ? children : null}
+    </HydrationContext.Provider>
+  );
 }
