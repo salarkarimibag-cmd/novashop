@@ -54,10 +54,7 @@ const useAuthStore = create(
           loading,
         }),
 
-      clearAuth: () =>
-        set({
-          ...initialState,
-        }),
+     
     }),
 
     {
