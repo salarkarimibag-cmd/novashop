@@ -2,15 +2,14 @@
 
 import { X, ShoppingBag } from "lucide-react";
 import { useEffect } from "react";
-
-import useCart from "@/hooks/useCart";
-
+import useCartStore from "@/store/cartStore";
 import EmptyCart from "./EmptyCart";
 import CartList from "./CartList";
 import CartSummary from "./CartSummary";
 
 export default function CartDrawer({ open, onClose }) {
-  const { items, totalItems } = useCart();
+  const items = useCartStore((state) => state.items);
+  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
   // جلوگیری از اسکرول پشت Drawer
   useEffect(() => {
@@ -65,6 +64,7 @@ export default function CartDrawer({ open, onClose }) {
         </div>
 
         {/* Content */}
+
         {items.length === 0 ? (
           <div className="flex flex-1 items-center justify-center">
             <EmptyCart />

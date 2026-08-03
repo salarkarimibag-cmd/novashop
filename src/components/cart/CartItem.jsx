@@ -1,98 +1,60 @@
 "use client";
 
 import Image from "next/image";
-import { Minus, Plus, Trash2 } from "lucide-react";
-import { toast } from "sonner";
+import { Trash2, Plus, Minus } from "lucide-react";
 
-import useCart from "@/hooks/useCart";
+import useCartStore from "@/store/cartStore";
+import formatPrice from "@/lib/formatPrice";
 
 export default function CartItem({ item }) {
-  const { increaseQuantity, decreaseQuantity, removeItem } = useCart();
+  const increaseQuantity = useCartStore((state) => state.increaseQuantity);
 
-  const handleRemove = () => {
-    removeItem(item._id, item.selectedColor, item.selectedSize);
+  const decreaseQuantity = useCartStore((state) => state.decreaseQuantity);
 
-    toast.error("محصول از سبد خرید حذف شد");
-  };
+  const removeItem = useCartStore((state) => state.removeItem);
 
-  const totalPrice = item.price * item.quantity;
+  const product = item.product;
+
+  if (!product) return null;
 
   return (
-    <div className="flex gap-4 border-b border-gray-100 p-4 transition hover:bg-gray-50">
-      {/* Image */}
-      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-gray-100">
+    <div className="flex items-center gap-4 rounded-xl border p-4">
+      <div className="relative h-24 w-24 overflow-hidden rounded-lg">
         <Image
-          src={item.images?.[0] || "/placeholder.png"}
-          alt={item.title}
+          src={product.images?.[0] || "/images/placeholder.jpg"}
+          alt={product.title}
           fill
-          sizes="96px"
-          className="object-contain p-2"
+          className="object-cover"
         />
       </div>
 
-      {/* Content */}
-      <div className="flex flex-1 flex-col">
-        <h3 className="line-clamp-2 text-sm font-semibold leading-6">
-          {item.title}
-        </h3>
+      <div className="flex-1">
+        <h3 className="font-semibold">{product.title}</h3>
 
-        {item.brand && (
-          <span className="mt-1 text-xs text-gray-500">{item.brand}</span>
-        )}
+        <p className="mt-2 font-bold">{formatPrice(item.price)}</p>
 
-        {/* Variant */}
-        <div className="mt-2 flex gap-3 text-xs text-gray-500">
-          {item.selectedColor && <span>رنگ: {item.selectedColor}</span>}
-
-          {item.selectedSize && <span>سایز: {item.selectedSize}</span>}
-        </div>
-
-        <p className="mt-2 text-sm text-gray-500">
-          {item.price.toLocaleString("fa-IR")} تومان
-        </p>
-
-        <p className="mt-1 font-bold text-indigo-600">
-          {totalPrice.toLocaleString("fa-IR")} تومان
-        </p>
-
-        <div className="mt-3 flex items-center justify-between">
-          {/* Quantity */}
-          <div className="flex items-center overflow-hidden rounded-xl border bg-white">
-            <button
-              onClick={() =>
-                decreaseQuantity(item._id, item.selectedColor, item.selectedSize)
-              }
-              className="p-2 transition hover:bg-gray-100"
-              aria-label="کاهش تعداد"
-            >
-              <Minus size={15} />
-            </button>
-
-            <span className="min-w-10 text-center text-sm font-bold">
-              {item.quantity}
-            </span>
-
-            <button
-              onClick={() =>
-                increaseQuantity(item._id, item.selectedColor, item.selectedSize)
-              }
-              className="p-2 transition hover:bg-gray-100"
-              aria-label="افزایش تعداد"
-            >
-              <Plus size={15} />
-            </button>
-          </div>
-
-          {/* Remove */}
+        <div className="mt-3 flex items-center gap-3">
           <button
-            onClick={handleRemove}
-            className="rounded-lg p-2 text-red-500 transition hover:bg-red-50"
-            aria-label="حذف محصول"
+            onClick={() => decreaseQuantity(product._id)}
+            className="rounded-lg border p-2"
           >
-            <Trash2 size={18} />
+            <Minus size={16} />
+          </button>
+
+          <span>{item.quantity}</span>
+
+          <button
+            onClick={() => increaseQuantity(product._id)}
+            className="rounded-lg border p-2"
+          >
+            <Plus size={16} />
           </button>
         </div>
       </div>
+
+      <button onClick={() => removeItem(product._id)} className="text-red-500">
+        <Trash2 size={20} />
+      </button>
     </div>
   );
 }

@@ -1,83 +1,30 @@
 "use client";
 
-import Link from "next/link";
-import useCart from "@/hooks/useCart";
+import useCartStore from "@/store/cartStore";
+import formatPrice from "@/lib/formatPrice";
 
-export default function CartSummary({ onClose }) {
-  const { totalPrice, totalQuantity, items } = useCart();
+export default function CartSummary() {
+  const totalPrice = useCartStore((state) => state.totalPrice);
 
-  const shipping = totalPrice >= 500000 ? 0 : 50000;
+  const items = useCartStore((state) => state.items);
 
-  const finalPrice = totalPrice + shipping;
-
-  const handleClick = () => {
-    if (onClose) {
-      onClose();
-    }
-  };
-
-  const isEmpty = items.length === 0;
+  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="rounded-2xl bg-white p-5 shadow-sm">
-      <div className="mb-4 flex items-center justify-between">
-        <span className="text-gray-500">تعداد کالا</span>
+    <div className="rounded-xl border p-5">
+      <h2 className="mb-5 text-xl font-bold">خلاصه سبد خرید</h2>
 
-        <span className="font-semibold">{totalQuantity}</span>
+      <div className="mb-3 flex justify-between">
+        <span>تعداد کالا</span>
+
+        <span>{totalItems}</span>
       </div>
 
-      <div className="mb-4 flex items-center justify-between">
-        <span className="text-gray-500">جمع کالاها</span>
+      <div className="flex justify-between font-bold">
+        <span>مبلغ کل</span>
 
-        <span className="font-bold">
-          {totalPrice.toLocaleString("fa-IR")} تومان
-        </span>
+        <span>{formatPrice(totalPrice)}</span>
       </div>
-
-      <div className="mb-4 flex items-center justify-between">
-        <span className="text-gray-500">هزینه ارسال</span>
-
-        <span className="font-semibold">
-          {shipping === 0
-            ? "رایگان"
-            : `${shipping.toLocaleString("fa-IR")} تومان`}
-        </span>
-      </div>
-
-      <div className="mb-5 flex items-center justify-between border-t pt-4">
-        <span className="font-semibold">مبلغ نهایی</span>
-
-        <span className="text-xl font-bold text-indigo-600">
-          {finalPrice.toLocaleString("fa-IR")} تومان
-        </span>
-      </div>
-
-      <Link
-        href="/cart"
-        onClick={handleClick}
-        className="mb-3 block rounded-xl bg-black py-3 text-center text-white transition hover:bg-gray-800"
-      >
-        مشاهده سبد خرید
-      </Link>
-
-      <Link
-        href={isEmpty ? "#" : "/checkout"}
-        onClick={(e) => {
-          if (isEmpty) {
-            e.preventDefault();
-            return;
-          }
-
-          handleClick();
-        }}
-        className={`block w-full rounded-xl py-3 text-center text-white transition ${
-          isEmpty
-            ? "cursor-not-allowed bg-gray-300"
-            : "bg-indigo-600 hover:bg-indigo-700"
-        }`}
-      >
-        ادامه فرآیند خرید
-      </Link>
     </div>
   );
 }

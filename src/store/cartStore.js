@@ -2,147 +2,164 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-const getProductId = (product) => String(product._id || product.id);
+import cartService from "@/services/cartService";
 
 const useCartStore = create(
   persist(
     (set, get) => ({
       items: [],
+      totalPrice: 0,
+      loading: false,
+      error: null,
 
-      // Add product
-      addItem: (product) => {
-        const items = get().items;
-
-        const productId = getProductId(product);
-
-        const existingItem = items.find(
-          (item) =>
-            getProductId(item) === productId &&
-            item.selectedColor === product.selectedColor &&
-            item.selectedSize === product.selectedSize,
-        );
-
-        if (existingItem) {
+      // =========================
+      // دریافت Cart از Backend
+      // =========================
+      fetchCart: async () => {
+        try {
           set({
-            items: items.map((item) =>
-              getProductId(item) === productId &&
-              item.selectedColor === product.selectedColor &&
-              item.selectedSize === product.selectedSize
-                ? {
-                    ...item,
-                    quantity: item.quantity + (product.quantity || 1),
-                  }
-                : item,
-            ),
+            loading: true,
+            error: null,
           });
 
-          return;
+          const res = await cartService.getCart();
+
+          set({
+            items: res.data.items || [],
+            totalPrice: res.data.totalPrice || 0,
+          });
+        } catch (error) {
+          set({
+            error: error.message,
+          });
+
+          throw error;
+        } finally {
+          set({
+            loading: false,
+          });
         }
+      },
+
+      // =========================
+      // افزودن محصول
+      // =========================
+      addItem: async (productId, quantity = 1) => {
+        try {
+          set({
+            loading: true,
+            error: null,
+          });
+
+          const res = await cartService.addToCart(productId, quantity);
+
+          set({
+            items: res.data.items || [],
+            totalPrice: res.data.totalPrice || 0,
+          });
+
+          return res.data;
+        } catch (error) {
+          set({
+            error: error.message,
+          });
+
+          throw error;
+        } finally {
+          set({
+            loading: false,
+          });
+        }
+      },
+
+      // =========================
+      // افزایش تعداد
+      // =========================
+      increaseQuantity: async (productId) => {
+        const res = await cartService.increaseQuantity(productId);
 
         set({
-          items: [
-            ...items,
-            {
-              ...product,
-              quantity: product.quantity || 1,
-            },
-          ],
+          items: res.data.items || [],
+          totalPrice: res.data.totalPrice || 0,
         });
       },
 
-      // Remove product
-      removeItem: (id, color, size) =>
-        set((state) => ({
-          items: state.items.filter(
-            (item) =>
-              !(
-                getProductId(item) === String(id) &&
-                item.selectedColor === color &&
-                item.selectedSize === size
-              ),
-          ),
-        })),
+      // =========================
+      // کاهش تعداد
+      // =========================
+      decreaseQuantity: async (productId) => {
+        const res = await cartService.decreaseQuantity(productId);
 
-      // Increase quantity
-      increaseQuantity: (id, color, size) =>
-        set((state) => ({
-          items: state.items.map((item) =>
-            getProductId(item) === String(id) &&
-            item.selectedColor === color &&
-            item.selectedSize === size
-              ? {
-                  ...item,
-                  quantity: item.quantity + 1,
-                }
-              : item,
-          ),
-        })),
+        set({
+          items: res.data.items || [],
+          totalPrice: res.data.totalPrice || 0,
+        });
+      },
 
-      // Decrease quantity
-      decreaseQuantity: (id, color, size) =>
-        set((state) => ({
-          items: state.items.map((item) =>
-            getProductId(item) === String(id) &&
-            item.selectedColor === color &&
-            item.selectedSize === size
-              ? {
-                  ...item,
-                  quantity: Math.max(1, item.quantity - 1),
-                }
-              : item,
-          ),
-        })),
+      // =========================
+      // حذف محصول
+      // =========================
+      removeItem: async (productId) => {
+        const res = await cartService.removeItem(productId);
 
-      // Update quantity
-      updateQuantity: (id, color, size, quantity) =>
-        set((state) => ({
-          items: state.items.map((item) =>
-            getProductId(item) === String(id) &&
-            item.selectedColor === color &&
-            item.selectedSize === size
-              ? {
-                  ...item,
-                  quantity: Math.max(1, quantity),
-                }
-              : item,
-          ),
-        })),
+        set({
+          items: res.data.items || [],
+          totalPrice: res.data.totalPrice || 0,
+        });
+      },
 
-      // Find item
-      findItem: (id, color, size) =>
-        get().items.find(
-          (item) =>
-            getProductId(item) === String(id) &&
-            item.selectedColor === color &&
-            item.selectedSize === size,
-        ),
+      // =========================
+      // خالی کردن Cart
+      // =========================
+      clearCart: async () => {
+        await cartService.clearCart();
 
-      // Check exists
-      hasItem: (id, color, size) =>
-        get().items.some(
-          (item) =>
-            getProductId(item) === String(id) &&
-            item.selectedColor === color &&
-            item.selectedSize === size,
-        ),
-
-      // Clear cart
-      clearCart: () =>
         set({
           items: [],
-        }),
+          totalPrice: 0,
+        });
+      },
 
-      // Total items
-      getTotalItems: () =>
-        get().items.reduce((total, item) => total + item.quantity, 0),
+      // =========================
+      // Sync دستی
+      // =========================
+      syncCart: async () => {
+        await get().fetchCart();
+      },
 
-      // Total price
-      getTotalPrice: () =>
-        get().items.reduce(
-          (total, item) => total + item.price * item.quantity,
-          0,
-        ),
+      // =========================
+      // تعداد کل کالاها
+      // =========================
+      getTotalItems: () => {
+        return get().items.reduce((sum, item) => sum + item.quantity, 0);
+      },
+
+      // =========================
+      // قیمت کل
+      // =========================
+      getTotalPrice: () => {
+        return get().totalPrice;
+      },
+
+      // =========================
+      // پاک کردن State
+      // =========================
+      resetCart: () => {
+        set({
+          items: [],
+          totalPrice: 0,
+          error: null,
+        });
+      },
+
+      // =========================
+      // پاک کردن Error
+      // =========================
+      clearError: () => {
+        set({
+          error: null,
+        });
+      },
     }),
 
     {

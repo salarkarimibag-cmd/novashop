@@ -1,19 +1,39 @@
 "use client";
 
-import { useMemo } from "react";
-import products from "@/data/products";
+import { useState } from "react";
+import { getProducts } from "@/services/productService";
 
-export default function useSearchProducts(query) {
-  return useMemo(() => {
-    const search = query.trim().toLowerCase();
+export default function useSearchProducts() {
+  const [results, setResults] = useState([]);
 
-    if (!search) return [];
+  const [loading, setLoading] = useState(false);
 
-    return products.filter(
-      (product) =>
-        product.title.toLowerCase().includes(search) ||
-        product.brand.toLowerCase().includes(search) ||
-        product.category.toLowerCase().includes(search),
-    );
-  }, [query]);
+  const searchProducts = async (query) => {
+    if (!query?.trim()) {
+      setResults([]);
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const result = await getProducts({
+        search: query,
+      });
+
+      setResults(result.products || []);
+    } catch (error) {
+      console.error("Search products error:", error);
+
+      setResults([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    results,
+    loading,
+    searchProducts,
+  };
 }

@@ -3,21 +3,50 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 
 import "swiper/css";
 import "swiper/css/navigation";
 
-import products from "@/data/products";
+import { getProducts } from "@/services/productService";
 import ProductCard from "@/components/home/Products/ProductCard";
 
 export default function BestSellers() {
-  const bestSellers = useMemo(
-    () => products.filter((product) => product.bestSeller),
-    [],
-  );
+  const [bestSellers, setBestSellers] = useState([]);
 
-  if (!bestSellers.length) return null;
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const result = await getProducts({
+          sort: "bestSeller",
+        });
+
+        setBestSellers((result.products || []).slice(0, 8));
+      } catch (error) {
+        console.error("خطا در دریافت پرفروش‌ترین محصولات:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadProducts();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="my-12">
+        <div className="rounded-xl bg-gray-100 p-10 text-center">
+          در حال دریافت محصولات...
+        </div>
+      </section>
+    );
+  }
+
+  if (!bestSellers.length) {
+    return null;
+  }
 
   return (
     <section className="my-12">
@@ -31,11 +60,23 @@ export default function BestSellers() {
         </div>
 
         <div className="flex gap-2">
-          <button className="best-prev flex h-10 w-10 items-center justify-center rounded-full border">
+          <button
+            className="
+            best-prev flex h-10 w-10
+            items-center justify-center
+            rounded-full border
+            "
+          >
             <ChevronRight size={20} />
           </button>
 
-          <button className="best-next flex h-10 w-10 items-center justify-center rounded-full border">
+          <button
+            className="
+            best-next flex h-10 w-10
+            items-center justify-center
+            rounded-full border
+            "
+          >
             <ChevronLeft size={20} />
           </button>
         </div>
@@ -57,9 +98,11 @@ export default function BestSellers() {
           640: {
             slidesPerView: 2,
           },
+
           1024: {
             slidesPerView: 3,
           },
+
           1280: {
             slidesPerView: 4,
           },

@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import { ShoppingCart } from "lucide-react";
-
-import useCart from "@/hooks/useCart";
+import useCartStore from "@/store/cartStore";
 import CartDrawer from "./CartDrawer";
 
 export default function CartButton() {
-  const { totalQuantity } = useCart();
+  const items = useCartStore((state) => state.items);
+
   const [open, setOpen] = useState(false);
+
+  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <>
@@ -20,7 +22,24 @@ export default function CartButton() {
         <ShoppingCart size={20} />
 
         {totalQuantity > 0 && (
-          <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-xs font-bold text-white">
+          <span
+            className="
+              absolute
+              -right-2
+              -top-2
+              flex
+              h-5
+              min-w-5
+              items-center
+              justify-center
+              rounded-full
+              bg-red-500
+              px-1
+              text-xs
+              font-bold
+              text-white
+            "
+          >
             {totalQuantity > 99 ? "99+" : totalQuantity}
           </span>
         )}

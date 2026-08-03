@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingCart, Star } from "lucide-react";
 import { toast } from "sonner";
-
 import useCartStore from "@/store/cartStore";
 import useWishlistStore from "@/store/wishlistStore";
 import formatPrice from "@/lib/formatPrice";
@@ -20,16 +19,14 @@ export default function ProductCard({ product }) {
 
   const image = product.images?.[0] || "/images/placeholder.jpg";
 
-  const handleAddToCart = () => {
-    addItem({
-      id: product._id,
-      title: product.title,
-      price: product.discountPrice || product.price,
-      image,
-      quantity: 1,
-    });
+  const handleAddToCart = async () => {
+    try {
+      await addItem(product._id, 1);
 
-    toast.success("محصول به سبد خرید اضافه شد");
+      toast.success("محصول به سبد خرید اضافه شد");
+    } catch (error) {
+      toast.error(error.message || "خطا در افزودن به سبد");
+    }
   };
 
   return (

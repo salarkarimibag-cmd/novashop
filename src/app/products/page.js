@@ -5,43 +5,60 @@ import { useEffect, useState } from "react";
 import ProductFilter from "@/components/products/ProductFilter";
 import ProductGrid from "@/components/products/ProductGrid";
 import ProductSort from "@/components/products/ProductSort";
+import ProductGridSkeleton from "@/components/ui/Skeleton/ProductGridSkeleton";
 
 import { getProducts } from "@/services/productService";
 import useFilterStore from "@/store/filterStore";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
+  const [error, setError] = useState(null);
+
   const selectedBrands = useFilterStore((state) => state.selectedBrands);
+
   const selectedCategories = useFilterStore(
     (state) => state.selectedCategories,
   );
+
   const sort = useFilterStore((state) => state.sort);
+
   const priceRange = useFilterStore((state) => state.priceRange);
+
   const searchQuery = useFilterStore((state) => state.searchQuery);
 
   useEffect(() => {
-    async function loadProducts() {
-      setLoading(true);
-
+    const loadProducts = async () => {
       try {
-        const { products } = await getProducts({
+        setLoading(true);
+
+        setError(null);
+
+        const result = await getProducts({
           search: searchQuery,
+
           brand: selectedBrands,
+
           category: selectedCategories,
+
           minPrice: priceRange[0],
+
           maxPrice: priceRange[1],
+
           sort,
         });
 
-        setProducts(products);
+        setProducts(result.products || []);
       } catch (error) {
-        console.error("خطا در دریافت محصولات:", error);
+        console.error(error);
+
+        setError("خطا در دریافت محصولات");
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     loadProducts();
   }, [selectedBrands, selectedCategories, sort, priceRange, searchQuery]);
@@ -60,13 +77,22 @@ export default function ProductsPage() {
         <section className="lg:col-span-3">
           <ProductSort />
 
-          {loading ? (
-            <div className="rounded-2xl border bg-white p-10 text-center">
-              در حال دریافت محصولات...
+          {loading && <ProductGridSkeleton />}
+
+          {error && (
+            <div
+              className="
+                rounded-xl
+                bg-red-50
+                p-5
+                text-red-600
+              "
+            >
+              {error}
             </div>
-          ) : (
-            <ProductGrid products={products} />
           )}
+
+          {!loading && !error && <ProductGrid products={products} />}
         </section>
       </div>
     </main>

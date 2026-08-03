@@ -6,11 +6,12 @@ import { FaHeart, FaShoppingCart, FaStar } from "react-icons/fa";
 import { toast } from "sonner";
 
 import Button from "@/components/ui/Button";
-import { useCartStore } from "@/store";
+
+import useCartStore from "@/store/cartStore";
 import useWishlistStore from "@/store/wishlistStore";
 
 export default function ProductCard({ product }) {
-  const addToCart = useCartStore((state) => state.addItem);
+  const addItem = useCartStore((state) => state.addItem);
 
   const cartItems = useCartStore((state) => state.items);
 
@@ -22,13 +23,14 @@ export default function ProductCard({ product }) {
 
   const isInWishlist = useWishlistStore((state) => state.isInWishlist);
 
-  const productId = product.id || product._id;
+  const productId = product._id || product.id;
 
   const productImage =
     product.images?.[0] || product.image || "/images/placeholder.png";
 
+  // بررسی وجود محصول در Cart Backend
   const isInCart = cartItems.some(
-    (item) => String(item.id || item._id) === String(productId),
+    (item) => String(item.product?._id) === String(productId),
   );
 
   const liked = isInWishlist(productId);
@@ -51,21 +53,22 @@ export default function ProductCard({ product }) {
     }
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (product.stock <= 0) {
       toast.error("این محصول موجود نیست");
 
       return;
     }
 
-    addToCart({
-      ...product,
-      id: productId,
-    });
+    try {
+      await addItem(productId, 1);
 
-    toast.success("محصول به سبد خرید اضافه شد", {
-      description: product.title,
-    });
+      toast.success("محصول به سبد خرید اضافه شد", {
+        description: product.title,
+      });
+    } catch (error) {
+      toast.error(error.message || "خطا در افزودن به سبد خرید");
+    }
   };
 
   const finalPrice =
@@ -85,8 +88,6 @@ export default function ProductCard({ product }) {
       hover:shadow-xl
       "
     >
-      {/* Image */}
-
       <div
         className="
         relative aspect-square
@@ -112,8 +113,6 @@ export default function ProductCard({ product }) {
           />
         </Link>
 
-        {/* Wishlist */}
-
         <button
           type="button"
           onClick={handleWishlist}
@@ -121,43 +120,33 @@ export default function ProductCard({ product }) {
             liked ? "حذف از علاقه‌مندی‌ها" : "افزودن به علاقه‌مندی‌ها"
           }
           className={`
-
           absolute right-3 top-3
-
           flex h-10 w-10 items-center
           justify-center rounded-full
-
           bg-white shadow transition-all
-
-
           ${
             liked
               ? "scale-110 text-red-500"
               : "text-gray-400 hover:scale-110 hover:text-red-500"
           }
-
           `}
         >
           <FaHeart size={18} />
         </button>
 
-        {/* Discount */}
-
         {product.discountPrice && product.discountPrice < product.price && (
           <span
             className="
-            absolute left-3 top-3
-            rounded-full bg-red-500
-            px-3 py-1 text-xs
-            font-semibold text-white
-            "
+              absolute left-3 top-3
+              rounded-full bg-red-500
+              px-3 py-1 text-xs
+              font-semibold text-white
+              "
           >
             تخفیف
           </span>
         )}
       </div>
-
-      {/* Content */}
 
       <div
         className="
@@ -177,35 +166,31 @@ export default function ProductCard({ product }) {
           </h3>
         </Link>
 
-        {/* Rating */}
-
         {product.rating > 0 && (
           <div
             className="
-            mt-2 flex items-center gap-1
-            "
+              mt-2 flex items-center gap-1
+              "
           >
             <FaStar className="text-amber-400" />
 
             <span
               className="
-              text-sm text-gray-700
-              "
+                text-sm text-gray-700
+                "
             >
               {product.rating}
             </span>
           </div>
         )}
 
-        {/* Price */}
-
         <div className="mt-4">
           {product.discountPrice && product.discountPrice < product.price && (
             <p
               className="
-              text-sm text-gray-400
-              line-through
-              "
+                text-sm text-gray-400
+                line-through
+                "
             >
               {Number(product.price || 0).toLocaleString("fa-IR")} تومان
             </p>
@@ -220,8 +205,6 @@ export default function ProductCard({ product }) {
             {Number(finalPrice || 0).toLocaleString("fa-IR")} تومان
           </p>
         </div>
-
-        {/* Cart Button */}
 
         <div
           className="

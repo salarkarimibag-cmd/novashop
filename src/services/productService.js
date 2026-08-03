@@ -1,9 +1,6 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export async function getProducts(filters = {}) {
-  // فقط برای تست Skeleton
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
   const params = new URLSearchParams();
 
   if (filters.search) {
@@ -18,11 +15,11 @@ export async function getProducts(filters = {}) {
     params.set("category", filters.category.join(","));
   }
 
-  if (filters.minPrice != null) {
+  if (filters.minPrice !== undefined) {
     params.set("minPrice", filters.minPrice);
   }
 
-  if (filters.maxPrice != null) {
+  if (filters.maxPrice !== undefined) {
     params.set("maxPrice", filters.maxPrice);
   }
 
@@ -38,7 +35,11 @@ export async function getProducts(filters = {}) {
     throw new Error("خطا در دریافت محصولات");
   }
 
-  return response.json();
+  const result = await response.json();
+
+  return {
+    products: result.products || result.data || [],
+  };
 }
 
 export async function getProductById(id) {
@@ -50,7 +51,7 @@ export async function getProductById(id) {
     throw new Error("محصول پیدا نشد");
   }
 
-  const data = await response.json();
+  const result = await response.json();
 
-  return data.product;
+  return result.product || result.data;
 }
