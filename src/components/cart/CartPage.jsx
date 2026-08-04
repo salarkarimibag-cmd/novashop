@@ -1,0 +1,65 @@
+"use client";
+
+import { useEffect } from "react";
+
+import EmptyCart from "./EmptyCart";
+import CartList from "./CartList";
+import CartSummary from "./CartSummary";
+
+import useCartStore from "@/store/cartStore";
+
+export default function CartPage() {
+  const items = useCartStore((state) => state.items);
+  const fetchCart = useCartStore((state) => state.fetchCart);
+  const loading = useCartStore((state) => state.loading);
+
+  useEffect(() => {
+    fetchCart();
+  }, [fetchCart]);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-gray-50 px-4 py-10">
+        <div className="mx-auto max-w-6xl text-center">
+          در حال دریافت سبد خرید...
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main className="min-h-screen bg-gray-50 px-4 py-10">
+      <div className="mx-auto max-w-6xl">
+        <h1 className="mb-8 text-3xl font-bold">سبد خرید</h1>
+
+        {items.length === 0 ? (
+          <div className="rounded-2xl bg-white p-8 shadow-sm">
+            <EmptyCart />
+          </div>
+        ) : (
+          <div className="grid gap-6 lg:grid-cols-3">
+            <section
+              className="
+              overflow-hidden
+              rounded-2xl
+              bg-white
+              shadow-sm
+              lg:col-span-2
+            "
+            >
+              <div className="border-b p-5">
+                <h2 className="text-xl font-bold">محصولات انتخاب شده</h2>
+              </div>
+
+              <CartList />
+            </section>
+
+            <aside className="lg:sticky lg:top-24 lg:h-fit">
+              <CartSummary />
+            </aside>
+          </div>
+        )}
+      </div>
+    </main>
+  );
+}

@@ -55,3 +55,47 @@ export async function getProductById(id) {
 
   return result.product || result.data;
 }
+
+export async function getFeaturedProducts() {
+  const response = await fetch(`${API_URL}/api/products/featured`, {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error("خطا در دریافت محصولات ویژه");
+  }
+
+  const data = await response.json();
+
+  return data.products;
+}
+
+export async function getNewestProducts() {
+  const response = await fetch(`${API_URL}/api/products/newest`, {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error("خطا در دریافت جدیدترین محصولات");
+  }
+
+  const data = await response.json();
+
+  return data.products;
+}
+
+export async function getDiscountProducts() {
+  const response = await fetch(`${API_URL}/api/products/discounts`, {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error("خطا در دریافت پیشنهادهای ویژه");
+  }
+
+  const data = await response.json();
+
+  return data.products;
+}
+
+

@@ -6,7 +6,7 @@ import useCartStore from "@/store/cartStore";
 import EmptyCart from "./EmptyCart";
 import CartList from "./CartList";
 import CartSummary from "./CartSummary";
-
+import Link from "next/link";
 export default function CartDrawer({ open, onClose }) {
   const items = useCartStore((state) => state.items);
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
@@ -77,6 +77,13 @@ export default function CartDrawer({ open, onClose }) {
 
             <div className="border-t bg-white p-4">
               <CartSummary />
+              <Link
+                href="/cart"
+                onClick={onClose}
+                className="mt-4 block w-full rounded-xl bg-black py-3 text-center font-semibold text-white transition hover:bg-gray-800"
+              >
+                مشاهده سبد خرید
+              </Link>
             </div>
           </>
         )}

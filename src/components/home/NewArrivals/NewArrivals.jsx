@@ -1,14 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-import { getProducts } from "@/services/productService";
-
+import { getNewestProducts } from "@/services/productService";
 import NewArrivalCard from "./NewArrivalCard";
 
 import "swiper/css";
@@ -16,20 +12,17 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 export default function NewArrivals() {
-  const [newArrivals, setNewArrivals] = useState([]);
-
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadProducts() {
       try {
-        const result = await getProducts({
-          sort: "newest",
-        });
+        const data = await getNewestProducts();
 
-        setNewArrivals((result.products || []).slice(0, 8));
+        setProducts(data);
       } catch (error) {
-        console.error("خطا در دریافت جدیدترین محصولات:", error);
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -41,14 +34,12 @@ export default function NewArrivals() {
   if (loading) {
     return (
       <section className="mt-16">
-        <div className="rounded-xl bg-gray-100 p-10 text-center">
-          در حال دریافت محصولات...
-        </div>
+        <div className="py-16 text-center">در حال دریافت محصولات...</div>
       </section>
     );
   }
 
-  if (!newArrivals.length) {
+  if (!products.length) {
     return null;
   }
 
@@ -64,29 +55,11 @@ export default function NewArrivals() {
         </div>
 
         <div className="hidden gap-2 md:flex">
-          <button
-            className="
-            new-arrival-prev
-            flex h-10 w-10
-            items-center justify-center
-            rounded-full border bg-white
-            transition hover:bg-black
-            hover:text-white
-            "
-          >
+          <button className="new-arrival-prev flex h-10 w-10 items-center justify-center rounded-full border bg-white transition hover:bg-black hover:text-white">
             <ChevronRight size={20} />
           </button>
 
-          <button
-            className="
-            new-arrival-next
-            flex h-10 w-10
-            items-center justify-center
-            rounded-full border bg-white
-            transition hover:bg-black
-            hover:text-white
-            "
-          >
+          <button className="new-arrival-next flex h-10 w-10 items-center justify-center rounded-full border bg-white transition hover:bg-black hover:text-white">
             <ChevronLeft size={20} />
           </button>
         </div>
@@ -112,18 +85,16 @@ export default function NewArrivals() {
           640: {
             slidesPerView: 2,
           },
-
           1024: {
             slidesPerView: 3,
           },
-
           1280: {
             slidesPerView: 4,
           },
         }}
         className="pb-12"
       >
-        {newArrivals.map((product) => (
+        {products.map((product) => (
           <SwiperSlide key={product._id}>
             <NewArrivalCard product={product} />
           </SwiperSlide>

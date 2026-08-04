@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Star } from "lucide-react";
 
 export default function BestSellerCard({ product }) {
+  const image = product.images?.[0] || "/images/placeholder.png";
   return (
     <div
       className="
@@ -15,7 +16,7 @@ hover:shadow-lg
     >
       <div className="overflow-hidden rounded-xl bg-gray-100">
         <Image
-          src={product.image}
+          src={image}
           alt={product.title}
           width={300}
           height={300}

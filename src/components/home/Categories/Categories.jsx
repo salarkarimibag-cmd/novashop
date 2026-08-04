@@ -1,27 +1,8 @@
-"use client";
-
-import { useEffect, useState } from "react";
-
-import { getCategories } from "@/services/productService";
-
+import { getCategories } from "@/services/categoryService";
 import CategoryCard from "./CategoryCard";
 
-export default function Categories() {
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const data = await getCategories();
-
-        setCategories(data.categories || []);
-      } catch (error) {
-        console.error("خطا در دریافت دسته‌بندی‌ها:", error);
-      }
-    }
-
-    fetchCategories();
-  }, []);
+export default async function Categories() {
+  const categories = await getCategories();
 
   if (!categories.length) {
     return null;

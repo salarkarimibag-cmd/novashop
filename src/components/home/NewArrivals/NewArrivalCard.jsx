@@ -2,6 +2,8 @@ import Image from "next/image";
 import { Heart, ShoppingCart, Star } from "lucide-react";
 
 export default function NewArrivalCard({ product }) {
+  const image = product.images?.[0] || "/images/placeholder.png";
+
   return (
     <div className="group rounded-2xl border bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
       <div className="relative overflow-hidden rounded-xl bg-gray-100">
@@ -12,7 +14,7 @@ export default function NewArrivalCard({ product }) {
         )}
 
         <Image
-          src={product.image}
+          src={image}
           alt={product.title}
           width={300}
           height={300}
@@ -34,7 +36,7 @@ export default function NewArrivalCard({ product }) {
         </div>
 
         <p className="font-bold text-lg">
-          {product.price.toLocaleString()} تومان
+          {product.price?.toLocaleString()} تومان
         </p>
 
         <div className="mt-4 flex gap-2">

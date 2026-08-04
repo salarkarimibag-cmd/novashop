@@ -29,8 +29,8 @@ export default function ProductFilter() {
           getCategories(),
         ]);
 
-        setBrands(brandData.brands);
-        setCategories(categoryData.categories);
+        setBrands(brandData);
+        setCategories(categoryData);
       } catch (error) {
         console.error("خطا در دریافت فیلترها:", error);
       }
@@ -71,7 +71,7 @@ export default function ProductFilter() {
         <h3 className="mb-4 font-semibold">برند</h3>
 
         <div className="space-y-3">
-          {brands.map((brand) => (
+          {brands?.map((brand) => (
             <label
               key={brand}
               className="flex cursor-pointer items-center gap-3"
@@ -95,7 +95,7 @@ export default function ProductFilter() {
         <h3 className="mb-4 font-semibold">دسته‌بندی</h3>
 
         <div className="space-y-3">
-          {categories.map((category) => (
+          {categories?.map((category) => (
             <label
               key={category}
               className="flex cursor-pointer items-center gap-3"

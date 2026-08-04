@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export async function getBrands() {
   const response = await fetch(`${API_URL}/api/products/brands`, {
@@ -9,5 +9,7 @@ export async function getBrands() {
     throw new Error("خطا در دریافت برندها");
   }
 
-  return response.json();
+  const data = await response.json();
+
+  return data.brands || [];
 }

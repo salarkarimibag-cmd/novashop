@@ -9,5 +9,7 @@ export async function getCategories() {
     throw new Error("خطا در دریافت دسته‌بندی‌ها");
   }
 
-  return response.json();
+  const data = await response.json();
+
+  return data.categories || data.data || [];
 }
