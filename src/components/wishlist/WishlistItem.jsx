@@ -28,7 +28,7 @@ export default function WishlistItem({ item }) {
 
     toast.error("محصول از علاقه‌مندی‌ها حذف شد");
   };
-
+ console.log(item);
   return (
     <div className="flex flex-col gap-5 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md md:flex-row md:items-center">
       {/* Image */}
@@ -38,10 +38,10 @@ export default function WishlistItem({ item }) {
       >
         <div className="relative h-32 w-32 overflow-hidden rounded-xl bg-gray-50">
           <Image
-            src={item.image}
+            src={item.image || "/placeholder.png"}
             alt={item.title}
             fill
-            sizes="128px"
+            sizes="(max-width: 768px) 96px, 128px"
             className="object-contain p-2"
           />
         </div>

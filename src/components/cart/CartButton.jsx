@@ -1,22 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ShoppingCart } from "lucide-react";
-import useCartStore from "@/store/cartStore";
+
+import cartService from "@/services/cartService";
 import CartDrawer from "./CartDrawer";
 
 export default function CartButton() {
-  const items = useCartStore((state) => state.items);
-
   const [open, setOpen] = useState(false);
 
-  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+  const [totalQuantity, setTotalQuantity] = useState(0);
+
+  const fetchCartCount = async () => {
+    try {
+      const res = await cartService.getCartCount();
+
+      setTotalQuantity(res.data.count || 0);
+    } catch (error) {
+      console.log("Cart count error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCartCount();
+  }, []);
 
   return (
     <>
       <button
         onClick={() => setOpen(true)}
-        className="relative rounded-lg border border-gray-300 p-2 transition hover:bg-gray-100"
+        className="
+          relative
+          rounded-lg
+          border
+          border-gray-300
+          p-2
+          transition
+          hover:bg-gray-100
+        "
         aria-label="سبد خرید"
       >
         <ShoppingCart size={20} />

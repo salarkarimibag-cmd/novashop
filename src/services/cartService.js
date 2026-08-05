@@ -6,6 +6,11 @@ const cartService = {
     return apiClient("/api/cart");
   },
 
+  // دریافت تعداد محصولات Cart
+  getCartCount() {
+    return apiClient("/api/cart/count");
+  },
+
   // افزودن محصول به سبد
   addToCart(productId, quantity = 1) {
     return apiClient("/api/cart", {

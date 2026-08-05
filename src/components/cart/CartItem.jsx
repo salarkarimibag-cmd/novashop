@@ -13,10 +13,9 @@ export default function CartItem({ item }) {
 
   const removeItem = useCartStore((state) => state.removeItem);
 
-  const product = item.product;
-
+  const product = item.product?.product || item.product;
   if (!product) return null;
-
+  const productId = product._id || product.id;
   return (
     <div className="flex items-center gap-4 rounded-xl border p-4">
       <div className="relative h-24 w-24 overflow-hidden rounded-lg">
@@ -35,7 +34,7 @@ export default function CartItem({ item }) {
 
         <div className="mt-3 flex items-center gap-3">
           <button
-            onClick={() => decreaseQuantity(product._id)}
+            onClick={() => decreaseQuantity(productId)}
             className="rounded-lg border p-2"
           >
             <Minus size={16} />
@@ -44,7 +43,7 @@ export default function CartItem({ item }) {
           <span>{item.quantity}</span>
 
           <button
-            onClick={() => increaseQuantity(product._id)}
+            onClick={() => increaseQuantity(productId)}
             className="rounded-lg border p-2"
           >
             <Plus size={16} />
@@ -52,7 +51,7 @@ export default function CartItem({ item }) {
         </div>
       </div>
 
-      <button onClick={() => removeItem(product._id)} className="text-red-500">
+      <button onClick={() => removeItem(productId)} className="text-red-500">
         <Trash2 size={20} />
       </button>
     </div>
