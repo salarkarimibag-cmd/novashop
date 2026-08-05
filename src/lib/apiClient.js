@@ -16,11 +16,14 @@ async function apiClient(endpoint, options = {}) {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
+  const url = `${API_URL}${endpoint}`;
+
+  const response = await fetch(url, {
     ...options,
     headers,
   });
 
+  // اگر Token منقضی شده
   if (response.status === 401) {
     useAuthStore.getState().clearAuth();
 
@@ -32,7 +35,19 @@ async function apiClient(endpoint, options = {}) {
   }
 
   const text = await response.text();
-  const data = text ? JSON.parse(text) : {};
+
+  let data = {};
+
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch (error) {
+    console.error("Invalid JSON Response:");
+    console.error("URL:", url);
+    console.error("STATUS:", response.status);
+    console.error("BODY:", text);
+
+    throw new Error("پاسخ سرور معتبر نیست. احتمالاً مسیر API اشتباه است");
+  }
 
   if (!response.ok) {
     throw new Error(data.message || "خطایی رخ داده است");

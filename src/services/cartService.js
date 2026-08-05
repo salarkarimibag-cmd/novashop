@@ -13,7 +13,7 @@ const cartService = {
 
   // افزودن محصول به سبد
   addToCart(productId, quantity = 1) {
-    return apiClient("/api/cart", {
+    return apiClient("/api/cart/add", {
       method: "POST",
       body: JSON.stringify({
         productId,
@@ -45,7 +45,7 @@ const cartService = {
 
   // پاک کردن کامل سبد
   clearCart() {
-    return apiClient("/api/cart", {
+    return apiClient("/api/cart/clear", {
       method: "DELETE",
     });
   },

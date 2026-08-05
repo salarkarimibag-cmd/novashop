@@ -1,29 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { ShoppingCart } from "lucide-react";
+import { useState } from "react";
 
-import cartService from "@/services/cartService";
+import useCartStore from "@/store/cartStore";
 import CartDrawer from "./CartDrawer";
 
 export default function CartButton() {
   const [open, setOpen] = useState(false);
 
-  const [totalQuantity, setTotalQuantity] = useState(0);
+  const items = useCartStore((state) => state.items);
 
-  const fetchCartCount = async () => {
-    try {
-      const res = await cartService.getCartCount();
-
-      setTotalQuantity(res.data.count || 0);
-    } catch (error) {
-      console.log("Cart count error:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchCartCount();
-  }, []);
+  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <>

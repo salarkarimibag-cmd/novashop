@@ -9,8 +9,24 @@ const useCartStore = create(
     (set, get) => ({
       items: [],
       totalPrice: 0,
+      totalQuantity: 0,
+
       loading: false,
       error: null,
+
+      // =========================
+      // آپدیت یکپارچه Cart
+      // =========================
+      updateCartState: (cart) => {
+        const items = cart?.items || [];
+
+        set({
+          items,
+          totalPrice: cart?.totalPrice || 0,
+
+          totalQuantity: items.reduce((sum, item) => sum + item.quantity, 0),
+        });
+      },
 
       // =========================
       // دریافت Cart از Backend
@@ -24,10 +40,7 @@ const useCartStore = create(
 
           const res = await cartService.getCart();
 
-          set({
-            items: res.data.items || [],
-            totalPrice: res.data.totalPrice || 0,
-          });
+          get().updateCartState(res.data);
         } catch (error) {
           set({
             error: error.message,
@@ -53,10 +66,7 @@ const useCartStore = create(
 
           const res = await cartService.addToCart(productId, quantity);
 
-          set({
-            items: res.data.items || [],
-            totalPrice: res.data.totalPrice || 0,
-          });
+          get().updateCartState(res.data);
 
           return res.data;
         } catch (error) {
@@ -76,48 +86,72 @@ const useCartStore = create(
       // افزایش تعداد
       // =========================
       increaseQuantity: async (productId) => {
-        const res = await cartService.increaseQuantity(productId);
+        try {
+          const res = await cartService.increaseQuantity(productId);
 
-        set({
-          items: res.data.items || [],
-          totalPrice: res.data.totalPrice || 0,
-        });
+          get().updateCartState(res.data);
+        } catch (error) {
+          set({
+            error: error.message,
+          });
+
+          throw error;
+        }
       },
 
       // =========================
       // کاهش تعداد
       // =========================
       decreaseQuantity: async (productId) => {
-        const res = await cartService.decreaseQuantity(productId);
+        try {
+          const res = await cartService.decreaseQuantity(productId);
 
-        set({
-          items: res.data.items || [],
-          totalPrice: res.data.totalPrice || 0,
-        });
+          get().updateCartState(res.data);
+        } catch (error) {
+          set({
+            error: error.message,
+          });
+
+          throw error;
+        }
       },
 
       // =========================
       // حذف محصول
       // =========================
       removeItem: async (productId) => {
-        const res = await cartService.removeItem(productId);
+        try {
+          const res = await cartService.removeItem(productId);
 
-        set({
-          items: res.data.items || [],
-          totalPrice: res.data.totalPrice || 0,
-        });
+          get().updateCartState(res.data);
+        } catch (error) {
+          set({
+            error: error.message,
+          });
+
+          throw error;
+        }
       },
 
       // =========================
       // خالی کردن Cart
       // =========================
       clearCart: async () => {
-        await cartService.clearCart();
+        try {
+          await cartService.clearCart();
 
-        set({
-          items: [],
-          totalPrice: 0,
-        });
+          set({
+            items: [],
+            totalPrice: 0,
+            totalQuantity: 0,
+          });
+        } catch (error) {
+          set({
+            error: error.message,
+          });
+
+          throw error;
+        }
       },
 
       // =========================
@@ -131,7 +165,7 @@ const useCartStore = create(
       // تعداد کل کالاها
       // =========================
       getTotalItems: () => {
-        return get().items.reduce((sum, item) => sum + item.quantity, 0);
+        return get().totalQuantity;
       },
 
       // =========================
@@ -148,6 +182,7 @@ const useCartStore = create(
         set({
           items: [],
           totalPrice: 0,
+          totalQuantity: 0,
           error: null,
         });
       },
