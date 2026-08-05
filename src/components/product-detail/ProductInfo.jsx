@@ -10,8 +10,8 @@ import useWishlistStore from "@/store/wishlistStore";
 
 export default function ProductInfo({ product }) {
   const router = useRouter();
-  const getProductId = (item) => String(item._id || item.id);
-  const productId = product.id || product._id;
+
+  const productId = product._id || product.id;
 
   const [selectedColor, setSelectedColor] = useState(
     product.colors?.[0] || null,
@@ -21,13 +21,21 @@ export default function ProductInfo({ product }) {
 
   const [quantity, setQuantity] = useState(1);
 
+  // ======================
   // Cart
+  // ======================
 
   const addItem = useCartStore((state) => state.addItem);
 
   const cartItems = useCartStore((state) => state.items);
 
+  const isInCart = cartItems.some(
+    (item) => String(item.product?._id || item.product) === String(productId),
+  );
+
+  // ======================
   // Wishlist
+  // ======================
 
   const addToWishlist = useWishlistStore((state) => state.addToWishlist);
 
@@ -37,12 +45,6 @@ export default function ProductInfo({ product }) {
 
   const liked = useWishlistStore((state) => state.isInWishlist(productId));
 
-  const isInCart = cartItems.some(
-    (item) =>
-      getProductId(item) === String(productId) &&
-      item.selectedColor === selectedColor &&
-      item.selectedSize === selectedSize,
-  );
   const handleWishlist = () => {
     if (liked) {
       removeFromWishlist(productId);
@@ -58,40 +60,40 @@ export default function ProductInfo({ product }) {
     }
   };
 
-  const handleAddToCart = () => {
+  // ======================
+  // Add Cart
+  // ======================
+
+  const handleAddToCart = async () => {
     if (product.stock <= 0) {
       toast.error("این محصول موجود نیست");
-
       return;
     }
 
     if (isInCart) {
       router.push("/cart");
-
       return;
     }
 
     if (product.colors?.length && !selectedColor) {
       toast.error("لطفا رنگ محصول را انتخاب کنید");
-
       return;
     }
 
     if (product.sizes?.length && !selectedSize) {
       toast.error("لطفا سایز محصول را انتخاب کنید");
-
       return;
     }
 
-    addItem({
-      ...product,
-      id: product._id,
-      quantity: 1,
-    });
+    try {
+      await addItem(productId, quantity);
 
-    toast.success("محصول به سبد خرید اضافه شد", {
-      description: product.title,
-    });
+      toast.success("محصول به سبد خرید اضافه شد", {
+        description: product.title,
+      });
+    } catch (error) {
+      toast.error(error.message || "خطا در افزودن به سبد خرید");
+    }
   };
 
   const finalPrice =
@@ -101,8 +103,6 @@ export default function ProductInfo({ product }) {
 
   return (
     <div className="space-y-6">
-      {/* Title */}
-
       <div>
         <h1 className="text-3xl font-bold">{product.title}</h1>
 
@@ -119,31 +119,29 @@ export default function ProductInfo({ product }) {
         )}
       </div>
 
-      {/* Price */}
-
       <div>
         <div className="flex items-center gap-3">
           {product.discountPrice && product.discountPrice < product.price && (
             <span className="text-lg text-gray-400 line-through">
-              {product.price.toLocaleString("fa-IR")} تومان
+              {product.price.toLocaleString("fa-IR")}
+              تومان
             </span>
           )}
 
           <span className="text-3xl font-bold text-red-600">
-            {finalPrice.toLocaleString("fa-IR")} تومان
+            {finalPrice.toLocaleString("fa-IR")}
+            تومان
           </span>
         </div>
 
         <div className="mt-3">
           {product.stock > 0 ? (
-            <span className="text-sm text-green-600">✓ موجود در انبار</span>
+            <span className="text-green-600">✓ موجود در انبار</span>
           ) : (
-            <span className="text-sm text-red-500">ناموجود</span>
+            <span className="text-red-500">ناموجود</span>
           )}
         </div>
       </div>
-
-      {/* Colors */}
 
       {product.colors?.length > 0 && (
         <div>
@@ -154,45 +152,35 @@ export default function ProductInfo({ product }) {
               <button
                 key={color}
                 onClick={() => setSelectedColor(color)}
-                className={`
-                    h-10 w-10 rounded-full border transition
-
-                    ${
-                      selectedColor === color
-                        ? "ring-2 ring-black ring-offset-2 scale-110"
-                        : "border-gray-300"
-                    }
-
-                    `}
                 style={{
                   backgroundColor: color,
                 }}
+                className={`
+                      h-10 w-10 rounded-full border
+                      ${
+                        selectedColor === color
+                          ? "ring-2 ring-black scale-110"
+                          : ""
+                      }
+                    `}
               />
             ))}
           </div>
         </div>
       )}
 
-      {/* Sizes */}
-
       {product.sizes?.length > 0 && (
         <div>
           <h3 className="mb-3 font-semibold">سایز</h3>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex gap-3">
             {product.sizes.map((size) => (
               <button
                 key={size}
                 onClick={() => setSelectedSize(size)}
                 className={`
-                    rounded-lg border px-4 py-2 transition
-
-                    ${
-                      selectedSize === size
-                        ? "bg-black text-white border-black"
-                        : "border-gray-300 hover:border-black"
-                    }
-
+                      rounded-lg border px-4 py-2
+                      ${selectedSize === size ? "bg-black text-white" : ""}
                     `}
               >
                 {size}
@@ -202,8 +190,6 @@ export default function ProductInfo({ product }) {
         </div>
       )}
 
-      {/* Quantity */}
-
       <div>
         <h3 className="mb-3 font-semibold">تعداد</h3>
 
@@ -212,15 +198,13 @@ export default function ProductInfo({ product }) {
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
             className="px-4 py-2 text-xl"
           >
-            −
+            -
           </button>
 
-          <span className="w-12 text-center font-bold">{quantity}</span>
+          <span className="w-12 text-center">{quantity}</span>
 
           <button
-            onClick={() =>
-              setQuantity((q) => Math.min(q + 1, product.stock || 1))
-            }
+            onClick={() => setQuantity((q) => Math.min(q + 1, product.stock))}
             className="px-4 py-2 text-xl"
           >
             +
@@ -228,21 +212,14 @@ export default function ProductInfo({ product }) {
         </div>
       </div>
 
-      {/* Buttons */}
-
       <div className="flex gap-4">
         <button
           onClick={handleAddToCart}
           className={`
-          flex flex-1 items-center justify-center
-          gap-2 rounded-xl px-6 py-4
-          text-white transition
+            flex flex-1 items-center justify-center
+            gap-2 rounded-xl px-6 py-4 text-white
 
-          ${
-            isInCart
-              ? "bg-emerald-600 hover:bg-emerald-700"
-              : "bg-black hover:bg-gray-800"
-          }
+            ${isInCart ? "bg-emerald-600" : "bg-black"}
 
           `}
         >
@@ -262,10 +239,9 @@ export default function ProductInfo({ product }) {
         <button
           onClick={handleWishlist}
           className={`
-          rounded-xl border p-4 transition
+            rounded-xl border p-4
 
-          ${liked ? "bg-red-50 text-red-500" : "hover:bg-gray-100"}
-
+            ${liked ? "bg-red-50 text-red-500" : ""}
           `}
         >
           <Heart size={22} fill={liked ? "currentColor" : "none"} />

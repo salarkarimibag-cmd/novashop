@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
+import useCartStore from "@/store/cartStore";
+
 import {
   CheckoutForm,
   ShippingMethod,
@@ -9,12 +12,16 @@ import {
 } from "@/components/checkout";
 
 import EmptyCart from "@/components/cart/EmptyCart";
-import useCart from "@/hooks/useCart";
 
 export default function CheckoutPage() {
-  const { items } = useCart();
+  const items = useCartStore((state) => state.items);
+  const fetchCart = useCartStore((state) => state.fetchCart);
 
-  if (items.length === 0) {
+  useEffect(() => {
+    fetchCart();
+  }, [fetchCart]);
+
+  if (!items.length) {
     return (
       <main className="min-h-screen bg-gray-50 px-4 py-10">
         <div className="mx-auto max-w-3xl rounded-2xl bg-white shadow-sm">
@@ -40,7 +47,7 @@ export default function CheckoutPage() {
             </div>
 
             <div className="rounded-2xl bg-white p-6 shadow-sm">
-              <OrderItems />
+              <OrderItems items={items} />
             </div>
 
             <div className="rounded-2xl bg-white p-6 shadow-sm">

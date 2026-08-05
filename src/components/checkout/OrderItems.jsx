@@ -1,61 +1,39 @@
 "use client";
 
 import Image from "next/image";
-import useCart from "@/hooks/useCart";
+import formatPrice from "@/lib/formatPrice";
 
-export default function OrderItems() {
-  const { items } = useCart();
-
-  if (!items.length) {
-    return (
-      <div className="rounded-2xl border bg-white p-6 text-center text-gray-400">
-        سبد خرید خالی است.
-      </div>
-    );
-  }
-
+export default function OrderItems({ items = [] }) {
   return (
-    <div className="rounded-2xl border bg-white p-6 shadow-sm">
-      <h2 className="mb-6 text-xl font-bold">محصولات سفارش</h2>
+    <div className="space-y-4">
+      {items.map((item) => {
+        const product = item.product;
 
-      <div className="space-y-5">
-        {items.map((item) => (
+        return (
           <div
-            key={item.id}
-            className="
-            flex
-            items-center
-            gap-4
-            border-b
-            pb-4
-            last:border-none
-            "
+            key={item._id || item.product?._id}
+            className="flex items-center gap-4 rounded-xl border p-4"
           >
-            <Image
-              src={item.image}
-              alt={item.title}
-              width={80}
-              height={80}
-              className="
-              rounded-xl
-              object-cover
-              "
-            />
-
-            <div className="flex-1">
-              <h3 className="font-semibold">{item.title}</h3>
-
-              <p className="mt-1 text-sm text-gray-500">
-                تعداد: {item.quantity}
-              </p>
+            <div className="relative h-20 w-20 overflow-hidden rounded-lg">
+              <Image
+                src={product?.images?.[0] || "/images/placeholder.png"}
+                alt={product?.title || "محصول"}
+                fill
+                sizes="80px"
+                className="object-cover"
+              />
             </div>
 
-            <div className="font-bold">
-              {(item.price * item.quantity).toLocaleString()} تومان
+            <div>
+              <h3 className="font-semibold">{product?.title}</h3>
+
+              <p>تعداد: {item.quantity}</p>
+
+              <p className="font-bold">{formatPrice(item.price)}</p>
             </div>
           </div>
-        ))}
-      </div>
+        );
+      })}
     </div>
   );
 }
