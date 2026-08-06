@@ -13,15 +13,16 @@ const cartService = {
 
   // افزودن محصول به سبد
   addToCart(productId, quantity = 1) {
+    console.log("CART SERVICE:", productId, typeof productId);
+
     return apiClient("/api/cart/add", {
       method: "POST",
       body: JSON.stringify({
-        productId,
-        quantity,
+        productId: String(productId),
+        quantity: Number(quantity),
       }),
     });
   },
-
   // افزایش تعداد
   increaseQuantity(productId) {
     return apiClient(`/api/cart/increase/${productId}`, {

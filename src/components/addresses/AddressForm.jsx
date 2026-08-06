@@ -1,16 +1,20 @@
 "use client";
 
 import { useFormik } from "formik";
+import { toast } from "sonner";
+
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
+
 import iranCities from "@/data/iranCities";
 import checkoutSchema from "@/validations/checkoutSchema";
+
 import useAddressStore from "@/store/addressStore";
 
 export default function AddressForm() {
-  const { addAddress } = useAddressStore();
+  const addAddress = useAddressStore((state) => state.addAddress);
 
   const formik = useFormik({
     initialValues: {
@@ -24,22 +28,21 @@ export default function AddressForm() {
 
     validationSchema: checkoutSchema,
 
-    onSubmit: (values, { resetForm }) => {
-      addAddress(values);
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        await addAddress(values);
 
-      alert("آدرس با موفقیت ذخیره شد.");
+        toast.success("آدرس با موفقیت ذخیره شد");
 
-      resetForm();
+        resetForm();
+      } catch (error) {
+        toast.error(error.message || "ذخیره آدرس انجام نشد");
+      }
     },
   });
 
   const cities = iranCities[formik.values.province] || [];
-  console.log({
-    Button,
-    Input,
-    Select,
-    Textarea,
-  });
+
   return (
     <div className="rounded-2xl border bg-white p-6 shadow-sm">
       <h2 className="mb-6 text-xl font-bold">افزودن آدرس جدید</h2>
@@ -68,7 +71,8 @@ export default function AddressForm() {
           name="province"
           value={formik.values.province}
           onChange={(e) => {
-            formik.handleChange(e);
+            formik.setFieldValue("province", e.target.value);
+
             formik.setFieldValue("city", "");
           }}
           onBlur={formik.handleBlur}
@@ -119,8 +123,8 @@ export default function AddressForm() {
           error={formik.touched.postalCode && formik.errors.postalCode}
         />
 
-        <Button type="submit" className="w-full">
-          ذخیره آدرس
+        <Button type="submit" disabled={formik.isSubmitting} className="w-full">
+          {formik.isSubmitting ? "در حال ذخیره..." : "ذخیره آدرس"}
         </Button>
       </form>
     </div>

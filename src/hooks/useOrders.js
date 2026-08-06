@@ -1,14 +1,21 @@
 "use client";
 
+import { useEffect } from "react";
 import useOrderStore from "@/store/orderStore";
 
 export default function useOrders() {
   const orders = useOrderStore((state) => state.orders);
+  const loading = useOrderStore((state) => state.loading);
+  const fetchOrders = useOrderStore((state) => state.fetchOrders);
 
-  const getOrderById = useOrderStore((state) => state.getOrderById);
+  useEffect(() => {
+    fetchOrders().catch((error) => {
+      console.error(error);
+    });
+  }, [fetchOrders]);
 
   return {
     orders,
-    getOrderById,
+    loading,
   };
 }

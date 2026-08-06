@@ -64,7 +64,7 @@ const useCartStore = create(
             error: null,
           });
 
-          const res = await cartService.addToCart(productId, quantity);
+          const res = await cartService.addToCart(String(productId), quantity);
 
           get().updateCartState(res.data);
 

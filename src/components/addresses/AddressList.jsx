@@ -1,10 +1,28 @@
 "use client";
 
+import { toast } from "sonner";
+
 import Button from "@/components/ui/Button";
 import useAddressStore from "@/store/addressStore";
 
 export default function AddressList() {
   const { addresses, removeAddress, setDefaultAddress } = useAddressStore();
+
+  const handleDelete = async (id) => {
+    try {
+      await removeAddress(id);
+
+      toast.success("آدرس حذف شد");
+    } catch (error) {
+      toast.error(error.message || "حذف آدرس انجام نشد");
+    }
+  };
+
+  const handleDefault = (id) => {
+    setDefaultAddress(id);
+
+    toast.success("آدرس پیش‌فرض انتخاب شد");
+  };
 
   if (addresses.length === 0) {
     return (
@@ -18,13 +36,13 @@ export default function AddressList() {
     <div className="space-y-5">
       {addresses.map((address) => (
         <div
-          key={address.id}
+          key={address._id}
           className="rounded-2xl border bg-white p-6 shadow-sm"
         >
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div className="space-y-2">
               <div className="flex items-center gap-3">
-                <h3 className="font-bold text-lg">{address.fullName}</h3>
+                <h3 className="text-lg font-bold">{address.fullName}</h3>
 
                 {address.isDefault && (
                   <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
@@ -48,7 +66,7 @@ export default function AddressList() {
               {!address.isDefault && (
                 <Button
                   variant="outline"
-                  onClick={() => setDefaultAddress(address.id)}
+                  onClick={() => handleDefault(address._id)}
                 >
                   انتخاب به عنوان پیش‌فرض
                 </Button>
@@ -56,7 +74,7 @@ export default function AddressList() {
 
               <Button
                 variant="danger"
-                onClick={() => removeAddress(address.id)}
+                onClick={() => handleDelete(address._id)}
               >
                 حذف
               </Button>

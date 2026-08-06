@@ -1,54 +1,85 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+import addressService from "@/services/addressService";
+
 const useAddressStore = create(
   persist(
     (set) => ({
       addresses: [],
 
-      addAddress: (address) =>
-        set((state) => ({
-          addresses: [
-            ...state.addresses,
-            {
-              id: Date.now(),
-              ...address,
-              isDefault: state.addresses.length === 0,
-            },
-          ],
-        })),
+      selectedAddress: null,
 
-      removeAddress: (id) =>
-        set((state) => {
-          const addresses = state.addresses.filter(
-            (address) => address.id !== id,
-          );
-
-          if (
-            addresses.length > 0 &&
-            !addresses.some((address) => address.isDefault)
-          ) {
-            addresses[0].isDefault = true;
-          }
-
-          return { addresses };
+      selectAddress: (address) =>
+        set({
+          selectedAddress: address,
         }),
 
-      updateAddress: (id, data) =>
+      loading: false,
+
+      fetchAddresses: async () => {
+        set({
+          loading: true,
+        });
+
+        try {
+          const response = await addressService.getAll();
+
+          set({
+            addresses: response.data,
+            loading: false,
+          });
+        } catch (error) {
+          set({
+            loading: false,
+          });
+
+          throw error;
+        }
+      },
+
+      addAddress: async (data) => {
+        const response = await addressService.create(data);
+
+        set((state) => ({
+          addresses: [response.data, ...state.addresses],
+        }));
+
+        return response.data;
+      },
+
+      updateAddress: async (id, data) => {
+        const response = await addressService.update(id, data);
+
         set((state) => ({
           addresses: state.addresses.map((address) =>
-            address.id === id ? { ...address, ...data } : address,
+            address._id === id ? response.data : address,
           ),
-        })),
+        }));
+      },
 
-      setDefaultAddress: (id) =>
+      removeAddress: async (id) => {
+        await addressService.remove(id);
+
         set((state) => ({
-          addresses: state.addresses.map((address) => ({
-            ...address,
-            isDefault: address.id === id,
-          })),
-        })),
+          addresses: state.addresses.filter((address) => address._id !== id),
+        }));
+      },
+
+      selectAddress: (address) => {
+        set({
+          selectedAddress: address,
+        });
+      },
+
+      clearAddresses: () => {
+        set({
+          addresses: [],
+          selectedAddress: null,
+        });
+      },
     }),
+
     {
       name: "nova-addresses",
       skipHydration: true,

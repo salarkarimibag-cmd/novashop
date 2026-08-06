@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+
 import Button from "@/components/ui/Button";
 import useCart from "@/hooks/useCart";
 import useCheckoutStore from "@/store/checkoutStore";
 import useOrderStore from "@/store/orderStore";
-import { SHIPPING_PRICES } from "@/constants/shipping";
+import useAddressStore from "@/store/addressStore";
 
 export default function OrderSummary() {
   const router = useRouter();
@@ -16,28 +17,31 @@ export default function OrderSummary() {
 
   const { items, totalQuantity, clearCart } = useCart();
 
-  const shippingAddress = useCheckoutStore((state) => state.shippingAddress);
-
-  const shippingMethod = useCheckoutStore((state) => state.shippingMethod);
-
   const paymentMethod = useCheckoutStore((state) => state.paymentMethod);
 
   const clearCheckout = useCheckoutStore((state) => state.clearCheckout);
 
-  const addOrder = useOrderStore((state) => state.addOrder);
+  const createOrder = useOrderStore((state) => state.createOrder);
+
+  const selectedAddress = useAddressStore(
+    (state) =>
+      state.selectedAddress ||
+      state.addresses.find((address) => address.isDefault),
+  );
 
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
 
-  const shipping = SHIPPING_PRICES[shippingMethod] ?? 0;
+  // مطابق Backend
+  const shippingCost = subtotal >= 5000000 ? 0 : 150000;
 
   const discount = 0;
 
-  const total = subtotal + shipping - discount;
+  const total = subtotal + shippingCost - discount;
 
-  const handleSubmitOrder = () => {
+  const handleSubmitOrder = async () => {
     if (loading) return;
 
     if (!items.length) {
@@ -45,50 +49,34 @@ export default function OrderSummary() {
       return;
     }
 
-    if (
-      !shippingAddress?.fullName ||
-      !shippingAddress?.phone ||
-      !shippingAddress?.address
-    ) {
-      toast.error("اطلاعات گیرنده را کامل کنید");
+    if (!selectedAddress?._id) {
+      toast.error("لطفاً آدرس ارسال را انتخاب کنید");
       return;
     }
 
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const order = {
-      id: crypto.randomUUID(),
+      const order = await createOrder({
+        addressId: selectedAddress._id,
 
-      items: [...items],
+        paymentMethod: paymentMethod || "online",
+      });
 
-      status: "pending",
+      clearCart();
 
-      shippingAddress,
+      clearCheckout();
 
-      shippingMethod,
+      toast.success("سفارش با موفقیت ثبت شد");
 
-      paymentMethod,
+      router.push(`/order-success?id=${order._id}`);
+    } catch (error) {
+      console.error("CREATE ORDER ERROR:", error);
 
-      subtotal,
-
-      shipping,
-
-      discount,
-
-      total,
-
-      createdAt: new Date().toISOString(),
-    };
-
-    addOrder(order);
-
-    clearCart();
-
-    clearCheckout();
-
-    toast.success("سفارش با موفقیت ثبت شد");
-
-    router.push("/order-success");
+      toast.error(error?.message || "ثبت سفارش انجام نشد");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -98,6 +86,7 @@ export default function OrderSummary() {
       <div className="space-y-4 text-sm">
         <div className="flex justify-between">
           <span>تعداد کالا</span>
+
           <span>{totalQuantity}</span>
         </div>
 
@@ -111,9 +100,9 @@ export default function OrderSummary() {
           <span>هزینه ارسال</span>
 
           <span>
-            {shipping === 0
+            {shippingCost === 0
               ? "رایگان"
-              : `${shipping.toLocaleString("fa-IR")} تومان`}
+              : `${shippingCost.toLocaleString("fa-IR")} تومان`}
           </span>
         </div>
 
