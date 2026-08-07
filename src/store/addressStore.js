@@ -24,9 +24,16 @@ const useAddressStore = create(
 
         try {
           const response = await addressService.getAll();
+          const addresses = response.data;
+          console.log("ADDRESS RESPONSE:", response);
+          console.log("ADDRESS DATA:", response.data);
 
           set({
-            addresses: response.data,
+            addresses,
+            selectedAddress:
+              addresses.find((address) => address.isDefault) ||
+              addresses[0] ||
+              null,
             loading: false,
           });
         } catch (error) {
@@ -64,12 +71,6 @@ const useAddressStore = create(
         set((state) => ({
           addresses: state.addresses.filter((address) => address._id !== id),
         }));
-      },
-
-      selectAddress: (address) => {
-        set({
-          selectedAddress: address,
-        });
       },
 
       clearAddresses: () => {

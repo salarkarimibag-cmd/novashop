@@ -21,13 +21,19 @@ const useOrderStore = create(
         try {
           const response = await orderService.createOrder(data);
 
-          const order = response.data.data;
+          console.log("ORDER RESPONSE:", response);
+
+          const order = response.data;
+
+          console.log("CREATED ORDER:", order);
+
+          if (!order?._id) {
+            throw new Error("اطلاعات سفارش معتبر نیست");
+          }
 
           set((state) => ({
             orders: [order, ...state.orders],
-
             currentOrder: order,
-
             loading: false,
           }));
 
@@ -40,7 +46,6 @@ const useOrderStore = create(
           throw error;
         }
       },
-
       // دریافت سفارش‌های کاربر
       fetchOrders: async () => {
         set({
@@ -49,9 +54,12 @@ const useOrderStore = create(
 
         try {
           const response = await orderService.getOrders();
-
+          console.log(
+            "GET ORDERS RESPONSE JSON:",
+            JSON.stringify(response, null, 2),
+          );
           set({
-            orders: response.data || [],
+            orders: (response.data || []).filter(Boolean),
             loading: false,
           });
         } catch (error) {
@@ -72,7 +80,7 @@ const useOrderStore = create(
         try {
           const response = await orderService.getOrderById(id);
 
-          const order = response.data.data;
+          const order = response.data;
 
           set({
             currentOrder: order,

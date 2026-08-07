@@ -27,6 +27,11 @@ const useAuthStore = create(
           ...initialState,
         }),
 
+      clearAuth: () =>
+        set({
+          ...initialState,
+        }),
+
       setUser: (user) =>
         set({
           user,
@@ -53,8 +58,6 @@ const useAuthStore = create(
         set({
           loading,
         }),
-
-     
     }),
 
     {
@@ -62,5 +65,4 @@ const useAuthStore = create(
     },
   ),
 );
-
 export default useAuthStore;

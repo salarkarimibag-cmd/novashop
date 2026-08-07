@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
+
+import CartSkeleton from "@/components/cart/CartSkeleton";
+import EmptyCart from "@/components/cart/EmptyCart";
+
 import useCartStore from "@/store/cartStore";
+import useAddressStore from "@/store/addressStore";
 
 import {
   CheckoutForm,
@@ -11,15 +16,30 @@ import {
   OrderItems,
 } from "@/components/checkout";
 
-import EmptyCart from "@/components/cart/EmptyCart";
-
 export default function CheckoutPage() {
   const items = useCartStore((state) => state.items);
-  const fetchCart = useCartStore((state) => state.fetchCart);
+  const loading = useCartStore((state) => state.loading);
+
+  const fetchAddresses = useAddressStore((state) => state.fetchAddresses);
+
+  const addresses = useAddressStore((state) => state.addresses);
+
+  console.log("CHECKOUT ADDRESSES:", addresses);
 
   useEffect(() => {
-    fetchCart();
-  }, [fetchCart]);
+    fetchAddresses();
+
+    const store = useCartStore.getState();
+
+    // فقط اگر Cart نداریم دریافت کن
+    if (store.items.length === 0 && !store.isFetching) {
+      store.fetchCart();
+    }
+  }, [fetchAddresses]);
+
+  if (loading) {
+    return <CartSkeleton count={3} />;
+  }
 
   if (!items.length) {
     return (

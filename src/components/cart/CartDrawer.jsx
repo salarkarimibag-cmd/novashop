@@ -1,6 +1,6 @@
 "use client";
 
-import { X, ShoppingBag, Loader2 } from "lucide-react";
+import { X, ShoppingBag } from "lucide-react";
 import { useEffect } from "react";
 import Link from "next/link";
 
@@ -9,18 +9,18 @@ import useCartStore from "@/store/cartStore";
 import EmptyCart from "./EmptyCart";
 import CartList from "./CartList";
 import CartSummary from "./CartSummary";
+import CartSkeleton from "./CartSkeleton";
 
 export default function CartDrawer({ open, onClose }) {
   const items = useCartStore((state) => state.items);
-  const fetchCart = useCartStore((state) => state.fetchCart);
   const loading = useCartStore((state) => state.loading);
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
-  // دریافت Cart از Backend هنگام باز شدن Drawer
+  // فقط کنترل Scroll صفحه
+  // دریافت Cart در CartPage انجام می‌شود
   useEffect(() => {
     if (open) {
-      fetchCart();
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -29,7 +29,7 @@ export default function CartDrawer({ open, onClose }) {
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [open, fetchCart]);
+  }, [open]);
 
   return (
     <>
@@ -69,7 +69,16 @@ export default function CartDrawer({ open, onClose }) {
         `}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b px-5 py-4">
+        <div
+          className="
+            flex
+            items-center
+            justify-between
+            border-b
+            px-5
+            py-4
+          "
+        >
           <div className="flex items-center gap-2">
             <ShoppingBag size={22} />
 
@@ -83,6 +92,7 @@ export default function CartDrawer({ open, onClose }) {
                   px-2
                   py-1
                   text-xs
+                  font-semibold
                   text-indigo-700
                 "
               >
@@ -106,17 +116,9 @@ export default function CartDrawer({ open, onClose }) {
         </div>
 
         {/* Content */}
-
         {loading ? (
-          <div
-            className="
-              flex
-              flex-1
-              items-center
-              justify-center
-            "
-          >
-            <Loader2 className="animate-spin" size={32} />
+          <div className="flex-1 overflow-y-auto">
+            <CartSkeleton count={3} />
           </div>
         ) : items.length === 0 ? (
           <div
@@ -131,8 +133,7 @@ export default function CartDrawer({ open, onClose }) {
           </div>
         ) : (
           <>
-            {/* Cart Items */}
-
+            {/* Items */}
             <div
               className="
                 flex-1
@@ -143,7 +144,6 @@ export default function CartDrawer({ open, onClose }) {
             </div>
 
             {/* Summary */}
-
             <div
               className="
                 border-t

@@ -22,8 +22,11 @@ export default function AddressForm() {
       phone: "",
       province: "",
       city: "",
-      address: "",
+      street: "",
+      plaque: "",
+      unit: "",
       postalCode: "",
+      isDefault: false,
     },
 
     validationSchema: checkoutSchema,
@@ -72,7 +75,6 @@ export default function AddressForm() {
           value={formik.values.province}
           onChange={(e) => {
             formik.setFieldValue("province", e.target.value);
-
             formik.setFieldValue("city", "");
           }}
           onBlur={formik.handleBlur}
@@ -105,13 +107,31 @@ export default function AddressForm() {
         </Select>
 
         <Textarea
-          label="آدرس"
+          label="خیابان و آدرس"
           rows={4}
-          name="address"
-          value={formik.values.address}
+          name="street"
+          value={formik.values.street}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.address && formik.errors.address}
+          error={formik.touched.street && formik.errors.street}
+        />
+
+        <Input
+          label="پلاک"
+          name="plaque"
+          value={formik.values.plaque}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.plaque && formik.errors.plaque}
+        />
+
+        <Input
+          label="واحد (اختیاری)"
+          name="unit"
+          value={formik.values.unit}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.unit && formik.errors.unit}
         />
 
         <Input
@@ -122,6 +142,16 @@ export default function AddressForm() {
           onBlur={formik.handleBlur}
           error={formik.touched.postalCode && formik.errors.postalCode}
         />
+
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            name="isDefault"
+            checked={formik.values.isDefault}
+            onChange={formik.handleChange}
+          />
+          آدرس پیش‌فرض
+        </label>
 
         <Button type="submit" disabled={formik.isSubmitting} className="w-full">
           {formik.isSubmitting ? "در حال ذخیره..." : "ذخیره آدرس"}

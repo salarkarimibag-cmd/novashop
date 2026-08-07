@@ -21,7 +21,7 @@ export default function OrdersPage() {
           </div>
         ) : (
           <div className="space-y-6">
-            {orders.map((order) => (
+            {orders.filter(Boolean).map((order) => (
               <OrderCard key={order._id || order.id} order={order} />
             ))}
           </div>

@@ -2,26 +2,34 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+
 import cartService from "@/services/cartService";
 
 const useCartStore = create(
   persist(
     (set, get) => ({
       items: [],
+
       totalPrice: 0,
+
       totalQuantity: 0,
 
       loading: false,
+
       error: null,
 
+      // جلوگیری از درخواست‌های همزمان
+      isFetching: false,
+
       // =========================
-      // آپدیت یکپارچه Cart
+      // آپدیت State Cart
       // =========================
       updateCartState: (cart) => {
         const items = cart?.items || [];
 
         set({
           items,
+
           totalPrice: cart?.totalPrice || 0,
 
           totalQuantity: items.reduce((sum, item) => sum + item.quantity, 0),
@@ -32,10 +40,20 @@ const useCartStore = create(
       // دریافت Cart از Backend
       // =========================
       fetchCart: async () => {
+        const state = get();
+
+        // جلوگیری از loop
+        if (state.isFetching) {
+          return;
+        }
+
         try {
+          console.log("🔥 FETCH CART RUN");
+
           set({
             loading: true,
             error: null,
+            isFetching: true,
           });
 
           const res = await cartService.getCart();
@@ -46,10 +64,11 @@ const useCartStore = create(
             error: error.message,
           });
 
-          throw error;
+          console.error("FETCH CART ERROR:", error);
         } finally {
           set({
             loading: false,
+            isFetching: false,
           });
         }
       },
@@ -134,7 +153,7 @@ const useCartStore = create(
       },
 
       // =========================
-      // خالی کردن Cart
+      // پاک کردن Cart
       // =========================
       clearCart: async () => {
         try {
@@ -142,7 +161,9 @@ const useCartStore = create(
 
           set({
             items: [],
+
             totalPrice: 0,
+
             totalQuantity: 0,
           });
         } catch (error) {
@@ -162,34 +183,31 @@ const useCartStore = create(
       },
 
       // =========================
-      // تعداد کل کالاها
+      // Getter
       // =========================
       getTotalItems: () => {
         return get().totalQuantity;
       },
 
-      // =========================
-      // قیمت کل
-      // =========================
       getTotalPrice: () => {
         return get().totalPrice;
       },
 
       // =========================
-      // پاک کردن State
+      // Reset
       // =========================
       resetCart: () => {
         set({
           items: [],
+
           totalPrice: 0,
+
           totalQuantity: 0,
+
           error: null,
         });
       },
 
-      // =========================
-      // پاک کردن Error
-      // =========================
       clearError: () => {
         set({
           error: null,
@@ -199,6 +217,7 @@ const useCartStore = create(
 
     {
       name: "nova-cart",
+
       skipHydration: true,
     },
   ),

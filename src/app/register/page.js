@@ -7,8 +7,14 @@ export default function RegisterPage() {
   const router = useRouter();
   const handleRegister = async (values) => {
     try {
-      await authService.register(values);
+      await authService.register({
+        name: values.fullName,
+        phone: values.phone,
+        password: values.password,
+      });
+
       alert("ثبت‌نام با موفقیت انجام شد.");
+
       router.push("/login");
     } catch (error) {
       alert(error.message || "ثبت‌نام ناموفق بود");

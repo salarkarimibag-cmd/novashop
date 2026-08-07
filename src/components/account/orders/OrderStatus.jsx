@@ -1,29 +1,26 @@
 "use client";
 
-import useOrderStore from "@/store/orderStore";
+import { ORDER_STATUS } from "@/constants/orderStatus";
 
 export default function OrderStatus({ order }) {
-  const { updateOrderStatus } = useOrderStore();
+  const status = order.status || "pending";
 
   return (
-    <div className="rounded-2xl border bg-white p-6">
-      <h2 className="mb-4 text-xl font-bold">تغییر وضعیت سفارش</h2>
+    <div className="mt-5">
+      <h3 className="mb-3 font-bold">وضعیت سفارش</h3>
 
-      <select
-        value={order.status}
-        onChange={(e) => updateOrderStatus(order.id, e.target.value)}
-        className="w-full rounded-xl border p-3"
+      <div
+        className="
+          rounded-xl
+          border
+          bg-gray-50
+          p-3
+          text-center
+          font-semibold
+        "
       >
-        <option value="pending">ثبت سفارش</option>
-
-        <option value="paid">پرداخت موفق</option>
-
-        <option value="preparing">آماده‌سازی کالا</option>
-
-        <option value="shipped">ارسال شده</option>
-
-        <option value="delivered">تحویل داده شد</option>
-      </select>
+        {ORDER_STATUS[status]?.title || "نامشخص"}
+      </div>
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Trash2, Plus, Minus } from "lucide-react";
+import { toast } from "sonner";
 
 import useCartStore from "@/store/cartStore";
 import formatPrice from "@/lib/formatPrice";
@@ -17,7 +18,36 @@ export default function CartItem({ item }) {
 
   if (!product) return null;
 
-  const productId = product._id || product.id;
+  const productId =
+    typeof product._id === "object"
+      ? product._id._id
+      : product._id || product.id;
+
+  const handleIncrease = async () => {
+    try {
+      await increaseQuantity(String(productId));
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleDecrease = async () => {
+    try {
+      await decreaseQuantity(String(productId));
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleRemove = async () => {
+    try {
+      await removeItem(String(productId));
+
+      toast.success("محصول از سبد خرید حذف شد");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <div
@@ -30,8 +60,6 @@ export default function CartItem({ item }) {
         p-4
       "
     >
-      {/* Image */}
-
       <div
         className="
           relative
@@ -51,8 +79,6 @@ export default function CartItem({ item }) {
         />
       </div>
 
-      {/* Info */}
-
       <div className="flex-1">
         <h3
           className="
@@ -65,8 +91,6 @@ export default function CartItem({ item }) {
 
         <p className="mt-2 font-bold">{formatPrice(item.price)}</p>
 
-        {/* Quantity */}
-
         <div
           className="
             mt-3
@@ -76,13 +100,15 @@ export default function CartItem({ item }) {
           "
         >
           <button
-            onClick={() => decreaseQuantity(productId)}
+            onClick={handleDecrease}
+            disabled={item.quantity <= 1}
             className="
               rounded-lg
               border
               p-2
               transition
               hover:bg-gray-100
+              disabled:opacity-40
             "
           >
             <Minus size={16} />
@@ -91,7 +117,7 @@ export default function CartItem({ item }) {
           <span className="min-w-6 text-center">{item.quantity}</span>
 
           <button
-            onClick={() => increaseQuantity(productId)}
+            onClick={handleIncrease}
             className="
               rounded-lg
               border
@@ -105,10 +131,8 @@ export default function CartItem({ item }) {
         </div>
       </div>
 
-      {/* Remove */}
-
       <button
-        onClick={() => removeItem(productId)}
+        onClick={handleRemove}
         className="
           rounded-lg
           p-2
