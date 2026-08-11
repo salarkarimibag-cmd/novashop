@@ -4,12 +4,16 @@ import Link from "next/link";
 
 import SearchItem from "./SearchItem";
 
-export default function SearchDropdown({ products, query, onSelect }) {
+export default function SearchDropdown({ products, loading, query, onSelect }) {
   if (!query) return null;
 
   return (
     <div className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border bg-white shadow-xl">
-      {products.length > 0 ? (
+      {loading ? (
+        <div className="p-5 text-center text-sm text-gray-500">
+          در حال جستجو...
+        </div>
+      ) : products.length > 0 ? (
         <>
           {products.slice(0, 5).map((product) => (
             <SearchItem

@@ -29,7 +29,8 @@ export default function SearchBox() {
 
   const debouncedQuery = useDebounce(query, 500);
 
-  const filteredProducts = useSearchProducts(debouncedQuery);
+  const { results: searchResults, loading: searching } =
+    useSearchProducts(debouncedQuery);
 
   // Sync with FilterStore
 
@@ -120,7 +121,8 @@ export default function SearchBox() {
 
           {open && (
             <SearchDropdown
-              products={filteredProducts}
+              products={searchResults}
+              loading={searching}
               query={query}
               onSelect={() => {
                 setQuery("");
