@@ -9,6 +9,7 @@ import Button from "@/components/ui/Button";
 
 import useCartStore from "@/store/cartStore";
 import useWishlistStore from "@/store/wishlistStore";
+import formatPrice from "@/lib/formatPrice";
 import { getProductImage } from "@/constants/images";
 
 export default function ProductCard({ product }) {
@@ -192,7 +193,7 @@ export default function ProductCard({ product }) {
                 line-through
                 "
             >
-              {Number(product.price || 0).toLocaleString("fa-IR")} تومان
+              {formatPrice(product.price)}
             </p>
           )}
 
@@ -202,7 +203,7 @@ export default function ProductCard({ product }) {
             text-indigo-600
             "
           >
-            {Number(finalPrice || 0).toLocaleString("fa-IR")} تومان
+            {formatPrice(finalPrice)}
           </p>
         </div>
 

@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { FaShoppingCart } from "react-icons/fa";
 
+import formatPrice from "@/lib/formatPrice";
+
 export default function OfferCard({ product }) {
   const image = product.images?.[0];
 
@@ -29,11 +31,11 @@ export default function OfferCard({ product }) {
 
         <div>
           <p className="text-sm text-gray-400 line-through">
-            {product.price.toLocaleString()} تومان
+            {formatPrice(product.price)}
           </p>
 
           <p className="text-xl font-bold text-indigo-600">
-            {product.discountPrice.toLocaleString()} تومان
+            {formatPrice(product.discountPrice)}
           </p>
         </div>
 

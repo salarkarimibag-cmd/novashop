@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Heart, ShoppingCart, Star } from "lucide-react";
 
+import formatPrice from "@/lib/formatPrice";
 import { getProductImage } from "@/constants/images";
 
 export default function NewArrivalCard({ product }) {
@@ -37,9 +38,7 @@ export default function NewArrivalCard({ product }) {
           ))}
         </div>
 
-        <p className="font-bold text-lg">
-          {product.price?.toLocaleString()} تومان
-        </p>
+        <p className="font-bold text-lg">{formatPrice(product.price)}</p>
 
         <div className="mt-4 flex gap-2">
           <button className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-black py-2 text-white">
