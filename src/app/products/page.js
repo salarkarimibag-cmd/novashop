@@ -8,6 +8,7 @@ import ProductSort from "@/components/products/ProductSort";
 import ProductGridSkeleton from "@/components/ui/Skeleton/ProductGridSkeleton";
 
 import { getProducts } from "@/services/productService";
+import useDebounce from "@/hooks/useDebounce";
 import useFilterStore from "@/store/filterStore";
 
 export default function ProductsPage() {
@@ -29,39 +30,67 @@ export default function ProductsPage() {
 
   const searchQuery = useFilterStore((state) => state.searchQuery);
 
+  // اسلایدر قیمت و کادر جستجو با هر حرکت تغییر می‌کنند؛
+  // تا آرام نگیرند درخواستی فرستاده نمی‌شود
+  const debouncedPriceRange = useDebounce(priceRange);
+
+  const debouncedSearchQuery = useDebounce(searchQuery);
+
   useEffect(() => {
+    // با تغییر فیلترها درخواست قبلی لغو می‌شود
+    // تا پاسخ کهنه روی پاسخ تازه ننشیند
+    const controller = new AbortController();
+
     const loadProducts = async () => {
       try {
         setLoading(true);
 
         setError(null);
 
-        const result = await getProducts({
-          search: searchQuery,
+        const result = await getProducts(
+          {
+            search: debouncedSearchQuery,
 
-          brand: selectedBrands,
+            brand: selectedBrands,
 
-          category: selectedCategories,
+            category: selectedCategories,
 
-          minPrice: priceRange[0],
+            minPrice: debouncedPriceRange[0],
 
-          maxPrice: priceRange[1],
+            maxPrice: debouncedPriceRange[1],
 
-          sort,
-        });
+            sort,
+          },
+          { signal: controller.signal },
+        );
 
         setProducts(result.products || []);
+
+        setLoading(false);
       } catch (error) {
+        // لغو عمدی خطا نیست؛ درخواست بعدی مسئول وضعیت است
+        if (error.name === "AbortError") {
+          return;
+        }
+
         console.error(error);
 
         setError("خطا در دریافت محصولات");
-      } finally {
+
         setLoading(false);
       }
     };
 
     loadProducts();
-  }, [selectedBrands, selectedCategories, sort, priceRange, searchQuery]);
+
+    return () => controller.abort();
+  }, [
+    selectedBrands,
+    selectedCategories,
+    sort,
+    debouncedPriceRange,
+    debouncedSearchQuery,
+  ]);
 
   return (
     <main className="container mx-auto px-4 py-10">
