@@ -11,10 +11,10 @@ export default function ProfileInfo() {
     <div className="rounded-2xl border bg-white p-6 shadow-sm">
       <div className="flex flex-col items-center">
         <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-200 text-3xl font-bold">
-          {user.fullName?.charAt(0)}
+          {user.name?.charAt(0)}
         </div>
 
-        <h2 className="mt-4 text-xl font-bold">{user.fullName}</h2>
+        <h2 className="mt-4 text-xl font-bold">{user.name}</h2>
 
         <p className="mt-2 text-gray-500">{user.phone}</p>
       </div>

@@ -6,22 +6,32 @@ import { toast } from "sonner";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import useAuthStore from "@/store/authStore";
+import profileService from "@/services/profileService";
 
 export default function ProfileForm() {
-  const { user, updateUser } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
+
+  const updateUser = useAuthStore((state) => state.updateUser);
 
   const formik = useFormik({
     initialValues: {
-      fullName: user?.fullName || "",
+      name: user?.name || "",
       phone: user?.phone || "",
     },
 
     enableReinitialize: true,
 
-    onSubmit: (values) => {
-      updateUser(values);
+    onSubmit: async (values) => {
+      try {
+        const updatedUser = await profileService.updateProfile(values);
 
-      toast.success("اطلاعات پروفایل با موفقیت بروزرسانی شد");
+        // منبع حقیقت، پاسخ سرور است نه چیزی که فرستادیم
+        updateUser(updatedUser);
+
+        toast.success("اطلاعات پروفایل با موفقیت بروزرسانی شد");
+      } catch (error) {
+        toast.error(error.message || "بروزرسانی اطلاعات انجام نشد");
+      }
     },
   });
 
@@ -35,8 +45,8 @@ export default function ProfileForm() {
       <div className="space-y-5">
         <Input
           label="نام و نام خانوادگی"
-          name="fullName"
-          value={formik.values.fullName}
+          name="name"
+          value={formik.values.name}
           onChange={formik.handleChange}
         />
 
@@ -47,7 +57,9 @@ export default function ProfileForm() {
           onChange={formik.handleChange}
         />
 
-        <Button type="submit">ذخیره تغییرات</Button>
+        <Button type="submit" disabled={formik.isSubmitting}>
+          {formik.isSubmitting ? "در حال ذخیره..." : "ذخیره تغییرات"}
+        </Button>
       </div>
     </form>
   );
