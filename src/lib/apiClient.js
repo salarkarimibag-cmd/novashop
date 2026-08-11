@@ -5,11 +5,14 @@ import useAuthStore from "@/store/authStore";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 async function apiClient(endpoint, options = {}) {
+  // اعتبارسنجی پس‌زمینه‌ی توکن نباید کاربر را از صفحه بیرون بیندازد
+  const { redirectOnUnauthorized = true, ...fetchOptions } = options;
+
   const token = useAuthStore.getState().token;
 
   const headers = {
     "Content-Type": "application/json",
-    ...options.headers,
+    ...fetchOptions.headers,
   };
 
   if (token) {
@@ -19,7 +22,7 @@ async function apiClient(endpoint, options = {}) {
   const url = `${API_URL}${endpoint}`;
 
   const response = await fetch(url, {
-    ...options,
+    ...fetchOptions,
     headers,
   });
 
@@ -33,7 +36,7 @@ async function apiClient(endpoint, options = {}) {
 
     clearSession();
 
-    if (typeof window !== "undefined") {
+    if (redirectOnUnauthorized && typeof window !== "undefined") {
       window.location.href = "/login";
     }
 
