@@ -1,6 +1,8 @@
 "use client";
 
 import { useFormik } from "formik";
+import { toast } from "sonner";
+
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import useAuthStore from "@/store/authStore";
@@ -19,7 +21,7 @@ export default function ProfileForm() {
     onSubmit: (values) => {
       updateUser(values);
 
-      alert("اطلاعات پروفایل با موفقیت بروزرسانی شد.");
+      toast.success("اطلاعات پروفایل با موفقیت بروزرسانی شد");
     },
   });
 
