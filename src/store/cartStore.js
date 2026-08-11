@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import cartService from "@/services/cartService";
+import useAuthStore from "@/store/authStore";
 
 const useCartStore = create(
   persist(
@@ -44,6 +45,11 @@ const useCartStore = create(
 
         // جلوگیری از loop
         if (state.isFetching) {
+          return;
+        }
+
+        // سبد خرید سرور-محور است؛ بدون ورود، درخواست حتماً رد می‌شود
+        if (!useAuthStore.getState().token) {
           return;
         }
 
