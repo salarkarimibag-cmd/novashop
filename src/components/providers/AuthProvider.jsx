@@ -3,12 +3,12 @@
 import { useEffect } from "react";
 import { useHydration } from "@/components/providers/HydrationProvider";
 import useAuthStore from "@/store/authStore";
+import clearSession from "@/lib/session";
 
 export default function AuthProvider({ children }) {
   const hydrated = useHydration();
   const token = useAuthStore((state) => state.token);
   const setUser = useAuthStore((state) => state.setUser);
-  const clearAuth = useAuthStore((state) => state.clearAuth);
   const setLoading = useAuthStore((state) => state.setLoading);
 
   useEffect(() => {
@@ -33,21 +33,21 @@ export default function AuthProvider({ children }) {
         );
 
         if (!res.ok) {
-          clearAuth();
+          clearSession();
           return;
         }
 
         const user = await res.json();
         setUser(user);
-      } catch (error) {
-        clearAuth();
+      } catch {
+        clearSession();
       } finally {
         setLoading(false);
       }
     }
 
     checkAuth();
-  }, [hydrated, token, setUser, clearAuth, setLoading]);
+  }, [hydrated, token, setUser, setLoading]);
 
   return children;
 }

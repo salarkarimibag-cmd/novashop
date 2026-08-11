@@ -25,7 +25,11 @@ async function apiClient(endpoint, options = {}) {
 
   // اگر Token منقضی شده
   if (response.status === 401) {
-    useAuthStore.getState().clearAuth();
+    // import پویا: session به‌طور غیرمستقیم به همین فایل وابسته است،
+    // پس import ایستا یک حلقه‌ی وابستگی می‌ساخت
+    const { default: clearSession } = await import("@/lib/session");
+
+    clearSession();
 
     if (typeof window !== "undefined") {
       window.location.href = "/login";

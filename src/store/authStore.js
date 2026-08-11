@@ -3,40 +3,35 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-const initialState = {
+// وضعیت کاربر خارج‌شده: نه کاربری هست، نه بررسی‌ای در جریان است
+const loggedOutState = {
   user: null,
   token: null,
-  isAuthenticated: false,
   loading: false,
 };
 
 const useAuthStore = create(
   persist(
     (set) => ({
-      ...initialState,
+      user: null,
+
+      token: null,
+
+      // تا وقتی AuthProvider توکن را بررسی نکرده، وضعیت ورود نامشخص است
+      loading: true,
 
       login: ({ user, token }) =>
         set({
           user,
           token,
-          isAuthenticated: !!token,
+          loading: false,
         }),
 
-      logout: () =>
-        set({
-          ...initialState,
-        }),
+      logout: () => set({ ...loggedOutState }),
 
-      clearAuth: () =>
-        set({
-          ...initialState,
-        }),
+      clearAuth: () => set({ ...loggedOutState }),
 
-      setUser: (user) =>
-        set({
-          user,
-          isAuthenticated: !!user,
-        }),
+      setUser: (user) => set({ user }),
 
       updateUser: (data) =>
         set((state) => ({
@@ -48,21 +43,21 @@ const useAuthStore = create(
             : null,
         })),
 
-      setToken: (token) =>
-        set({
-          token,
-          isAuthenticated: !!token,
-        }),
+      setToken: (token) => set({ token }),
 
-      setLoading: (loading) =>
-        set({
-          loading,
-        }),
+      setLoading: (loading) => set({ loading }),
     }),
 
     {
       name: "nova-auth",
+
+      // فقط داده‌ی واقعی ذخیره می‌شود، نه وضعیت موقتِ UI
+      partialize: (state) => ({
+        user: state.user,
+        token: state.token,
+      }),
     },
   ),
 );
+
 export default useAuthStore;

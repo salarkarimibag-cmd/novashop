@@ -2,11 +2,11 @@
 
 import Container from "@/components/common/Container";
 import useAuthStore from "@/store/authStore";
+import clearSession from "@/lib/session";
 import { User, LogOut } from "lucide-react";
 import Link from "next/link";
 export default function TopHeader() {
   const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
 
   return (
     <div className="hidden md:block border-b border-gray-200 bg-gray-50">
@@ -47,7 +47,7 @@ export default function TopHeader() {
               </Link>
 
               <button
-                onClick={logout}
+                onClick={clearSession}
                 className="
         flex items-center gap-2
         rounded-lg
