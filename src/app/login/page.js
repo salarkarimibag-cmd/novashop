@@ -15,9 +15,9 @@ export default function LoginPage() {
 
   const handleLogin = async (values) => {
     try {
-      const data = await authService.login(values);
+      const session = await authService.login(values);
 
-      login(data);
+      login(session);
 
       toast.success("خوش آمدید");
 
