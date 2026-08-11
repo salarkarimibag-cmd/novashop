@@ -22,10 +22,6 @@ export default function CheckoutPage() {
 
   const fetchAddresses = useAddressStore((state) => state.fetchAddresses);
 
-  const addresses = useAddressStore((state) => state.addresses);
-
-  console.log("CHECKOUT ADDRESSES:", addresses);
-
   useEffect(() => {
     fetchAddresses();
 

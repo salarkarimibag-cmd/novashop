@@ -24,9 +24,8 @@ const useAddressStore = create(
 
         try {
           const response = await addressService.getAll();
+
           const addresses = response.data;
-          console.log("ADDRESS RESPONSE:", response);
-          console.log("ADDRESS DATA:", response.data);
 
           set({
             addresses,

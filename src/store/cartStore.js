@@ -48,8 +48,6 @@ const useCartStore = create(
         }
 
         try {
-          console.log("🔥 FETCH CART RUN");
-
           set({
             loading: true,
             error: null,

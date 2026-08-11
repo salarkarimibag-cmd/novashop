@@ -28,7 +28,7 @@ export default function OrderSummary() {
       state.selectedAddress ||
       state.addresses.find((address) => address.isDefault),
   );
-  console.log("SELECTED ADDRESS:", selectedAddress);
+
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
