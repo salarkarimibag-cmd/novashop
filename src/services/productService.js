@@ -48,8 +48,13 @@ export async function getProductById(id) {
     cache: "no-store",
   });
 
+  // نبودِ محصول با از کار افتادن سرور یکی نیست
+  if (response.status === 404) {
+    return null;
+  }
+
   if (!response.ok) {
-    throw new Error("محصول پیدا نشد");
+    throw new Error("خطا در دریافت محصول");
   }
 
   const result = await response.json();
