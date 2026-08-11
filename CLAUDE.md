@@ -53,33 +53,44 @@ needs auth:
 2. **Raw `fetch`** — public/unauthenticated data. `src/services/productService.js` does this
    directly with `cache: "no-store"`; `AuthProvider` also fetches `/api/auth/profile` raw.
 
-`src/lib/axios.js` and `src/lib/auth.js` are empty placeholder files despite `axios` being a
-dependency — nothing imports axios. Don't assume they contain anything.
-
 Every service in `src/services/` (except `productService`) is a default-exported object of
-methods wrapping `apiClient`. Backend responses are unwrapped inconsistently — some return
-`res.data`, product endpoints return `result.products || result.data`. Check the specific
-service before assuming a response shape.
+methods wrapping `apiClient`. **Backend responses are wrapped inconsistently** — most endpoints
+nest the payload under `data`, but not all. `authService` normalises this with an `unwrap()`
+helper (`response?.data ?? response`) and throws when a login comes back without a token;
+follow that pattern rather than passing a raw response to a store. Check the specific service
+before assuming a response shape.
 
-### State: Zustand stores + the hydration gate
+`apiClient` treats `401` as an expired session **only when a token was sent** — a `401` without
+one means bad credentials and is thrown to the caller. Pass `redirectOnUnauthorized: false` for
+background checks that shouldn't navigate the user away (see `authService.me`).
+
+### State: Zustand stores and hydration
 
 Stores live in `src/store/`, each a default export, re-exported from `src/store/index.js`.
 All use `persist` to `localStorage` under `nova-*` keys (`nova-auth`, `nova-cart`,
 `nova-checkout`, `nova-wishlist`, ...).
 
-**Critical**: every store except `authStore` sets `skipHydration: true`.
-`HydrationProvider` (`src/components/providers/`) manually `await`s
-`persist.rehydrate()` on all six stores and **renders `null` until they finish**, exposing
-the flag through a `useHydration()` context. If you add a new persisted store, register its
-`rehydrate()` call there or its persisted state will never load. `AuthProvider` sits inside
-it and only re-validates the token against `/api/auth/profile` once `hydrated` is true.
+**Critical**: all six stores set `skipHydration: true`, so the first client render matches the
+server's HTML and nothing reads `localStorage` before React hydrates.
+`HydrationProvider` (`src/components/providers/`) `await`s `persist.rehydrate()` on all six and
+exposes the result through a `useHydration()` context — it **renders children immediately**, so
+never assume persisted state is available on first render. If you add a persisted store,
+register its `rehydrate()` call there or its state will never load.
+
+Anything that reads persisted data or fires an authenticated request on mount must wait for
+`hydrated` — otherwise the request goes out with no `Authorization` header. Pages under
+`ProtectedRoute` are covered by its loading gate; `/cart`, `/checkout` and `/order-success` are
+not, and gate their own effects.
 
 Store responsibilities:
 
-- `authStore` — user/token/isAuthenticated/loading. `login({user, token})`, `clearAuth()`.
+- `authStore` — user/token/loading. `login({user, token})`, `clearAuth()`. `partialize` persists
+  only user and token; `loading` starts `true` until `AuthProvider` resolves. `isAuthenticated`
+  is derived in `useAuth`, not stored.
 - `cartStore` — server-backed. Every mutation calls `cartService` and feeds the response
-  through `updateCartState(cart)`, which recomputes `totalQuantity`. Has an `isFetching`
-  guard in `fetchCart` to prevent request loops.
+  through `updateCartState(cart)`. `fetchCart` returns early without a token and has an
+  `isFetching` guard against request loops. Item count comes from the exported
+  `selectTotalQuantity` selector — it is not kept in state.
 - `wishlistStore` — purely client-side/localStorage, not synced to the backend. Normalizes
   IDs via `String(product._id || product.id)`.
 - `checkoutStore` — shipping address form draft, shipping/payment method, note.
@@ -114,18 +125,27 @@ Formik + Yup. Schemas live in `src/validations/` (`loginSchema`, `registerSchema
   Several components inline the same `toLocaleString("fa-IR")` call instead; prefer the
   helper for new code.
 - **Toasts**: `sonner` only (`import { toast } from "sonner"`), `<Toaster dir="rtl">` mounted
-  in the root layout. `react-hot-toast` is a dependency but unused.
-- **Icons**: `lucide-react`. **Sliders/carousels**: `swiper` (`swiper/react` + `swiper/modules`,
-  with the per-feature `swiper/css/*` imports).
+  in the root layout. Never `alert()` — it blocks the main thread and ignores the RTL styling.
+- **Icons**: `lucide-react` (`react-icons` is also present in a few older components).
+  **Sliders/carousels**: `swiper` (`swiper/react` + `swiper/modules`, with the per-feature
+  `swiper/css/*` imports).
 - **Styling**: Tailwind v4 via `@import "tailwindcss"` in `src/app/globals.css` — no
   `tailwind.config.js`; theme extensions go in the `@theme` block there.
-- `@reduxjs/toolkit` / `react-redux` are installed but **not used** — this app is Zustand-only.
-  Don't introduce Redux.
+- **State**: Zustand only. Don't introduce Redux.
+- **Images**: product images go through `getProductImage()` in `src/constants/images.js`.
+  `next.config.mjs` whitelists the `NEXT_PUBLIC_API_URL` host for `next/image`.
+- `no-console` is enforced by ESLint; `console.warn`/`console.error` are allowed, `console.log`
+  is not.
+- Never report success before it is confirmed. Await the request, seed state from the server's
+  response rather than the submitted values, and throw when the response lacks what it promised
+  — several bugs here were success toasts over silent failures.
 
 ## Known rough edges
 
-- Debug `console.log` calls are left in production paths (`cartStore.fetchCart`,
-  `cartService.addToCart`, `ProtectedRoute`, `OrderSummary`). Don't add more.
-- Shipping cost is duplicated and inconsistent: `src/constants/shipping.js` has
-  `SHIPPING_PRICES`, while `checkout/OrderSummary.jsx` hardcodes `subtotal >= 5000000 ? 0 :
-  150000` "to match the backend".
+- Shipping is unresolved: `checkout/OrderSummary.jsx` charges `getShippingCost(subtotal)`
+  (flat 150,000, free over 5,000,000) to match the backend, while `ShippingMethod.jsx`
+  advertises per-method prices from `SHIPPING_PRICES` that affect nothing — and the selected
+  `shippingMethod` is never sent with the order. Fixing it needs to know whether the backend
+  prices shipping methods at all.
+- `src/app/products/page.js` is a client component that fetches in an effect; filters live in
+  `filterStore` rather than the URL, so results are not linkable or server-rendered.

@@ -175,20 +175,6 @@ const useCartStore = create(
       },
 
       // =========================
-      // Sync دستی
-      // =========================
-      syncCart: async () => {
-        await get().fetchCart();
-      },
-
-      // =========================
-      // Getter
-      // =========================
-      getTotalPrice: () => {
-        return get().totalPrice;
-      },
-
-      // =========================
       // Reset
       // =========================
       resetCart: () => {
