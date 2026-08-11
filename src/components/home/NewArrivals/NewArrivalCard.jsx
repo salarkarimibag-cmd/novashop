@@ -1,8 +1,10 @@
 import Image from "next/image";
 import { Heart, ShoppingCart, Star } from "lucide-react";
 
+import { getProductImage } from "@/constants/images";
+
 export default function NewArrivalCard({ product }) {
-  const image = product.images?.[0] || "/images/placeholder.png";
+  const image = getProductImage(product);
 
   return (
     <div className="group rounded-2xl border bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">

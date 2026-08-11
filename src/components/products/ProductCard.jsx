@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import useCartStore from "@/store/cartStore";
 import useWishlistStore from "@/store/wishlistStore";
 import formatPrice from "@/lib/formatPrice";
+import { getProductImage } from "@/constants/images";
 
 export default function ProductCard({ product }) {
   const addItem = useCartStore((state) => state.addItem);
@@ -17,7 +18,7 @@ export default function ProductCard({ product }) {
     state.isInWishlist(product._id),
   );
 
-  const image = product.images?.[0] || "/images/placeholder.jpg";
+  const image = getProductImage(product);
 
   const handleAddToCart = async () => {
     try {

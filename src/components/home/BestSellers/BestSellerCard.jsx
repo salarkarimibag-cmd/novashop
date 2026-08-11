@@ -1,8 +1,10 @@
 import Image from "next/image";
 import { Star } from "lucide-react";
 
+import { getProductImage } from "@/constants/images";
+
 export default function BestSellerCard({ product }) {
-  const image = product.images?.[0] || "/images/placeholder.png";
+  const image = getProductImage(product);
   return (
     <div
       className="

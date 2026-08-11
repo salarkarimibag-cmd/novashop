@@ -2,9 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Star } from "lucide-react";
 
+import { getProductImage } from "@/constants/images";
+
 export default function RelatedProductCard({ product }) {
-  const image =
-    product.images?.[0] || product.image || "/images/placeholder.png";
+  const image = getProductImage(product);
 
   return (
     <Link
