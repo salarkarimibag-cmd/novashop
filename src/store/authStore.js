@@ -51,6 +51,10 @@ const useAuthStore = create(
     {
       name: "nova-auth",
 
+      // مثل بقیه‌ی استورها، بازیابی را HydrationProvider انجام می‌دهد؛
+      // این‌طور اولین رندر کلاینت با HTML سرور یکی است
+      skipHydration: true,
+
       // فقط داده‌ی واقعی ذخیره می‌شود، نه وضعیت موقتِ UI
       partialize: (state) => ({
         user: state.user,
