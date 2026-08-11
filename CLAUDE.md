@@ -94,8 +94,13 @@ Store responsibilities:
 - `wishlistStore` — purely client-side/localStorage, not synced to the backend. Normalizes
   IDs via `String(product._id || product.id)`.
 - `checkoutStore` — shipping address form draft, shipping/payment method, note.
-- `orderStore`, `addressStore`, `filterStore` (product list filters, read by
-  `src/app/products/page.js` to refetch).
+- `orderStore`, `addressStore`.
+
+Product list filters are **not** in a store — they live in the URL. `src/app/products/page.js`
+is an async Server Component that reads them via `parseProductFilters` (`src/lib/productFilters.js`)
+and fetches on the server; the filter controls are client components that write back through the
+`useProductFilters` hook. Keep it that way: filtered results stay linkable, the back button works,
+and the list is server-rendered.
 
 Thin hooks in `src/hooks/` (`useAuth`, `useCart`, `useOrders`) just wrap store selectors —
 prefer these in components over reaching into the store directly.
@@ -147,5 +152,5 @@ Formik + Yup. Schemas live in `src/validations/` (`loginSchema`, `registerSchema
   advertises per-method prices from `SHIPPING_PRICES` that affect nothing — and the selected
   `shippingMethod` is never sent with the order. Fixing it needs to know whether the backend
   prices shipping methods at all.
-- `src/app/products/page.js` is a client component that fetches in an effect; filters live in
-  `filterStore` rather than the URL, so results are not linkable or server-rendered.
+- `next` is pinned to 16.2.10 and carries open advisories fixed in 16.3.0 (along with its
+  bundled `postcss` and `sharp`). Upgrading means moving `eslint-config-next` in step.

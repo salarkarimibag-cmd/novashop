@@ -11,7 +11,6 @@ import Logo from "@/components/common/Logo";
 import CartButton from "@/components/cart/CartButton";
 import WishlistButton from "@/components/wishlist/WishlistButton";
 import SearchDropdown from "./SearchDropdown";
-import useFilterStore from "@/store/filterStore";
 import useSearchProducts from "@/hooks/useSearchProducts";
 
 export default function SearchBox() {
@@ -19,11 +18,7 @@ export default function SearchBox() {
 
   const searchRef = useRef(null);
 
-  const searchQuery = useFilterStore((state) => state.searchQuery);
-
-  const setSearchQuery = useFilterStore((state) => state.setSearchQuery);
-
-  const [query, setQuery] = useState(searchQuery);
+  const [query, setQuery] = useState("");
 
   const [open, setOpen] = useState(false);
 
@@ -31,12 +26,6 @@ export default function SearchBox() {
 
   const { results: searchResults, loading: searching } =
     useSearchProducts(debouncedQuery);
-
-  // Sync with FilterStore
-
-  useEffect(() => {
-    setSearchQuery(debouncedQuery);
-  }, [debouncedQuery, setSearchQuery]);
 
   // Close dropdown outside
 
@@ -58,12 +47,6 @@ export default function SearchBox() {
     setQuery(value);
 
     setOpen(Boolean(value.trim()));
-
-    if (!value.trim()) {
-      setSearchQuery("");
-
-      router.push("/products");
-    }
   };
 
   const handleSubmit = (e) => {
@@ -126,8 +109,6 @@ export default function SearchBox() {
               query={query}
               onSelect={() => {
                 setQuery("");
-
-                setSearchQuery("");
 
                 setOpen(false);
               }}
