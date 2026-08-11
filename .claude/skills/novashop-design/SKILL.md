@@ -1,6 +1,6 @@
 ---
-name: frontend-design
-description: Professional frontend design and implementation for NovaShop. Use when creating, redesigning, improving, or reviewing UI, UX, responsive layouts, components, pages, and visual design.
+name: novashop-design
+description: NovaShop's own UI conventions — Persian/RTL rules, the existing components, stores and services, and what must be preserved when changing the interface. Use when creating, redesigning, improving, or reviewing NovaShop UI; pair it with frontend-design, which covers visual direction rather than this project's constraints.
 ---
 
 # NovaShop Frontend Design
