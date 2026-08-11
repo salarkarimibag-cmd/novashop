@@ -23,8 +23,10 @@ async function apiClient(endpoint, options = {}) {
     headers,
   });
 
-  // اگر Token منقضی شده
-  if (response.status === 401) {
+  // نشست وقتی منقضی است که توکنی فرستاده باشیم و سرور ردش کند.
+  // ۴۰۱ روی درخواست بدون توکن یعنی نام کاربری یا رمز اشتباه است،
+  // و باید مثل هر خطای دیگری به فراخوان برگردد تا در فرم نمایش داده شود.
+  if (response.status === 401 && token) {
     // import پویا: session به‌طور غیرمستقیم به همین فایل وابسته است،
     // پس import ایستا یک حلقه‌ی وابستگی می‌ساخت
     const { default: clearSession } = await import("@/lib/session");
