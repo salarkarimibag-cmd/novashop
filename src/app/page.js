@@ -10,23 +10,21 @@ import BestSellers from "@/components/home/BestSellers";
 export default function Home() {
   return (
     <>
-      <main>
-        <Hero />
+      <Hero />
 
-        <Categories />
+      <Categories />
 
-        <NewArrivals />
+      <NewArrivals />
 
-        <SpecialOffers />
+      <SpecialOffers />
 
-        <BestSellers />
+      <BestSellers />
 
-        <ProductList />
+      <ProductList />
 
-        <Features />
+      <Features />
 
-        <Brands />
-      </main>
+      <Brands />
     </>
   );
 }
