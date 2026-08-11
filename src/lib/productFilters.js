@@ -10,6 +10,12 @@ function parseList(value) {
 }
 
 function parseNumber(value, fallback) {
+  // نبودِ پارامتر باید صریح بررسی شود: Number(null) و Number("") هر دو
+  // صفرِ معتبر می‌دهند و از فیلتر Number.isFinite رد می‌شوند
+  if (value === null || value.trim() === "") {
+    return fallback;
+  }
+
   const parsed = Number(value);
 
   return Number.isFinite(parsed) ? parsed : fallback;
