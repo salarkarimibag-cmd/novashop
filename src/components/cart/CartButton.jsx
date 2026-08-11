@@ -3,15 +3,13 @@
 import { ShoppingCart } from "lucide-react";
 import { useState } from "react";
 
-import useCartStore from "@/store/cartStore";
+import useCartStore, { selectTotalQuantity } from "@/store/cartStore";
 import CartDrawer from "./CartDrawer";
 
 export default function CartButton() {
   const [open, setOpen] = useState(false);
 
-  const items = useCartStore((state) => state.items);
-
-  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+  const totalQuantity = useCartStore(selectTotalQuantity);
 
   return (
     <>

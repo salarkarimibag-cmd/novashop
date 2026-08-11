@@ -11,9 +11,8 @@ const useCartStore = create(
     (set, get) => ({
       items: [],
 
+      // برخلاف تعداد کالاها، این مقدار را سرور حساب می‌کند
       totalPrice: 0,
-
-      totalQuantity: 0,
 
       loading: false,
 
@@ -32,8 +31,6 @@ const useCartStore = create(
           items,
 
           totalPrice: cart?.totalPrice || 0,
-
-          totalQuantity: items.reduce((sum, item) => sum + item.quantity, 0),
         });
       },
 
@@ -167,8 +164,6 @@ const useCartStore = create(
             items: [],
 
             totalPrice: 0,
-
-            totalQuantity: 0,
           });
         } catch (error) {
           set({
@@ -189,10 +184,6 @@ const useCartStore = create(
       // =========================
       // Getter
       // =========================
-      getTotalItems: () => {
-        return get().totalQuantity;
-      },
-
       getTotalPrice: () => {
         return get().totalPrice;
       },
@@ -205,8 +196,6 @@ const useCartStore = create(
           items: [],
 
           totalPrice: 0,
-
-          totalQuantity: 0,
 
           error: null,
         });
@@ -226,5 +215,14 @@ const useCartStore = create(
     },
   ),
 );
+
+/**
+ * تعداد کل کالاهای سبد.
+ *
+ * از روی items محاسبه می‌شود و در state نگهداری نمی‌شود، تا هیچ‌وقت
+ * با محتوای واقعی سبد ناهماهنگ نشود.
+ */
+export const selectTotalQuantity = (state) =>
+  state.items.reduce((sum, item) => sum + item.quantity, 0);
 
 export default useCartStore;

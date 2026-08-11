@@ -4,7 +4,7 @@ import { X, ShoppingBag } from "lucide-react";
 import { useEffect } from "react";
 import Link from "next/link";
 
-import useCartStore from "@/store/cartStore";
+import useCartStore, { selectTotalQuantity } from "@/store/cartStore";
 
 import EmptyCart from "./EmptyCart";
 import CartList from "./CartList";
@@ -15,7 +15,7 @@ export default function CartDrawer({ open, onClose }) {
   const items = useCartStore((state) => state.items);
   const loading = useCartStore((state) => state.loading);
 
-  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+  const totalItems = useCartStore(selectTotalQuantity);
 
   // فقط کنترل Scroll صفحه
   // دریافت Cart در CartPage انجام می‌شود
