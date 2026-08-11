@@ -9,6 +9,7 @@ import useCart from "@/hooks/useCart";
 import useCheckoutStore from "@/store/checkoutStore";
 import useOrderStore from "@/store/orderStore";
 import useAddressStore from "@/store/addressStore";
+import { getShippingCost } from "@/constants/shipping";
 
 export default function OrderSummary() {
   const router = useRouter();
@@ -34,8 +35,7 @@ export default function OrderSummary() {
     0,
   );
 
-  // مطابق Backend
-  const shippingCost = subtotal >= 5000000 ? 0 : 150000;
+  const shippingCost = getShippingCost(subtotal);
 
   const discount = 0;
 
