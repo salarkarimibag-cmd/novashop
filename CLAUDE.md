@@ -147,10 +147,10 @@ Formik + Yup. Schemas live in `src/validations/` (`loginSchema`, `registerSchema
 
 ## Known rough edges
 
-- Shipping is unresolved: `checkout/OrderSummary.jsx` charges `getShippingCost(subtotal)`
-  (flat 150,000, free over 5,000,000) to match the backend, while `ShippingMethod.jsx`
-  advertises per-method prices from `SHIPPING_PRICES` that affect nothing — and the selected
-  `shippingMethod` is never sent with the order. Fixing it needs to know whether the backend
-  prices shipping methods at all.
-- `next` is pinned to 16.2.10 and carries open advisories fixed in 16.3.0 (along with its
-  bundled `postcss` and `sharp`). Upgrading means moving `eslint-config-next` in step.
+- The order detail page reads `order.shippingAddress`, but the backend populates the field as
+  `order.address` — so the whole address block on `/account/orders/[id]` renders blank.
+- Shipping has exactly one method. The backend prices it as a flat 150,000, free over
+  5,000,000, and has no `shippingMethod` concept at all — not in the order validation schema
+  and not in the Mongoose model. `getShippingCost` in `src/constants/shipping.js` mirrors that
+  formula and must stay in sync with `order.service.js` on the backend. Don't reintroduce
+  per-method shipping prices in the UI without adding backend support first.

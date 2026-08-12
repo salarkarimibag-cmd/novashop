@@ -11,7 +11,7 @@ import useAddressStore from "@/store/addressStore";
 
 import {
   CheckoutForm,
-  ShippingMethod,
+  ShippingInfo,
   PaymentMethod,
   OrderSummary,
   OrderItems,
@@ -65,7 +65,7 @@ export default function CheckoutPage() {
             </div>
 
             <div className="rounded-2xl bg-white p-6 shadow-sm">
-              <ShippingMethod />
+              <ShippingInfo />
             </div>
 
             <div className="rounded-2xl bg-white p-6 shadow-sm">
