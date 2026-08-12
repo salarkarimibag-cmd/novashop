@@ -4,6 +4,7 @@ import { toast } from "sonner";
 
 import Button from "@/components/ui/Button";
 import useAddressStore from "@/store/addressStore";
+import formatAddress from "@/lib/formatAddress";
 
 export default function AddressList() {
   const { addresses, removeAddress, setDefaultAddress } = useAddressStore();
@@ -57,7 +58,7 @@ export default function AddressList() {
                 {address.province} - {address.city}
               </p>
 
-              <p className="text-gray-700">{address.address}</p>
+              <p className="text-gray-700">{formatAddress(address)}</p>
 
               <p className="text-gray-500">کد پستی: {address.postalCode}</p>
             </div>

@@ -8,6 +8,7 @@ import useOrderStore from "@/store/orderStore";
 import OrderTimeline from "@/components/account/orders/OrderTimeline";
 import OrderStatus from "@/components/account/orders/OrderStatus";
 import { ORDER_STATUS } from "@/constants/orderStatus";
+import formatAddress from "@/lib/formatAddress";
 
 export default function OrderDetailPage() {
   const { id } = useParams();
@@ -236,20 +237,22 @@ export default function OrderDetailPage() {
             >
               <h2 className="mb-4 font-bold">اطلاعات ارسال</h2>
 
-              <p>{order.shippingAddress?.fullName}</p>
+              <p>{order.address?.fullName}</p>
 
-              <p className="mt-2 text-gray-500">
-                {order.shippingAddress?.phone}
-              </p>
+              <p className="mt-2 text-gray-500">{order.address?.phone}</p>
 
               <p className="mt-3">
-                {order.shippingAddress?.province}
+                {order.address?.province}
                 {" - "}
-                {order.shippingAddress?.city}
+                {order.address?.city}
               </p>
 
               <p className="mt-2 text-gray-600">
-                {order.shippingAddress?.address}
+                {formatAddress(order.address)}
+              </p>
+
+              <p className="mt-2 text-gray-500">
+                کد پستی: {order.address?.postalCode}
               </p>
 
               <p className="mt-4 font-semibold">روش ارسال: ارسال عادی</p>
