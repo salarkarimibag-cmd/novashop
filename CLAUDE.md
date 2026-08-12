@@ -93,7 +93,8 @@ Store responsibilities:
   `selectTotalQuantity` selector — it is not kept in state.
 - `wishlistStore` — purely client-side/localStorage, not synced to the backend. Normalizes
   IDs via `String(product._id || product.id)`.
-- `checkoutStore` — shipping address form draft, shipping/payment method, note.
+- `checkoutStore` — payment method, discount code, note. The delivery address is **not** here:
+  an order is placed against a saved address's `_id`, so `addressStore` owns it.
 - `orderStore`, `addressStore`.
 
 Product list filters are **not** in a store — they live in the URL. `src/app/products/page.js`
@@ -117,7 +118,7 @@ export through an `index.js` barrel — import from the folder when one exists.
 ### Forms
 
 Formik + Yup. Schemas live in `src/validations/` (`loginSchema`, `registerSchema`,
-`checkoutSchema`) and are passed as `validationSchema` to `useFormik`. Shared inputs
+`addressSchema`) and are passed as `validationSchema` to `useFormik`. Shared inputs
 (`src/components/ui/Input|Select|Textarea`) take a `label` and an `error` prop fed as
 `formik.touched.x && formik.errors.x`.
 
@@ -147,13 +148,6 @@ Formik + Yup. Schemas live in `src/validations/` (`loginSchema`, `registerSchema
 
 ## Known rough edges
 
-- `checkout/CheckoutForm.jsx` collects a full "اطلاعات گیرنده" form, toasts "ذخیره شد", and
-  writes only to `checkoutStore.shippingAddress` in localStorage. Nothing sends it anywhere:
-  `OrderSummary` builds the order from `addressStore`'s selected address. A customer can type
-  a new delivery address, be told it saved, and have the order ship somewhere else. Deciding
-  the fix means deciding whether checkout should create a real address via `addressService`
-  or drop the form for an address picker. `checkout/ShippingAddress.jsx` renders that same
-  draft and is not mounted anywhere.
 - An address is `{fullName, phone, province, city, street, plaque, unit, postalCode}`. There is
   no `address` field on it — use `formatAddress()` in `src/lib/formatAddress.js` to render the
   street line. Orders reference it as `order.address` (populated), never `order.shippingAddress`.

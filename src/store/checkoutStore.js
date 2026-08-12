@@ -1,33 +1,17 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-const createInitialAddress = () => ({
-  fullName: "",
-  phone: "",
-  province: "",
-  city: "",
-  address: "",
-  postalCode: "",
-});
-
+// آدرس تحویل اینجا نگهداری نمی‌شود: سفارش با شناسه‌ی یکی از آدرس‌های
+// ذخیره‌شده روی سرور ثبت می‌شود، پس addressStore صاحب آن است.
+// این استور فقط انتخاب‌های موقتِ همین صفحه‌ی تسویه را نگه می‌دارد.
 const useCheckoutStore = create(
   persist(
     (set) => ({
-      shippingAddress: createInitialAddress(),
-
       paymentMethod: "online",
 
       discountCode: "",
 
       note: "",
-
-      setShippingAddress: (data) =>
-        set((state) => ({
-          shippingAddress: {
-            ...state.shippingAddress,
-            ...data,
-          },
-        })),
 
       setPaymentMethod: (method) =>
         set({
@@ -44,15 +28,8 @@ const useCheckoutStore = create(
           note,
         }),
 
-      clearAddress: () =>
-        set({
-          shippingAddress: createInitialAddress(),
-        }),
-
       clearCheckout: () =>
         set({
-          shippingAddress: createInitialAddress(),
-
           paymentMethod: "online",
 
           discountCode: "",

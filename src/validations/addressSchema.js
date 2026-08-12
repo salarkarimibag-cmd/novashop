@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-const checkoutSchema = Yup.object({
+const addressSchema = Yup.object({
   fullName: Yup.string()
     .trim()
     .min(3, "نام معتبر نیست")
@@ -32,4 +32,4 @@ const checkoutSchema = Yup.object({
   isDefault: Yup.boolean().default(false),
 });
 
-export default checkoutSchema;
+export default addressSchema;

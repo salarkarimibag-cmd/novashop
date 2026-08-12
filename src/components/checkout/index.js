@@ -1,5 +1,4 @@
-export { default as CheckoutForm } from "./CheckoutForm";
-export { default as ShippingAddress } from "./ShippingAddress";
+export { default as AddressPicker } from "./AddressPicker";
 export { default as ShippingInfo } from "./ShippingInfo";
 export { default as PaymentMethod } from "./PaymentMethod";
 export { default as OrderItems } from "./OrderItems";
