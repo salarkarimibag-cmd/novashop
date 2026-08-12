@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { MapPin, Plus } from "lucide-react";
+import { MapPin, Plus, AlertCircle, RotateCw } from "lucide-react";
 
 import useAddressStore from "@/store/addressStore";
+import Spinner from "@/components/ui/Spinner/Spinner";
 import formatAddress from "@/lib/formatAddress";
 
 // سفارش با شناسه‌ی یکی از آدرس‌های ذخیره‌شده ثبت می‌شود، پس انتخاب کاربر
@@ -15,6 +16,53 @@ export default function AddressPicker() {
   const selectedAddress = useAddressStore((state) => state.selectedAddress);
 
   const selectAddress = useAddressStore((state) => state.selectAddress);
+
+  const loading = useAddressStore((state) => state.loading);
+
+  const error = useAddressStore((state) => state.error);
+
+  const fetchAddresses = useAddressStore((state) => state.fetchAddresses);
+
+  if (loading) {
+    return (
+      <div>
+        <h2 className="mb-6 text-xl font-bold">آدرس تحویل</h2>
+
+        <Spinner className="py-10" />
+      </div>
+    );
+  }
+
+  // خطا باید پیش از حالت خالی بررسی شود: وقتی دریافت شکست خورده،
+  // فهرست هم خالی است و پیام «آدرسی ندارید» گمراه‌کننده می‌شود.
+  if (error) {
+    return (
+      <div>
+        <h2 className="mb-6 text-xl font-bold">آدرس تحویل</h2>
+
+        <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-center">
+          <AlertCircle size={28} className="mx-auto text-red-500" />
+
+          <p className="mt-3 font-semibold">آدرس‌های شما بارگذاری نشد</p>
+
+          <p className="mt-1 text-sm text-gray-600">{error}</p>
+
+          <button
+            type="button"
+            onClick={() => fetchAddresses().catch(() => {})}
+            className="
+              mt-4 inline-flex items-center gap-2 rounded-xl border
+              border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold
+              transition hover:border-gray-400
+            "
+          >
+            <RotateCw size={18} />
+            تلاش دوباره
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (!addresses.length) {
     return (

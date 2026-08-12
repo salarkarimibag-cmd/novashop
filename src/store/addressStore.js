@@ -17,9 +17,14 @@ const useAddressStore = create(
 
       loading: false,
 
+      // بدون این، یک دریافت ناموفق از یک لیست واقعاً خالی قابل تشخیص نیست
+      // و رابط کاربری به کاربر می‌گوید «آدرسی ندارید» در حالی که دارد.
+      error: null,
+
       fetchAddresses: async () => {
         set({
           loading: true,
+          error: null,
         });
 
         try {
@@ -38,6 +43,7 @@ const useAddressStore = create(
         } catch (error) {
           set({
             loading: false,
+            error: error.message || "دریافت آدرس‌ها انجام نشد",
           });
 
           throw error;

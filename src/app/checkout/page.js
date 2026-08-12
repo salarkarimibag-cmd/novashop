@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 import CartSkeleton from "@/components/cart/CartSkeleton";
 import EmptyCart from "@/components/cart/EmptyCart";
@@ -29,7 +30,14 @@ export default function CheckoutPage() {
     // پیش از بازیابی توکن، درخواست بدون هدر Authorization می‌رفت و ۴۰۱ می‌گرفت
     if (!hydrated) return;
 
-    fetchAddresses();
+    // fetchAddresses خطا را دوباره پرتاب می‌کند. اگر اینجا گرفته نشود،
+    // یک promise ردشده‌ی بی‌صاحب می‌ماند و کل صفحه را می‌ترکاند —
+    // آن هم بدون اینکه کاربر بفهمد چرا آدرس‌هایش نیامده.
+    fetchAddresses().catch((error) => {
+      console.error("FETCH ADDRESSES ERROR:", error);
+
+      toast.error(error?.message || "دریافت آدرس‌ها انجام نشد");
+    });
 
     const store = useCartStore.getState();
 
