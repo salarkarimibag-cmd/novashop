@@ -37,6 +37,11 @@ async function apiClient(endpoint, options = {}) {
     clearSession();
 
     if (redirectOnUnauthorized && typeof window !== "undefined") {
+      // ریلود کامل صفحه، عمدی است و نباید به router.push تبدیل شود:
+      // ۱) اینجا یک ماژول ساده است نه کامپوننت، پس useRouter در دسترس نیست.
+      // ۲) ناوبری نرم، state درون‌حافظه‌ی نشستِ منقضی را نگه می‌دارد؛
+      //    ریلود تضمین می‌کند هیچ داده‌ی کاربر قبلی باقی نماند.
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.href = "/login";
     }
 
