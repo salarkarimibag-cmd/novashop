@@ -9,7 +9,7 @@ import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
 
 import iranCities from "@/data/iranCities";
-import checkoutSchema from "@/validations/checkoutSchema";
+import addressSchema from "@/validations/addressSchema";
 
 import useAddressStore from "@/store/addressStore";
 
@@ -29,7 +29,7 @@ export default function AddressForm() {
       isDefault: false,
     },
 
-    validationSchema: checkoutSchema,
+    validationSchema: addressSchema,
 
     onSubmit: async (values, { resetForm }) => {
       try {

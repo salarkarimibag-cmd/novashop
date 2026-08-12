@@ -10,7 +10,7 @@ import useCartStore from "@/store/cartStore";
 import useAddressStore from "@/store/addressStore";
 
 import {
-  CheckoutForm,
+  AddressPicker,
   ShippingInfo,
   PaymentMethod,
   OrderSummary,
@@ -61,7 +61,7 @@ export default function CheckoutPage() {
         <div className="grid gap-8 lg:grid-cols-3">
           <section className="space-y-6 lg:col-span-2">
             <div className="rounded-2xl bg-white p-6 shadow-sm">
-              <CheckoutForm />
+              <AddressPicker />
             </div>
 
             <div className="rounded-2xl bg-white p-6 shadow-sm">
