@@ -8,7 +8,6 @@ import useOrderStore from "@/store/orderStore";
 import OrderTimeline from "@/components/account/orders/OrderTimeline";
 import OrderStatus from "@/components/account/orders/OrderStatus";
 import { ORDER_STATUS } from "@/constants/orderStatus";
-import { SHIPPING_PRICES } from "@/constants/shipping";
 
 export default function OrderDetailPage() {
   const { id } = useParams();
@@ -48,18 +47,14 @@ export default function OrderDetailPage() {
         ? "پرداخت در محل"
         : "کارت به کارت";
 
-  const shippingTitle =
-    order.shippingMethod === "normal"
-      ? "ارسال عادی"
-      : order.shippingMethod === "express"
-        ? "ارسال سریع"
-        : "تحویل حضوری";
-
+  // فاکتور باید همان چیزی را نشان دهد که سرور ثبت کرده، نه چیزی که
+  // فرانت دوباره حساب می‌کند؛ وگرنه جمع روی صفحه با مبلغ پرداختی نمی‌خواند.
   const subtotal =
-    order.items?.reduce((sum, item) => sum + item.price * item.quantity, 0) ||
+    order.subtotal ??
+    order.items?.reduce((sum, item) => sum + item.price * item.quantity, 0) ??
     0;
 
-  const shipping = SHIPPING_PRICES[order.shippingMethod] ?? 0;
+  const shipping = order.shippingCost ?? 0;
 
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-10">
@@ -257,7 +252,7 @@ export default function OrderDetailPage() {
                 {order.shippingAddress?.address}
               </p>
 
-              <p className="mt-4 font-semibold">روش ارسال: {shippingTitle}</p>
+              <p className="mt-4 font-semibold">روش ارسال: ارسال عادی</p>
             </div>
 
             <div

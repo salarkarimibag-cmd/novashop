@@ -15,8 +15,6 @@ const useCheckoutStore = create(
     (set) => ({
       shippingAddress: createInitialAddress(),
 
-      shippingMethod: "normal",
-
       paymentMethod: "online",
 
       discountCode: "",
@@ -30,11 +28,6 @@ const useCheckoutStore = create(
             ...data,
           },
         })),
-
-      setShippingMethod: (method) =>
-        set({
-          shippingMethod: method,
-        }),
 
       setPaymentMethod: (method) =>
         set({
@@ -59,8 +52,6 @@ const useCheckoutStore = create(
       clearCheckout: () =>
         set({
           shippingAddress: createInitialAddress(),
-
-          shippingMethod: "normal",
 
           paymentMethod: "online",
 
