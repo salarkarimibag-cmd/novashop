@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { ORDER_STATUS } from "@/constants/orderStatus";
 import formatPrice from "@/lib/formatPrice";
+import formatAddress from "@/lib/formatAddress";
 
 export default function OrderCard({ order }) {
   const status = order.status || "pending";
@@ -130,7 +131,7 @@ export default function OrderCard({ order }) {
       </div>
 
       {/* Address */}
-      {(order.address || order.shippingAddress) && (
+      {order.address && (
         <div
           className="
             mt-5
@@ -141,18 +142,16 @@ export default function OrderCard({ order }) {
             text-gray-600
           "
         >
-          <p>گیرنده: {(order.address || order.shippingAddress)?.fullName}</p>
+          <p>گیرنده: {order.address.fullName}</p>
+
+          <p className="mt-2">شماره تماس: {order.address.phone}</p>
 
           <p className="mt-2">
-            شماره تماس: {(order.address || order.shippingAddress)?.phone}
-          </p>
-
-          <p className="mt-2">
-            آدرس: {(order.address || order.shippingAddress)?.province}
+            آدرس: {order.address.province}
             {" - "}
-            {(order.address || order.shippingAddress)?.city}
+            {order.address.city}
             <br />
-            {(order.address || order.shippingAddress)?.address}
+            {formatAddress(order.address)}
           </p>
         </div>
       )}

@@ -147,8 +147,16 @@ Formik + Yup. Schemas live in `src/validations/` (`loginSchema`, `registerSchema
 
 ## Known rough edges
 
-- The order detail page reads `order.shippingAddress`, but the backend populates the field as
-  `order.address` — so the whole address block on `/account/orders/[id]` renders blank.
+- `checkout/CheckoutForm.jsx` collects a full "اطلاعات گیرنده" form, toasts "ذخیره شد", and
+  writes only to `checkoutStore.shippingAddress` in localStorage. Nothing sends it anywhere:
+  `OrderSummary` builds the order from `addressStore`'s selected address. A customer can type
+  a new delivery address, be told it saved, and have the order ship somewhere else. Deciding
+  the fix means deciding whether checkout should create a real address via `addressService`
+  or drop the form for an address picker. `checkout/ShippingAddress.jsx` renders that same
+  draft and is not mounted anywhere.
+- An address is `{fullName, phone, province, city, street, plaque, unit, postalCode}`. There is
+  no `address` field on it — use `formatAddress()` in `src/lib/formatAddress.js` to render the
+  street line. Orders reference it as `order.address` (populated), never `order.shippingAddress`.
 - Shipping has exactly one method. The backend prices it as a flat 150,000, free over
   5,000,000, and has no `shippingMethod` concept at all — not in the order validation schema
   and not in the Mongoose model. `getShippingCost` in `src/constants/shipping.js` mirrors that
