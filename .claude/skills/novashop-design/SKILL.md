@@ -34,6 +34,23 @@ Formik, Yup, Swiper, lucide-react, react-icons, and Sonner.
 
 Use the existing stack. Do not introduce a new UI framework unless explicitly requested.
 
+### Icons: lucide-react only
+
+New icons come from `lucide-react`. `react-icons` survives in a few older
+components; leave it where it is, but do not reach for it in new code.
+
+The general-purpose `ui-ux-pro-max` skill names Phosphor
+(`@phosphor-icons/react`) as its default icon library, with Heroicons as a
+fallback. **That recommendation does not apply here.** Installing a second icon
+set would break the one rule both skills agree on — a single icon family, with
+consistent stroke width and corner radius, across the whole product.
+
+The same goes for the rest of that skill's stack advice: it also ships
+shadcn/ui and GSAP guidance, and NovaShop uses neither. Read `ui-ux-pro-max`
+for its UX rules (accessibility, touch targets, form feedback, responsive
+layout); ignore its library picks. It also has no RTL guidance at all, so its
+typography and Google Fonts suggestions do not survive contact with Vazirmatn.
+
 ## Design Direction
 
 NovaShop should look like a premium modern e-commerce platform.
