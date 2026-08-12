@@ -1,12 +1,15 @@
 "use client";
 
 import Container from "@/components/common/Container";
+import { useHydration } from "@/components/providers/HydrationProvider";
 import useAuthStore from "@/store/authStore";
+import clearSession from "@/lib/session";
 import { User, LogOut } from "lucide-react";
 import Link from "next/link";
 export default function TopHeader() {
+  const hydrated = useHydration();
+
   const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
 
   return (
     <div className="hidden md:block border-b border-gray-200 bg-gray-50">
@@ -26,7 +29,9 @@ export default function TopHeader() {
         <div className="flex items-center gap-4 text-sm text-gray-600">
           <span className="text-gray-500">ارسال به سراسر ایران</span>
 
-          {user ? (
+          {/* تا بازیابی localStorage، وضعیت ورود نامشخص است؛
+              نمایش «ورود / ثبت نام» به کاربرِ واردشده پرش ایجاد می‌کند */}
+          {!hydrated ? null : user ? (
             <div className="flex items-center gap-3">
               <Link
                 href="/account"
@@ -47,7 +52,7 @@ export default function TopHeader() {
               </Link>
 
               <button
-                onClick={logout}
+                onClick={clearSession}
                 className="
         flex items-center gap-2
         rounded-lg

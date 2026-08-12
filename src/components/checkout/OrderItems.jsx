@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import formatPrice from "@/lib/formatPrice";
+import { getProductImage } from "@/constants/images";
 
 export default function OrderItems({ items = [] }) {
   return (
@@ -16,7 +17,7 @@ export default function OrderItems({ items = [] }) {
           >
             <div className="relative h-20 w-20 overflow-hidden rounded-lg">
               <Image
-                src={product?.images?.[0] || "/images/placeholder.png"}
+                src={getProductImage(product)}
                 alt={product?.title || "محصول"}
                 fill
                 sizes="80px"

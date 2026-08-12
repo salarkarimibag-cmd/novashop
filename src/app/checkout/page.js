@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import CartSkeleton from "@/components/cart/CartSkeleton";
 import EmptyCart from "@/components/cart/EmptyCart";
 
+import { useHydration } from "@/components/providers/HydrationProvider";
 import useCartStore from "@/store/cartStore";
 import useAddressStore from "@/store/addressStore";
 
@@ -17,16 +18,17 @@ import {
 } from "@/components/checkout";
 
 export default function CheckoutPage() {
+  const hydrated = useHydration();
+
   const items = useCartStore((state) => state.items);
   const loading = useCartStore((state) => state.loading);
 
   const fetchAddresses = useAddressStore((state) => state.fetchAddresses);
 
-  const addresses = useAddressStore((state) => state.addresses);
-
-  console.log("CHECKOUT ADDRESSES:", addresses);
-
   useEffect(() => {
+    // پیش از بازیابی توکن، درخواست بدون هدر Authorization می‌رفت و ۴۰۱ می‌گرفت
+    if (!hydrated) return;
+
     fetchAddresses();
 
     const store = useCartStore.getState();
@@ -35,9 +37,9 @@ export default function CheckoutPage() {
     if (store.items.length === 0 && !store.isFetching) {
       store.fetchCart();
     }
-  }, [fetchAddresses]);
+  }, [hydrated, fetchAddresses]);
 
-  if (loading) {
+  if (!hydrated || loading) {
     return <CartSkeleton count={3} />;
   }
 

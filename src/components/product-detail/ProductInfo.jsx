@@ -16,8 +16,6 @@ export default function ProductInfo({ product }) {
       ? product._id._id
       : product._id || product.id;
 
-  console.log("PRODUCT ID:", productId);
-
   const [selectedColor, setSelectedColor] = useState(
     product.colors?.[0] || null,
   );
@@ -106,9 +104,6 @@ export default function ProductInfo({ product }) {
       ? product.discountPrice
       : product.price;
 
-  console.log("FULL PRODUCT:", product);
-  console.log("RAW _id:", product._id);
-  console.log("FINAL ID:", productId);
   return (
     <div className="space-y-6">
       <div>

@@ -11,13 +11,8 @@ import RelatedProducts from "@/components/product-detail/RelatedProducts";
 export default async function ProductDetailPage({ params }) {
   const { id } = await params;
 
-  let product;
-
-  try {
-    product = await getProductById(id);
-  } catch {
-    notFound();
-  }
+  // خطای واقعی عمداً گرفته نمی‌شود تا به error.js برسد
+  const product = await getProductById(id);
 
   if (!product) {
     notFound();

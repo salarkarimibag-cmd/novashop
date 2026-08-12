@@ -1,6 +1,6 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-export async function getProducts(filters = {}) {
+export async function getProducts(filters = {}, { signal } = {}) {
   const params = new URLSearchParams();
 
   if (filters.search) {
@@ -29,6 +29,7 @@ export async function getProducts(filters = {}) {
 
   const response = await fetch(`${API_URL}/api/products?${params.toString()}`, {
     cache: "no-store",
+    signal,
   });
 
   if (!response.ok) {
@@ -47,8 +48,13 @@ export async function getProductById(id) {
     cache: "no-store",
   });
 
+  // نبودِ محصول با از کار افتادن سرور یکی نیست
+  if (response.status === 404) {
+    return null;
+  }
+
   if (!response.ok) {
-    throw new Error("محصول پیدا نشد");
+    throw new Error("خطا در دریافت محصول");
   }
 
   const result = await response.json();

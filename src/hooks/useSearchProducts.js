@@ -1,39 +1,59 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import { getProducts } from "@/services/productService";
 
-export default function useSearchProducts() {
+export default function useSearchProducts(query) {
+  const term = query?.trim() || "";
+
   const [results, setResults] = useState([]);
 
   const [loading, setLoading] = useState(false);
 
-  const searchProducts = async (query) => {
-    if (!query?.trim()) {
-      setResults([]);
+  useEffect(() => {
+    if (!term) {
       return;
     }
 
-    try {
-      setLoading(true);
+    // با تغییر عبارت، جستجوی قبلی لغو می‌شود
+    // تا نتیجه‌ی کهنه روی نتیجه‌ی تازه ننشیند
+    const controller = new AbortController();
 
-      const result = await getProducts({
-        search: query,
-      });
+    const searchProducts = async () => {
+      try {
+        setLoading(true);
 
-      setResults(result.products || []);
-    } catch (error) {
-      console.error("Search products error:", error);
+        const result = await getProducts(
+          { search: term },
+          { signal: controller.signal },
+        );
 
-      setResults([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+        setResults(result.products || []);
 
+        setLoading(false);
+      } catch (error) {
+        // لغو عمدی خطا نیست؛ جستجوی بعدی مسئول وضعیت است
+        if (error.name === "AbortError") {
+          return;
+        }
+
+        console.error("Search products error:", error);
+
+        setResults([]);
+
+        setLoading(false);
+      }
+    };
+
+    searchProducts();
+
+    return () => controller.abort();
+  }, [term]);
+
+  // با عبارت خالی چیزی برای نمایش نیست؛ محاسبه‌شده است، نه state جدا
   return {
-    results,
-    loading,
-    searchProducts,
+    results: term ? results : [],
+    loading: term ? loading : false,
   };
 }

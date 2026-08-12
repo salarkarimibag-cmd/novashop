@@ -1,6 +1,6 @@
 "use client";
 
-import useCartStore from "@/store/cartStore";
+import useCartStore, { selectTotalQuantity } from "@/store/cartStore";
 
 export default function useCart() {
   const items = useCartStore((state) => state.items);
@@ -17,7 +17,7 @@ export default function useCart() {
 
   const clearCart = useCartStore((state) => state.clearCart);
 
-  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+  const totalQuantity = useCartStore(selectTotalQuantity);
 
   return {
     items,

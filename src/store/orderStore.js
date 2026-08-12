@@ -21,11 +21,7 @@ const useOrderStore = create(
         try {
           const response = await orderService.createOrder(data);
 
-          console.log("ORDER RESPONSE:", response);
-
           const order = response.data;
-
-          console.log("CREATED ORDER:", order);
 
           if (!order?._id) {
             throw new Error("اطلاعات سفارش معتبر نیست");
@@ -54,10 +50,7 @@ const useOrderStore = create(
 
         try {
           const response = await orderService.getOrders();
-          console.log(
-            "GET ORDERS RESPONSE JSON:",
-            JSON.stringify(response, null, 2),
-          );
+
           set({
             orders: (response.data || []).filter(Boolean),
             loading: false,

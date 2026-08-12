@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import formatPrice from "@/lib/formatPrice";
+import { getProductImage } from "@/constants/images";
+
 export default function SearchItem({ product, onSelect }) {
   return (
     <Link
@@ -10,7 +13,7 @@ export default function SearchItem({ product, onSelect }) {
     >
       <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-gray-100">
         <Image
-          src={product.image}
+          src={getProductImage(product)}
           alt={product.title}
           fill
           className="object-cover"
@@ -24,7 +27,7 @@ export default function SearchItem({ product, onSelect }) {
         <p className="mt-1 text-sm text-gray-500">{product.brand}</p>
 
         <p className="mt-2 text-sm font-bold text-red-600">
-          {product.price.toLocaleString("fa-IR")} تومان
+          {formatPrice(product.price)}
         </p>
       </div>
     </Link>

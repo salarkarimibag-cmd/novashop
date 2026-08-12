@@ -37,9 +37,11 @@ export default function HydrationProvider({ children }) {
     hydrate();
   }, []);
 
+  // صفحه بلافاصله رندر می‌شود؛ فقط بخش‌هایی که به داده‌ی ذخیره‌شده
+  // وابسته‌اند با useHydration() منتظر می‌مانند
   return (
     <HydrationContext.Provider value={hydrated}>
-      {hydrated ? children : null}
+      {children}
     </HydrationContext.Provider>
   );
 }

@@ -9,6 +9,7 @@ import useCart from "@/hooks/useCart";
 import useCheckoutStore from "@/store/checkoutStore";
 import useOrderStore from "@/store/orderStore";
 import useAddressStore from "@/store/addressStore";
+import { getShippingCost } from "@/constants/shipping";
 
 export default function OrderSummary() {
   const router = useRouter();
@@ -28,14 +29,13 @@ export default function OrderSummary() {
       state.selectedAddress ||
       state.addresses.find((address) => address.isDefault),
   );
-  console.log("SELECTED ADDRESS:", selectedAddress);
+
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
 
-  // مطابق Backend
-  const shippingCost = subtotal >= 5000000 ? 0 : 150000;
+  const shippingCost = getShippingCost(subtotal);
 
   const discount = 0;
 

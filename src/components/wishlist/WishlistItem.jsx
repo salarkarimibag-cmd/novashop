@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import Button from "@/components/ui/Button";
 
 import { useCartStore, useWishlistStore } from "@/store";
+import { getProductImage } from "@/constants/images";
 
 export default function WishlistItem({ item }) {
   const addToCart = useCartStore((state) => state.addItem);
@@ -62,7 +63,7 @@ export default function WishlistItem({ item }) {
           "
         >
           <Image
-            src={item.image || item.images?.[0] || "/placeholder.png"}
+            src={getProductImage(item)}
             alt={item.title || "product"}
             fill
             sizes="(max-width:768px) 96px,128px"

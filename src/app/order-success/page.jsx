@@ -1,16 +1,53 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { CheckCircle } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
 import Skeleton from "@/components/ui/Skeleton";
+import { useHydration } from "@/components/providers/HydrationProvider";
 import useOrderStore from "@/store/orderStore";
 import formatPrice from "@/lib/formatPrice";
 
-export default function OrderSuccessPage() {
+function OrderSuccessSkeleton() {
+  return (
+    <main className="min-h-screen bg-gray-50 px-4 py-10">
+      <div className="mx-auto max-w-xl rounded-2xl bg-white p-8 shadow">
+        <div className="space-y-6">
+          <Skeleton className="mx-auto h-20 w-20 rounded-full" />
+
+          <Skeleton className="mx-auto h-8 w-64" />
+
+          <Skeleton className="mx-auto h-4 w-80" />
+
+          <div className="space-y-5 rounded-xl bg-gray-50 p-5">
+            <div className="flex justify-between">
+              <Skeleton className="h-4 w-28" />
+              <Skeleton className="h-4 w-36" />
+            </div>
+
+            <div className="flex justify-between">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-4 w-16" />
+            </div>
+
+            <div className="border-t pt-4">
+              <Skeleton className="h-6 w-44" />
+            </div>
+          </div>
+
+          <Skeleton className="mx-auto h-12 w-48 rounded-xl" />
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function OrderSuccessContent() {
   const searchParams = useSearchParams();
+
+  const hydrated = useHydration();
 
   const orderId = searchParams.get("id");
 
@@ -19,43 +56,14 @@ export default function OrderSuccessPage() {
   const fetchOrderById = useOrderStore((state) => state.fetchOrderById);
 
   useEffect(() => {
-    if (orderId) {
-      fetchOrderById(orderId).catch(console.error);
-    }
-  }, [orderId, fetchOrderById]);
+    // پیش از بازیابی توکن، درخواست بدون هدر Authorization می‌رفت و ۴۰۱ می‌گرفت
+    if (!hydrated || !orderId) return;
+
+    fetchOrderById(orderId).catch(console.error);
+  }, [hydrated, orderId, fetchOrderById]);
 
   if (!order) {
-    return (
-      <main className="min-h-screen bg-gray-50 px-4 py-10">
-        <div className="mx-auto max-w-xl rounded-2xl bg-white p-8 shadow">
-          <div className="space-y-6">
-            <Skeleton className="mx-auto h-20 w-20 rounded-full" />
-
-            <Skeleton className="mx-auto h-8 w-64" />
-
-            <Skeleton className="mx-auto h-4 w-80" />
-
-            <div className="space-y-5 rounded-xl bg-gray-50 p-5">
-              <div className="flex justify-between">
-                <Skeleton className="h-4 w-28" />
-                <Skeleton className="h-4 w-36" />
-              </div>
-
-              <div className="flex justify-between">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-4 w-16" />
-              </div>
-
-              <div className="border-t pt-4">
-                <Skeleton className="h-6 w-44" />
-              </div>
-            </div>
-
-            <Skeleton className="mx-auto h-12 w-48 rounded-xl" />
-          </div>
-        </div>
-      </main>
-    );
+    return <OrderSuccessSkeleton />;
   }
 
   return (
@@ -107,5 +115,14 @@ export default function OrderSuccessPage() {
         </Link>
       </div>
     </main>
+  );
+}
+
+export default function OrderSuccessPage() {
+  // useSearchParams از رندر روی سرور خارج می‌شود، پس باید مرز Suspense داشته باشد
+  return (
+    <Suspense fallback={<OrderSuccessSkeleton />}>
+      <OrderSuccessContent />
+    </Suspense>
   );
 }

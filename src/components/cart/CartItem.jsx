@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import useCartStore from "@/store/cartStore";
 import formatPrice from "@/lib/formatPrice";
+import { getProductImage } from "@/constants/images";
 
 export default function CartItem({ item }) {
   const increaseQuantity = useCartStore((state) => state.increaseQuantity);
@@ -71,7 +72,7 @@ export default function CartItem({ item }) {
         "
       >
         <Image
-          src={product.images?.[0] || "/images/placeholder.png"}
+          src={getProductImage(product)}
           alt={product.title}
           fill
           sizes="96px"

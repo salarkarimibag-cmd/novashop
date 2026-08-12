@@ -9,6 +9,8 @@ import Button from "@/components/ui/Button";
 
 import useCartStore from "@/store/cartStore";
 import useWishlistStore from "@/store/wishlistStore";
+import formatPrice from "@/lib/formatPrice";
+import { getProductImage } from "@/constants/images";
 
 export default function ProductCard({ product }) {
   const addItem = useCartStore((state) => state.addItem);
@@ -25,8 +27,7 @@ export default function ProductCard({ product }) {
 
   const productId = product._id || product.id;
 
-  const productImage =
-    product.images?.[0] || product.image || "/images/placeholder.png";
+  const productImage = getProductImage(product);
 
   // بررسی وجود محصول در Cart Backend
   const isInCart = cartItems.some(
@@ -192,7 +193,7 @@ export default function ProductCard({ product }) {
                 line-through
                 "
             >
-              {Number(product.price || 0).toLocaleString("fa-IR")} تومان
+              {formatPrice(product.price)}
             </p>
           )}
 
@@ -202,7 +203,7 @@ export default function ProductCard({ product }) {
             text-indigo-600
             "
           >
-            {Number(finalPrice || 0).toLocaleString("fa-IR")} تومان
+            {formatPrice(finalPrice)}
           </p>
         </div>
 

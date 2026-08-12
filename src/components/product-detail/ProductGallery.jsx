@@ -10,11 +10,12 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 
+import { PLACEHOLDER_IMAGE } from "@/constants/images";
+
 export default function ProductGallery({ images = [], title = "Product" }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
-  const galleryImages =
-    images.length > 0 ? images : ["/images/placeholder.png"];
+  const galleryImages = images.length > 0 ? images : [PLACEHOLDER_IMAGE];
 
   return (
     <div className="space-y-4">

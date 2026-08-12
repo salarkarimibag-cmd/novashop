@@ -6,9 +6,12 @@ import EmptyCart from "./EmptyCart";
 import CartList from "./CartList";
 import CartSummary from "./CartSummary";
 import CartSkeleton from "@/components/cart/CartSkeleton";
+import { useHydration } from "@/components/providers/HydrationProvider";
 import useCartStore from "@/store/cartStore";
 
 export default function CartPage() {
+  const hydrated = useHydration();
+
   const items = useCartStore((state) => state.items);
 
   const loading = useCartStore((state) => state.loading);
@@ -16,10 +19,13 @@ export default function CartPage() {
   const fetchCart = useCartStore((state) => state.fetchCart);
 
   useEffect(() => {
-    fetchCart();
-  }, [fetchCart]);
+    // پیش از بازیابی توکن، درخواست بدون هدر Authorization می‌رفت و ۴۰۱ می‌گرفت
+    if (!hydrated) return;
 
-  if (loading) {
+    fetchCart();
+  }, [hydrated, fetchCart]);
+
+  if (!hydrated || loading) {
     return (
       <main className="min-h-screen bg-gray-50 px-4 py-10">
         <div className="mx-auto max-w-6xl">

@@ -1,15 +1,13 @@
 "use client";
 
-import useCartStore from "@/store/cartStore";
+import useCartStore, { selectTotalQuantity } from "@/store/cartStore";
 import formatPrice from "@/lib/formatPrice";
 import Link from "next/link";
 
 export default function CartSummary() {
   const totalPrice = useCartStore((state) => state.totalPrice);
 
-  const items = useCartStore((state) => state.items);
-
-  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+  const totalItems = useCartStore(selectTotalQuantity);
 
   return (
     <div

@@ -1,10 +1,15 @@
 "use client";
+
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
 import AuthLayout from "@/components/auth/AuthLayout";
 import RegisterForm from "@/components/auth/RegisterForm";
 import authService from "@/services/authService";
+
 export default function RegisterPage() {
   const router = useRouter();
+
   const handleRegister = async (values) => {
     try {
       await authService.register({
@@ -13,13 +18,14 @@ export default function RegisterPage() {
         password: values.password,
       });
 
-      alert("ثبت‌نام با موفقیت انجام شد.");
+      toast.success("ثبت‌نام با موفقیت انجام شد");
 
       router.push("/login");
     } catch (error) {
-      alert(error.message || "ثبت‌نام ناموفق بود");
+      toast.error(error.message || "ثبت‌نام ناموفق بود");
     }
   };
+
   return (
     <AuthLayout
       title="ایجاد حساب کاربری"
@@ -27,8 +33,7 @@ export default function RegisterPage() {
       footerLink="/login"
       footerLinkText="ورود"
     >
-      {" "}
-      <RegisterForm onSubmit={handleRegister} />{" "}
+      <RegisterForm onSubmit={handleRegister} />
     </AuthLayout>
   );
 }

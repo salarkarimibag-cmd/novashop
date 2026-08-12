@@ -1,21 +1,32 @@
 "use client";
+
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
 import AuthLayout from "@/components/auth/AuthLayout";
 import LoginForm from "@/components/auth/LoginForm";
 import useAuthStore from "@/store/authStore";
 import authService from "@/services/authService";
+
 export default function LoginPage() {
   const router = useRouter();
+
   const login = useAuthStore((state) => state.login);
+
   const handleLogin = async (values) => {
     try {
-      const data = await authService.login(values);
-      login(data);
+      const session = await authService.login(values);
+
+      login(session);
+
+      toast.success("خوش آمدید");
+
       router.push("/");
     } catch (error) {
-      alert(error.message || "ورود ناموفق بود");
+      toast.error(error.message || "ورود ناموفق بود");
     }
   };
+
   return (
     <AuthLayout
       title="ورود به حساب کاربری"
@@ -23,8 +34,7 @@ export default function LoginPage() {
       footerLink="/register"
       footerLinkText="ثبت‌نام"
     >
-      {" "}
-      <LoginForm onSubmit={handleLogin} />{" "}
+      <LoginForm onSubmit={handleLogin} />
     </AuthLayout>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import AuthLayout from "@/components/auth/AuthLayout";
 import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
@@ -8,10 +9,8 @@ import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
 export default function ForgotPasswordPage() {
   const router = useRouter();
 
-  const handleSubmit = async (values) => {
-    console.log(values);
-
-    alert("کد بازیابی با موفقیت ارسال شد.");
+  const handleSubmit = async () => {
+    toast.success("کد بازیابی با موفقیت ارسال شد");
 
     router.push("/login");
   };
