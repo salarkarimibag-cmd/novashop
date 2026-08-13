@@ -1,13 +1,22 @@
 "use client";
 
 import { toast } from "sonner";
+import { AlertCircle, RotateCw } from "lucide-react";
 
 import Button from "@/components/ui/Button";
+import Spinner from "@/components/ui/Spinner/Spinner";
 import useAddressStore from "@/store/addressStore";
 import formatAddress from "@/lib/formatAddress";
 
 export default function AddressList() {
-  const { addresses, removeAddress, setDefaultAddress } = useAddressStore();
+  const {
+    addresses,
+    loading,
+    error,
+    fetchAddresses,
+    removeAddress,
+    setDefaultAddress,
+  } = useAddressStore();
 
   const handleDelete = async (id) => {
     try {
@@ -24,6 +33,37 @@ export default function AddressList() {
 
     toast.success("آدرس پیش‌فرض انتخاب شد");
   };
+
+  if (loading) {
+    return (
+      <div className="rounded-2xl border bg-white p-8 shadow-sm">
+        <Spinner />
+      </div>
+    );
+  }
+
+  // خطا پیش از حالت خالی: یک دریافت ناموفق هم فهرست را خالی می‌گذارد،
+  // و «آدرسی ثبت نشده» به کسی که آدرس دارد پیام غلطی است.
+  if (error) {
+    return (
+      <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center shadow-sm">
+        <AlertCircle size={28} className="mx-auto text-red-500" />
+
+        <p className="mt-3 font-semibold">آدرس‌های شما بارگذاری نشد</p>
+
+        <p className="mt-1 text-sm text-gray-600">{error}</p>
+
+        <Button
+          variant="outline"
+          className="mt-4"
+          onClick={() => fetchAddresses().catch(() => {})}
+        >
+          <RotateCw size={18} />
+          تلاش دوباره
+        </Button>
+      </div>
+    );
+  }
 
   if (addresses.length === 0) {
     return (
