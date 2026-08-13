@@ -15,7 +15,10 @@ export default function useCart() {
 
   const decreaseQuantity = useCartStore((state) => state.decreaseQuantity);
 
-  const clearCart = useCartStore((state) => state.clearCart);
+  // resetCart فقط state محلی را خالی می‌کند. برای پایان چک‌اوت همین لازم است،
+  // چون سرور خودش سبد را هنگام ثبت سفارش خالی کرده. clearCart که درخواست
+  // DELETE می‌فرستد، در استور باقی است برای دکمه‌ی «خالی کردن سبد».
+  const resetCart = useCartStore((state) => state.resetCart);
 
   const totalQuantity = useCartStore(selectTotalQuantity);
 
@@ -28,7 +31,7 @@ export default function useCart() {
     increaseQuantity,
     decreaseQuantity,
 
-    clearCart,
+    resetCart,
 
     totalQuantity,
     totalPrice,
