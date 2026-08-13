@@ -30,7 +30,7 @@ export default function HeroSlider() {
     >
       {heroData.map((slide) => (
         <SwiperSlide key={slide.id}>
-          <Link href={slide.link} className="block h-full">
+          <Link href={slide.link} className="relative block h-full w-full">
             <div className="relative h-96 w-full overflow-hidden rounded-2xl">
               <Image
                 src={slide.image}
