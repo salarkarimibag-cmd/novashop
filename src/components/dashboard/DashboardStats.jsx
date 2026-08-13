@@ -2,17 +2,21 @@
 
 import { ShoppingBag, Heart, MapPin, Wallet } from "lucide-react";
 
-import useOrderStore from "@/store/orderStore";
+import useOrders from "@/hooks/useOrders";
+import useAddresses from "@/hooks/useAddresses";
 import useWishlistStore from "@/store/wishlistStore";
-import useAddressStore from "@/store/addressStore";
 import formatPrice from "@/lib/formatPrice";
 
 import StatCard from "./StatCard";
 
 export default function DashboardStats() {
-  const orders = useOrderStore((state) => state.orders);
+  // این آمار باید از سرور بیاید. پیش از این مستقیم از استور خوانده می‌شد و
+  // چون داشبورد چیزی نمی‌گرفت، فقط باقی‌مانده‌ی localStorage را می‌شمرد.
+  const { orders } = useOrders();
+  const { addresses } = useAddresses();
+
+  // علاقه‌مندی‌ها عمداً محلی است و به بک‌اند همگام نمی‌شود
   const wishlist = useWishlistStore((state) => state.items);
-  const addresses = useAddressStore((state) => state.addresses);
 
   // فیلد سرور totalPrice است؛ order.total وجود ندارد و جمع را همیشه صفر می‌کرد
   const totalSpent = orders.reduce(

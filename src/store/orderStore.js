@@ -5,7 +5,7 @@ import orderService from "@/services/orderService";
 
 const useOrderStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       orders: [],
 
       currentOrder: null,
@@ -42,10 +42,17 @@ const useOrderStore = create(
           throw error;
         }
       },
+      // چند کامپوننت روی یک صفحه ممکن است سفارش‌ها را بخواهند؛ بدون این
+      // گارد هرکدام یک درخواست جدا می‌فرستد. همان الگوی cartStore.
+      isFetching: false,
+
       // دریافت سفارش‌های کاربر
       fetchOrders: async () => {
+        if (get().isFetching) return;
+
         set({
           loading: true,
+          isFetching: true,
         });
 
         try {
@@ -53,14 +60,12 @@ const useOrderStore = create(
 
           set({
             orders: (response.data || []).filter(Boolean),
-            loading: false,
           });
-        } catch (error) {
+        } finally {
           set({
             loading: false,
+            isFetching: false,
           });
-
-          throw error;
         }
       },
 
