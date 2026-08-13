@@ -95,7 +95,10 @@ export default function ProductCard({ product }) {
         overflow-hidden bg-gray-50
         "
       >
-        <Link href={`/products/${productId}`}>
+        <Link
+          href={`/products/${productId}`}
+          className="relative block h-full w-full"
+        >
           <Image
             src={productImage}
             alt={product.title || "product"}

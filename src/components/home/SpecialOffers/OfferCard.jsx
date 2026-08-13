@@ -41,7 +41,10 @@ export default function OfferCard({ product }) {
   return (
     <div className="group overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
       <div className="relative aspect-square overflow-hidden">
-        <Link href={`/products/${productId}`} className="block h-full">
+        <Link
+          href={`/products/${productId}`}
+          className="relative block h-full w-full"
+        >
           <Image
             src={image}
             alt={product.title}

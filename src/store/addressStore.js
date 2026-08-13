@@ -5,7 +5,7 @@ import addressService from "@/services/addressService";
 
 const useAddressStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       addresses: [],
 
       selectedAddress: null,
@@ -68,6 +68,36 @@ const useAddressStore = create(
             address._id === id ? response.data : address,
           ),
         }));
+      },
+
+      // بک‌اند مسیر جداگانه‌ای برای «پیش‌فرض کردن» ندارد؛ همان PUT آدرس را
+      // با isDefault: true می‌گیرد و خودش پیش‌فرضِ قبلی را برمی‌دارد.
+      // اسکیمای اعتبارسنجی آنجا همه‌ی فیلدها را الزامی می‌کند، پس باید کل
+      // آدرس فرستاده شود، نه فقط همین یک فیلد.
+      setDefaultAddress: async (id) => {
+        const address = get().addresses.find((item) => item._id === id);
+
+        if (!address) {
+          throw new Error("آدرس مورد نظر پیدا نشد");
+        }
+
+        const response = await addressService.update(id, {
+          ...address,
+          isDefault: true,
+        });
+
+        const updated = response.data;
+
+        set((state) => ({
+          // پیش‌فرضِ قبلی روی سرور برداشته شده، ولی پاسخ فقط همین آدرس را
+          // برمی‌گرداند؛ پس بقیه را اینجا هم باید پایین آورد.
+          addresses: state.addresses.map((item) =>
+            item._id === id ? updated : { ...item, isDefault: false },
+          ),
+          selectedAddress: updated,
+        }));
+
+        return updated;
       },
 
       removeAddress: async (id) => {
