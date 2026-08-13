@@ -12,7 +12,7 @@ import { getProductImage } from "@/constants/images";
 export default function OfferCard({ product }) {
   const addItem = useCartStore((state) => state.addItem);
 
-  const productId = String(product._id || product.id);
+  const productId = String(product._id);
 
   const image = getProductImage(product);
 

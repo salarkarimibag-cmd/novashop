@@ -22,7 +22,7 @@ export default function OrdersPage() {
         ) : (
           <div className="space-y-6">
             {orders.filter(Boolean).map((order) => (
-              <OrderCard key={order._id || order.id} order={order} />
+              <OrderCard key={order._id} order={order} />
             ))}
           </div>
         )}

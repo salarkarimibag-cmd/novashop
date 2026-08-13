@@ -16,7 +16,7 @@ export default function NewArrivalCard({ product }) {
 
   const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
 
-  const productId = String(product._id || product.id);
+  const productId = String(product._id);
 
   // خودِ نتیجه انتخاب می‌شود نه تابع، تا با تغییر لیست علاقه‌مندی‌ها
   // این کارت دوباره رندر شود
