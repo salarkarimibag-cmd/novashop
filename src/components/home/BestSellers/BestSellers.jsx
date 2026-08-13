@@ -80,6 +80,7 @@ export default function BestSellers() {
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
+          pauseOnMouseEnter: true,
         }}
         spaceBetween={20}
         slidesPerView={1}

@@ -73,6 +73,9 @@ export default function NewArrivals() {
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
+          // بدون این، اسلاید وسط کلیک جابه‌جا می‌شود و دکمه‌ی خرید
+          // هرگز رویداد click نمی‌گیرد
+          pauseOnMouseEnter: true,
         }}
         pagination={{
           clickable: true,

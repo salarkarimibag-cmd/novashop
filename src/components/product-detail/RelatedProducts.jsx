@@ -48,6 +48,7 @@ export default function RelatedProducts({ currentProductId, category }) {
         autoplay={{
           delay: 3500,
           disableOnInteraction: false,
+          pauseOnMouseEnter: true,
         }}
         spaceBetween={24}
         breakpoints={{

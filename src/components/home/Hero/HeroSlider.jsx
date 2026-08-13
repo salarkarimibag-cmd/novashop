@@ -21,6 +21,7 @@ export default function HeroSlider() {
       autoplay={{
         delay: 3000,
         disableOnInteraction: false,
+        pauseOnMouseEnter: true,
       }}
       pagination={{
         clickable: true,
