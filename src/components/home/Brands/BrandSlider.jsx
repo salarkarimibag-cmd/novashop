@@ -16,6 +16,7 @@ export default function BrandSlider({ brands }) {
           autoplay={{
             delay: 2500,
             disableOnInteraction: false,
+            pauseOnMouseEnter: true,
           }}
           spaceBetween={20}
           breakpoints={{
