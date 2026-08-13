@@ -1,4 +1,10 @@
+import Image from "next/image";
+
+import { getBrandLogo } from "@/constants/brands";
+
 export default function BrandCard({ brand }) {
+  const logo = getBrandLogo(brand);
+
   return (
     <div
       className="
@@ -13,7 +19,21 @@ export default function BrandCard({ brand }) {
       p-6
     "
     >
-      <span className="text-xl font-bold">{brand}</span>
+      {logo ? (
+        <Image
+          src={logo}
+          alt={brand}
+          width={48}
+          height={48}
+          // این لوگوها SVG هستند و بهینه‌ساز next/image بدون
+          // dangerouslyAllowSVG آن‌ها را رد می‌کند. unoptimized فایل را
+          // مستقیم سرو می‌کند، بدون باز کردن آن تنظیم برای تصاویر ریموت.
+          unoptimized
+          className="h-10 w-auto object-contain opacity-70 transition hover:opacity-100"
+        />
+      ) : (
+        <span className="text-xl font-bold">{brand}</span>
+      )}
     </div>
   );
 }
