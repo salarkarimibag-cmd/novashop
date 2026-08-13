@@ -25,7 +25,7 @@ export default function ProductCard({ product }) {
 
   const isInWishlist = useWishlistStore((state) => state.isInWishlist);
 
-  const productId = product._id || product.id;
+  const productId = String(product._id);
 
   const productImage = getProductImage(product);
 

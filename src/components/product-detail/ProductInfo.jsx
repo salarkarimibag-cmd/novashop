@@ -11,10 +11,7 @@ import useWishlistStore from "@/store/wishlistStore";
 export default function ProductInfo({ product }) {
   const router = useRouter();
 
-  const productId =
-    typeof product._id === "object"
-      ? product._id._id
-      : product._id || product.id;
+  const productId = String(product._id);
 
   const [selectedColor, setSelectedColor] = useState(
     product.colors?.[0] || null,

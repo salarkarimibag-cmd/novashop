@@ -20,7 +20,7 @@ export default function ProductList({ products = [] }) {
       "
     >
       {products.map((product) => (
-        <ProductCard key={product._id || product.id} product={product} />
+        <ProductCard key={product._id} product={product} />
       ))}
     </section>
   );

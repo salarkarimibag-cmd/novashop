@@ -9,7 +9,7 @@ import formatAddress from "@/lib/formatAddress";
 export default function OrderCard({ order }) {
   const status = order.status || "pending";
 
-  const orderId = order._id || order.id;
+  const orderId = order._id;
 
   return (
     <div className="rounded-2xl border bg-white p-6 shadow-sm">
@@ -127,7 +127,7 @@ export default function OrderCard({ order }) {
       >
         <span>مبلغ نهایی</span>
 
-        <span>{formatPrice(order.totalPrice || order.total || 0)}</span>
+        <span>{formatPrice(order.totalPrice)}</span>
       </div>
 
       {/* Address */}
