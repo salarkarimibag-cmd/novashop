@@ -28,10 +28,14 @@ export default function AddressList() {
     }
   };
 
-  const handleDefault = (id) => {
-    setDefaultAddress(id);
+  const handleDefault = async (id) => {
+    try {
+      await setDefaultAddress(id);
 
-    toast.success("آدرس پیش‌فرض انتخاب شد");
+      toast.success("آدرس پیش‌فرض انتخاب شد");
+    } catch (error) {
+      toast.error(error.message || "تغییر آدرس پیش‌فرض انجام نشد");
+    }
   };
 
   if (loading) {
