@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import useCartStore from "@/store/cartStore";
 import useWishlistStore from "@/store/wishlistStore";
 import formatPrice from "@/lib/formatPrice";
+import isNewProduct from "@/lib/isNewProduct";
 import { getProductImage } from "@/constants/images";
 
 export default function NewArrivalCard({ product }) {
@@ -44,7 +45,7 @@ export default function NewArrivalCard({ product }) {
   return (
     <div className="group rounded-2xl border bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
       <div className="relative overflow-hidden rounded-xl bg-gray-100">
-        {product.isNew && (
+        {isNewProduct(product) && (
           <span className="absolute right-3 top-3 z-10 rounded-full bg-black px-3 py-1 text-xs text-white">
             جدید
           </span>

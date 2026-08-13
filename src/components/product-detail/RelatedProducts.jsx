@@ -70,7 +70,7 @@ export default function RelatedProducts({ currentProductId, category }) {
         }}
       >
         {relatedProducts.map((product) => (
-          <SwiperSlide key={product.id}>
+          <SwiperSlide key={product._id}>
             <RelatedProductCard product={product} />
           </SwiperSlide>
         ))}

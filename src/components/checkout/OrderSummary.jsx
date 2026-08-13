@@ -16,7 +16,7 @@ export default function OrderSummary() {
 
   const [loading, setLoading] = useState(false);
 
-  const { items, totalQuantity, clearCart } = useCart();
+  const { items, totalQuantity, resetCart } = useCart();
 
   const paymentMethod = useCheckoutStore((state) => state.paymentMethod);
 
@@ -63,7 +63,11 @@ export default function OrderSummary() {
         paymentMethod: paymentMethod || "online",
       });
 
-      clearCart();
+      // سرور سبد را هنگام ساخت سفارش خالی کرده (claimForOrder)، پس اینجا
+      // فقط state محلی هم‌تراز می‌شود. درخواست DELETE اضافه‌ای که قبلاً
+      // اینجا بود نه await می‌شد و نه catch — یعنی خطایش از try/catch فرار
+      // می‌کرد و صفحه را می‌ترکاند.
+      resetCart();
 
       clearCheckout();
 

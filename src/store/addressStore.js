@@ -21,9 +21,16 @@ const useAddressStore = create(
       // و رابط کاربری به کاربر می‌گوید «آدرسی ندارید» در حالی که دارد.
       error: null,
 
+      // چند کامپوننت روی یک صفحه ممکن است آدرس‌ها را بخواهند؛ بدون این
+      // گارد هرکدام یک درخواست جدا می‌فرستد. همان الگوی cartStore.
+      isFetching: false,
+
       fetchAddresses: async () => {
+        if (get().isFetching) return;
+
         set({
           loading: true,
+          isFetching: true,
           error: null,
         });
 
@@ -38,15 +45,20 @@ const useAddressStore = create(
               addresses.find((address) => address.isDefault) ||
               addresses[0] ||
               null,
-            loading: false,
           });
         } catch (error) {
           set({
-            loading: false,
             error: error.message || "دریافت آدرس‌ها انجام نشد",
           });
 
           throw error;
+        } finally {
+          // در هر دو مسیر باید صفر شود، وگرنه یک شکست، گارد را قفل
+          // نگه می‌دارد و درخواست بعدی هرگز فرستاده نمی‌شود
+          set({
+            loading: false,
+            isFetching: false,
+          });
         }
       },
 

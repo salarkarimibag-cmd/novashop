@@ -9,7 +9,7 @@ export default function RelatedProductCard({ product }) {
 
   return (
     <Link
-      href={`/products/${product.id}`}
+      href={`/products/${product._id}`}
       className="group block overflow-hidden rounded-2xl border bg-white transition hover:-translate-y-1 hover:shadow-lg"
     >
       <div className="relative aspect-square overflow-hidden bg-gray-50">
