@@ -3,10 +3,15 @@
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
 
-import useOrderStore from "@/store/orderStore";
+import useOrders from "@/hooks/useOrders";
+import Spinner from "@/components/ui/Spinner/Spinner";
+import { ORDER_STATUS } from "@/constants/orderStatus";
+import formatPrice from "@/lib/formatPrice";
 
 export default function RecentOrders() {
-  const orders = useOrderStore((state) => state.orders);
+  // useOrders خودش سفارش‌ها را از سرور می‌گیرد. خواندن مستقیم از استور،
+  // فقط چیزی را نشان می‌داد که در localStorage مانده بود.
+  const { orders, loading } = useOrders();
 
   const recentOrders = orders.slice(0, 3);
 
@@ -23,7 +28,9 @@ export default function RecentOrders() {
         </Link>
       </div>
 
-      {recentOrders.length === 0 ? (
+      {loading ? (
+        <Spinner className="py-10" />
+      ) : recentOrders.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-10 text-center text-gray-500">
           <ShoppingBag size={40} />
 
@@ -33,19 +40,19 @@ export default function RecentOrders() {
         <div className="space-y-4">
           {recentOrders.map((order) => (
             <Link
-              key={order.id}
-              href={`/account/orders/${order.id}`}
+              key={order._id}
+              href={`/account/orders/${order._id}`}
               className="flex items-center justify-between rounded-xl border p-4 transition hover:bg-gray-50"
             >
               <div>
-                <p className="font-semibold">سفارش #{order.id}</p>
+                <p className="font-semibold">سفارش #{order._id}</p>
 
-                <p className="text-sm text-gray-500">{order.status}</p>
+                <p className="text-sm text-gray-500">
+                  {ORDER_STATUS[order.status]?.title || "در انتظار بررسی"}
+                </p>
               </div>
 
-              <span className="font-bold">
-                {order.total?.toLocaleString()} تومان
-              </span>
+              <span className="font-bold">{formatPrice(order.totalPrice)}</span>
             </Link>
           ))}
         </div>
