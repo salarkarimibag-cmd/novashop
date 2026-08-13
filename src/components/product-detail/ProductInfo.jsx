@@ -113,8 +113,6 @@ export default function ProductInfo({ product }) {
           <Star size={18} fill="currentColor" />
 
           <span>{product.rating || 0}</span>
-
-          <span className="text-gray-500">({product.reviews || 0} نظر)</span>
         </div>
 
         {product.brand && (

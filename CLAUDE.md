@@ -148,6 +148,8 @@ Formik + Yup. Schemas live in `src/validations/` (`loginSchema`, `registerSchema
 
 ## Known rough edges
 
+- There is no review system on the backend — no model, no route, no mention of one. A product
+  carries a `rating` number and nothing else, so don't render a review count.
 - An address is `{fullName, phone, province, city, street, plaque, unit, postalCode}`. There is
   no `address` field on it — use `formatAddress()` in `src/lib/formatAddress.js` to render the
   street line. Orders reference it as `order.address` (populated), never `order.shippingAddress`.
