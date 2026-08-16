@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
-
 import useProductFilters from "@/hooks/useProductFilters";
-import { MAX_PRICE } from "@/lib/productFilters";
+import { MIN_PRICE, MAX_PRICE } from "@/lib/productFilters";
+import formatPrice from "@/lib/formatPrice";
+import PriceRangeSlider from "./PriceRangeSlider";
 
 function toggleValue(list, value) {
   return list.includes(value)
@@ -14,28 +14,14 @@ function toggleValue(list, value) {
 export default function ProductFilter({ brands = [], categories = [] }) {
   const { filters, applyFilters } = useProductFilters();
 
-  // اسلایدر باید هنگام کشیدن روان حرکت کند، پس مقدارش محلی نگه داشته می‌شود
-  // و فقط موقع رها کردن به URL می‌رود
-  const [maxPrice, setMaxPrice] = useState(filters.maxPrice);
-
-  const [urlPrice, setUrlPrice] = useState(filters.maxPrice);
-
-  // اگر URL از بیرون عوض شود (دکمه‌ی back یا «حذف همه»)، اسلایدر باید همراهش بیاید.
-  // تنظیم state هنگام رندر — الگوی رسمی ری‌اکت برای همگام‌سازی با props
-  if (filters.maxPrice !== urlPrice) {
-    setUrlPrice(filters.maxPrice);
-
-    setMaxPrice(filters.maxPrice);
-  }
-
-  const commitPrice = () => {
-    if (maxPrice === filters.maxPrice) return;
-
-    // در بیشترین مقدار، پارامتر حذف می‌شود تا URL تمیز بماند.
-    // push (پیش‌فرض) نه replace: commit فقط یک‌بار در لحظه‌ی رهاکردن اجرا
-    // می‌شود، پس نیازی به replace برای جلوگیری از شلوغی تاریخچه نیست؛ replace
-    // رکورد فعلی را جایگزین می‌کرد و فیلتر قبلی (مثلاً برند) را از تاریخچه پاک می‌کرد.
-    applyFilters({ maxPrice: maxPrice === MAX_PRICE ? null : maxPrice });
+  // commit فقط یک‌بار در لحظه‌ی رهاکردن اجرا می‌شود (نه در هر تیکِ کشیدن)،
+  // پس push پیش‌فرض کافی است؛ replace رکورد فعلی تاریخچه را جایگزین می‌کرد
+  // و فیلتر قبلی (مثلاً برند) را از تاریخچه پاک می‌کرد.
+  const commitPrice = ({ min, max }) => {
+    applyFilters({
+      minPrice: min === MIN_PRICE ? null : min,
+      maxPrice: max === MAX_PRICE ? null : max,
+    });
   };
 
   const clearFilters = () =>
@@ -134,19 +120,12 @@ export default function ProductFilter({ brands = [], categories = [] }) {
       <div>
         <h3 className="mb-4 font-semibold">محدوده قیمت</h3>
 
-        <input
-          type="range"
-          min="0"
+        <PriceRangeSlider
+          min={MIN_PRICE}
           max={MAX_PRICE}
-          step="500000"
-          value={maxPrice}
-          onChange={(e) => setMaxPrice(Number(e.target.value))}
-          onPointerUp={commitPrice}
-          onKeyUp={commitPrice}
-          className="
-          w-full
-          accent-black
-          "
+          step={500000}
+          value={{ min: filters.minPrice, max: filters.maxPrice }}
+          onCommit={commitPrice}
         />
 
         <div
@@ -158,15 +137,9 @@ export default function ProductFilter({ brands = [], categories = [] }) {
           text-gray-600
           "
         >
-          <span>
-            حداقل: {filters.minPrice.toLocaleString("fa-IR")}
-            تومان
-          </span>
+          <span>حداقل: {formatPrice(filters.minPrice)}</span>
 
-          <span>
-            حداکثر: {maxPrice.toLocaleString("fa-IR")}
-            تومان
-          </span>
+          <span>حداکثر: {formatPrice(filters.maxPrice)}</span>
         </div>
       </div>
     </aside>
