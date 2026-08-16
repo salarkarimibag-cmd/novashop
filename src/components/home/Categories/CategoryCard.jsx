@@ -1,6 +1,9 @@
+import Link from "next/link";
+
 export default function CategoryCard({ category }) {
   return (
-    <div
+    <Link
+      href={`/products?category=${encodeURIComponent(category)}`}
       className="
       flex cursor-pointer
       items-center justify-center
@@ -15,6 +18,6 @@ export default function CategoryCard({ category }) {
       "
     >
       <h3 className="font-semibold">{category}</h3>
-    </div>
+    </Link>
   );
 }
