@@ -20,7 +20,8 @@ export default function RelatedProducts({ currentProductId, category }) {
         const data = await getProducts();
 
         const products = data.products.filter(
-          (item) => item.id !== currentProductId && item.category === category,
+          (item) =>
+            item._id !== currentProductId && item.category === category,
         );
 
         setRelatedProducts(products);
