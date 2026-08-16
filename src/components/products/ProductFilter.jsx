@@ -31,11 +31,11 @@ export default function ProductFilter({ brands = [], categories = [] }) {
   const commitPrice = () => {
     if (maxPrice === filters.maxPrice) return;
 
-    // در بیشترین مقدار، پارامتر حذف می‌شود تا URL تمیز بماند
-    applyFilters(
-      { maxPrice: maxPrice === MAX_PRICE ? null : maxPrice },
-      { replace: true },
-    );
+    // در بیشترین مقدار، پارامتر حذف می‌شود تا URL تمیز بماند.
+    // push (پیش‌فرض) نه replace: commit فقط یک‌بار در لحظه‌ی رهاکردن اجرا
+    // می‌شود، پس نیازی به replace برای جلوگیری از شلوغی تاریخچه نیست؛ replace
+    // رکورد فعلی را جایگزین می‌کرد و فیلتر قبلی (مثلاً برند) را از تاریخچه پاک می‌کرد.
+    applyFilters({ maxPrice: maxPrice === MAX_PRICE ? null : maxPrice });
   };
 
   const clearFilters = () =>
