@@ -15,15 +15,13 @@ export default function TopHeader() {
     <div className="hidden md:block border-b border-gray-200 bg-gray-50">
       <Container className="flex h-12 items-center justify-between">
         <div className="flex items-center gap-6 text-sm text-gray-600">
-          <button className="transition hover:text-red-600">
-            سوالات متداول
-          </button>
+          <span className="cursor-default text-gray-400">سوالات متداول</span>
 
-          <button className="transition hover:text-red-600">
+          <Link href="/account/orders" className="transition hover:text-red-600">
             پیگیری سفارش
-          </button>
+          </Link>
 
-          <button className="transition hover:text-red-600">پشتیبانی</button>
+          <span className="cursor-default text-gray-400">پشتیبانی</span>
         </div>
 
         <div className="flex items-center gap-4 text-sm text-gray-600">

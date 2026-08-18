@@ -12,9 +12,15 @@ import CartButton from "@/components/cart/CartButton";
 import WishlistButton from "@/components/wishlist/WishlistButton";
 import SearchDropdown from "./SearchDropdown";
 import useSearchProducts from "@/hooks/useSearchProducts";
+import { useHydration } from "@/components/providers/HydrationProvider";
+import useAuthStore from "@/store/authStore";
 
 export default function SearchBox() {
   const router = useRouter();
+
+  const hydrated = useHydration();
+
+  const user = useAuthStore((state) => state.user);
 
   const searchRef = useRef(null);
 
@@ -117,19 +123,21 @@ export default function SearchBox() {
         </div>
 
         <div className="flex items-center gap-4">
-          <Link
-            href="/login"
-            className="
-            rounded-lg
-            border
-            border-gray-300
-            p-2
-            transition
-            hover:bg-gray-100
-            "
-          >
-            <User size={20} />
-          </Link>
+          {hydrated && (
+            <Link
+              href={user ? "/account" : "/login"}
+              className="
+              rounded-lg
+              border
+              border-gray-300
+              p-2
+              transition
+              hover:bg-gray-100
+              "
+            >
+              <User size={20} />
+            </Link>
+          )}
 
           <WishlistButton />
 
