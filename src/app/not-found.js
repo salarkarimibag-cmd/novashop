@@ -27,6 +27,7 @@ export default function NotFound() {
               rounded-xl bg-red-500 px-5 py-3
               font-medium text-white transition
               hover:bg-red-600
+              dark:bg-red-600 dark:hover:bg-red-700
             "
           >
             <Search size={18} />

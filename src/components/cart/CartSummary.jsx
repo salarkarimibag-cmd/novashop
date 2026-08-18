@@ -71,6 +71,8 @@ export default function CartSummary() {
           text-white
           transition
           hover:bg-red-700
+          dark:bg-red-700
+          dark:hover:bg-red-800
         "
       >
         ادامه خرید

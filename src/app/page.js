@@ -1,4 +1,5 @@
 import Hero from "@/components/home/Hero";
+import PromoBanner from "@/components/home/PromoBanner";
 import Categories from "@/components/home/Categories";
 import { Products } from "@/components/home/Products";
 import SpecialOffers from "@/components/home/SpecialOffers";
@@ -10,6 +11,8 @@ import BestSellers from "@/components/home/BestSellers";
 export default function Home() {
   return (
     <>
+      <PromoBanner />
+
       <Hero />
 
       <Categories />

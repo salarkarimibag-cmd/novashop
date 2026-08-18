@@ -79,7 +79,7 @@ export default function OfferCard({ product }) {
         <button
           type="button"
           onClick={handleAddToCart}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 py-3 text-white transition hover:bg-red-700"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 py-3 text-white transition hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800"
         >
           <FaShoppingCart />
           خرید

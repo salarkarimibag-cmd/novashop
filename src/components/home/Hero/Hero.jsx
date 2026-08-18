@@ -6,12 +6,21 @@ export default function Hero() {
   return (
     <section className="mt-4">
       <Container>
-        <div className="grid gap-4 lg:grid-cols-4">
-          <div className="lg:col-span-3">
-            <HeroSlider />
-          </div>
+        <div
+          className="
+          rounded-3xl border border-gray-200 bg-white p-3
+          shadow-sm
+          sm:p-4
+          dark:border-gray-800 dark:bg-gray-900
+          "
+        >
+          <div className="grid gap-4 lg:grid-cols-4">
+            <div className="lg:col-span-3">
+              <HeroSlider />
+            </div>
 
-          <HeroBanner />
+            <HeroBanner />
+          </div>
         </div>
       </Container>
     </section>

@@ -221,7 +221,11 @@ export default function ProductInfo({ product }) {
             flex flex-1 items-center justify-center
             gap-2 rounded-xl px-6 py-4 text-white
 
-            ${isInCart ? "bg-emerald-600" : "bg-black dark:bg-white dark:text-black"}
+            ${
+              isInCart
+                ? "bg-emerald-600 dark:bg-emerald-700"
+                : "bg-black dark:bg-white dark:text-black"
+            }
 
           `}
         >
