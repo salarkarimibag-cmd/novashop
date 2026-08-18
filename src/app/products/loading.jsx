@@ -11,6 +11,7 @@ export default function Loading() {
           animate-pulse
           rounded-xl
           bg-gray-200
+          dark:bg-gray-800
           "
         />
       </div>
@@ -29,8 +30,10 @@ export default function Loading() {
           hidden
           rounded-2xl
           border
+          border-gray-200
           p-5
           lg:block
+          dark:border-gray-800
           "
         >
           <div className="space-y-5">

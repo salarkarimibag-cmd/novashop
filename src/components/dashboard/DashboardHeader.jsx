@@ -12,7 +12,7 @@ export default function DashboardHeader() {
   }).format(new Date());
 
   return (
-    <section className="overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-8 text-white shadow-lg">
+    <section className="overflow-hidden rounded-3xl bg-linear-to-r from-slate-900 via-slate-800 to-slate-900 p-8 text-white shadow-lg">
       <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-center">
         <div>
           <p className="mb-2 text-sm text-slate-300">پنل کاربری NovaShop</p>

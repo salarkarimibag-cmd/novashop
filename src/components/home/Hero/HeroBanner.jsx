@@ -2,13 +2,13 @@ import Link from "next/link";
 
 export default function HeroBanner() {
   return (
-    <div className="hidden lg:flex flex-col gap-4">
-      <div className="relative flex h-[184px] flex-col justify-center overflow-hidden rounded-2xl bg-gray-200 p-6">
-        <span className="text-sm font-medium text-red-600">پیشنهاد ویژه</span>
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:flex lg:flex-col">
+      <div className="relative flex h-40 flex-col justify-center overflow-hidden rounded-2xl bg-linear-to-br from-red-50 to-red-100 p-6 sm:h-44 lg:h-46 dark:from-red-950/40 dark:to-red-900/20">
+        <span className="text-sm font-medium text-red-600 dark:text-red-500">پیشنهاد ویژه</span>
 
-        <h3 className="mt-2 text-xl font-bold text-gray-900">تا ۴۰٪ تخفیف</h3>
+        <h3 className="mt-2 text-xl font-bold text-gray-900 dark:text-gray-100">تا ۴۰٪ تخفیف</h3>
 
-        <p className="mt-1 text-sm text-gray-600">روی محصولات منتخب فروشگاه</p>
+        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">روی محصولات منتخب فروشگاه</p>
 
         <Link
           href="/products"
@@ -18,14 +18,14 @@ export default function HeroBanner() {
         </Link>
       </div>
 
-      <div className="relative flex h-[184px] flex-col justify-center overflow-hidden rounded-2xl bg-gray-200 p-6">
-        <span className="text-sm font-medium text-red-600">ارسال رایگان</span>
+      <div className="relative flex h-40 flex-col justify-center overflow-hidden rounded-2xl bg-linear-to-br from-red-50 to-red-100 p-6 sm:h-44 lg:h-46 dark:from-red-950/40 dark:to-red-900/20">
+        <span className="text-sm font-medium text-red-600 dark:text-red-500">ارسال رایگان</span>
 
-        <h3 className="mt-2 text-xl font-bold text-gray-900">
+        <h3 className="mt-2 text-xl font-bold text-gray-900 dark:text-gray-100">
           برای خرید بالای ۵۰۰ هزار تومان
         </h3>
 
-        <p className="mt-1 text-sm text-gray-600">به سراسر کشور</p>
+        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">به سراسر کشور</p>
 
         <Link
           href="/products"

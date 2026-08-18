@@ -27,7 +27,7 @@ export default function ProductGallery({ images = [], title = "Product" }) {
           swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
         }}
         spaceBetween={10}
-        className="overflow-hidden rounded-2xl border bg-white"
+        className="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900"
       >
         {galleryImages.map((image, index) => (
           <SwiperSlide key={`${image}-${index}`}>
@@ -60,7 +60,7 @@ export default function ProductGallery({ images = [], title = "Product" }) {
       >
         {galleryImages.map((image, index) => (
           <SwiperSlide key={`thumb-${image}-${index}`}>
-            <div className="relative aspect-square cursor-pointer overflow-hidden rounded-xl border bg-white hover:border-indigo-500">
+            <div className="relative aspect-square cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white hover:border-indigo-500 dark:border-gray-800 dark:bg-gray-900 dark:hover:border-indigo-500">
               <Image
                 src={image}
                 alt={`${title}-${index + 1}`}

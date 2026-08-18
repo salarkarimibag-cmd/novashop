@@ -55,17 +55,17 @@ export default function BestSellers() {
         <div>
           <h2 className="text-2xl font-bold">پرفروش‌ترین محصولات</h2>
 
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
             محبوب‌ترین محصولات فروشگاه
           </p>
         </div>
 
         <div className="flex gap-2">
-          <button className="best-prev flex h-10 w-10 items-center justify-center rounded-full border">
+          <button className="best-prev flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
             <ChevronRight size={20} />
           </button>
 
-          <button className="best-next flex h-10 w-10 items-center justify-center rounded-full border">
+          <button className="best-next flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
             <ChevronLeft size={20} />
           </button>
         </div>

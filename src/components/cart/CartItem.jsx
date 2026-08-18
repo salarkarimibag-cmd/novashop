@@ -58,7 +58,9 @@ export default function CartItem({ item }) {
         gap-4
         rounded-xl
         border
+        border-gray-200
         p-4
+        dark:border-gray-800
       "
     >
       <div
@@ -106,10 +108,13 @@ export default function CartItem({ item }) {
             className="
               rounded-lg
               border
+              border-gray-200
               p-2
               transition
               hover:bg-gray-100
               disabled:opacity-40
+              dark:border-gray-700
+              dark:hover:bg-gray-800
             "
           >
             <Minus size={16} />
@@ -122,9 +127,12 @@ export default function CartItem({ item }) {
             className="
               rounded-lg
               border
+              border-gray-200
               p-2
               transition
               hover:bg-gray-100
+              dark:border-gray-700
+              dark:hover:bg-gray-800
             "
           >
             <Plus size={16} />
@@ -140,6 +148,8 @@ export default function CartItem({ item }) {
           text-red-500
           transition
           hover:bg-red-50
+          dark:text-red-400
+          dark:hover:bg-red-950/40
         "
         aria-label="حذف محصول"
       >

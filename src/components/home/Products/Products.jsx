@@ -28,7 +28,7 @@ async function ProductsContent() {
 
     // خطای این بخش نباید کل صفحه‌ی اصلی را از کار بیندازد
     return (
-      <p className="py-10 text-center text-gray-500">
+      <p className="py-10 text-center text-gray-500 dark:text-gray-400">
         دریافت محصولات با خطا مواجه شد.
       </p>
     );

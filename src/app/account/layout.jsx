@@ -6,7 +6,7 @@ import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
 export default function AccountLayout({ children }) {
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gray-50 px-4 py-10">
+      <div className="min-h-screen bg-gray-50 px-4 py-10 dark:bg-gray-950">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-4">
           <aside>
             <DashboardSidebar />

@@ -8,7 +8,7 @@ export default function Spinner({ size = "md", className = "" }) {
   return (
     <div className={`flex items-center justify-center ${className}`}>
       <div
-        className={`animate-spin rounded-full border-gray-200 border-t-gray-800 ${sizes[size]}`}
+        className={`animate-spin rounded-full border-gray-200 border-t-gray-800 dark:border-gray-700 dark:border-t-gray-300 ${sizes[size]}`}
       />
     </div>
   );

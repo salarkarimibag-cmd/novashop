@@ -29,14 +29,14 @@ export default function ShippingInfo() {
     <div>
       <h2 className="mb-6 text-xl font-bold">روش ارسال</h2>
 
-      <div className="flex items-center justify-between rounded-xl border p-4">
+      <div className="flex items-center justify-between rounded-xl border border-gray-200 p-4 dark:border-gray-800">
         <div className="flex items-center gap-4">
           <Truck size={22} />
 
           <div>
             <p className="font-semibold">ارسال عادی</p>
 
-            <p className="text-sm text-gray-500">۳ تا ۵ روز کاری</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">۳ تا ۵ روز کاری</p>
           </div>
         </div>
 
@@ -45,7 +45,7 @@ export default function ShippingInfo() {
         </span>
       </div>
 
-      <p className="mt-3 text-sm text-gray-500">
+      <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
         {shippingCost === 0
           ? `ارسال این سفارش رایگان است، چون مبلغ خرید از ${formatPrice(
               FREE_SHIPPING_THRESHOLD,

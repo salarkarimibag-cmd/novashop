@@ -15,6 +15,9 @@ export default function CategoryCard({ category }) {
       hover:-translate-y-1
       hover:border-indigo-600
       hover:shadow-lg
+      dark:border-gray-800
+      dark:bg-gray-900
+      dark:hover:border-indigo-500
       "
     >
       <h3 className="font-semibold">{category}</h3>

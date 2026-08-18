@@ -27,7 +27,7 @@ export default function CartPage() {
 
   if (!hydrated || loading) {
     return (
-      <main className="min-h-screen bg-gray-50 px-4 py-10">
+      <main className="min-h-screen bg-gray-50 px-4 py-10 dark:bg-gray-950">
         <div className="mx-auto max-w-6xl">
           <CartSkeleton count={4} />
         </div>
@@ -41,13 +41,13 @@ export default function CartPage() {
         <h1 className="mb-8 text-3xl font-bold">سبد خرید</h1>
 
         {items.length === 0 ? (
-          <div className="rounded-2xl bg-white p-8 shadow-sm">
+          <div className="rounded-2xl bg-white p-8 shadow-sm dark:bg-gray-900">
             <EmptyCart />
           </div>
         ) : (
           <div className="grid gap-6 lg:grid-cols-3">
-            <section className="overflow-hidden rounded-2xl bg-white shadow-sm lg:col-span-2">
-              <div className="border-b p-5">
+            <section className="overflow-hidden rounded-2xl bg-white shadow-sm lg:col-span-2 dark:bg-gray-900">
+              <div className="border-b border-gray-200 p-5 dark:border-gray-800">
                 <h2 className="text-xl font-bold">محصولات انتخاب شده</h2>
               </div>
 

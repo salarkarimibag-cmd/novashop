@@ -12,8 +12,11 @@ export default function CartSkeleton({ count = 3 }) {
             gap-4
             rounded-2xl
             border
+            border-gray-200
             bg-white
             p-4
+            dark:border-gray-800
+            dark:bg-gray-900
           "
         >
           {/* Image */}
@@ -24,6 +27,7 @@ export default function CartSkeleton({ count = 3 }) {
               animate-pulse
               rounded-xl
               bg-gray-200
+              dark:bg-gray-700
             "
           />
 

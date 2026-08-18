@@ -12,8 +12,8 @@ import formatPrice from "@/lib/formatPrice";
 
 function OrderSuccessSkeleton() {
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-10">
-      <div className="mx-auto max-w-xl rounded-2xl bg-white p-8 shadow">
+    <main className="min-h-screen bg-gray-50 px-4 py-10 dark:bg-gray-950">
+      <div className="mx-auto max-w-xl rounded-2xl bg-white p-8 shadow dark:bg-gray-900">
         <div className="space-y-6">
           <Skeleton className="mx-auto h-20 w-20 rounded-full" />
 
@@ -21,7 +21,7 @@ function OrderSuccessSkeleton() {
 
           <Skeleton className="mx-auto h-4 w-80" />
 
-          <div className="space-y-5 rounded-xl bg-gray-50 p-5">
+          <div className="space-y-5 rounded-xl bg-gray-50 p-5 dark:bg-gray-800">
             <div className="flex justify-between">
               <Skeleton className="h-4 w-28" />
               <Skeleton className="h-4 w-36" />
@@ -32,7 +32,7 @@ function OrderSuccessSkeleton() {
               <Skeleton className="h-4 w-16" />
             </div>
 
-            <div className="border-t pt-4">
+            <div className="border-t border-gray-200 pt-4 dark:border-gray-700">
               <Skeleton className="h-6 w-44" />
             </div>
           </div>
@@ -67,15 +67,15 @@ function OrderSuccessContent() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-10">
-      <div className="mx-auto max-w-xl rounded-2xl bg-white p-8 text-center shadow">
+    <main className="min-h-screen bg-gray-50 px-4 py-10 dark:bg-gray-950">
+      <div className="mx-auto max-w-xl rounded-2xl bg-white p-8 text-center shadow dark:bg-gray-900">
         <CheckCircle className="mx-auto h-20 w-20 text-green-500" />
 
         <h1 className="mt-6 text-3xl font-bold">سفارش شما ثبت شد 🎉</h1>
 
-        <p className="mt-3 text-gray-500">از خرید شما در NovaShop متشکریم</p>
+        <p className="mt-3 text-gray-500 dark:text-gray-400">از خرید شما در NovaShop متشکریم</p>
 
-        <div className="mt-8 space-y-4 rounded-xl bg-gray-50 p-5 text-right">
+        <div className="mt-8 space-y-4 rounded-xl bg-gray-50 p-5 text-right dark:bg-gray-800">
           <div className="flex justify-between">
             <span>شماره سفارش</span>
 
@@ -90,7 +90,7 @@ function OrderSuccessContent() {
             </span>
           </div>
 
-          <div className="flex justify-between border-t pt-4 font-bold">
+          <div className="flex justify-between border-t border-gray-200 pt-4 font-bold dark:border-gray-700">
             <span>مبلغ پرداختی</span>
 
             <span>{formatPrice(order.totalPrice || 0)}</span>
@@ -109,6 +109,9 @@ function OrderSuccessContent() {
           text-white
           transition
           hover:bg-gray-800
+          dark:bg-white
+          dark:text-black
+          dark:hover:bg-gray-200
           "
         >
           مشاهده جزئیات سفارش

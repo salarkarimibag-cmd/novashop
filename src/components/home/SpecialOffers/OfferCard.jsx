@@ -39,7 +39,7 @@ export default function OfferCard({ product }) {
   };
 
   return (
-    <div className="group overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <div className="group overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900">
       <div className="relative aspect-square overflow-hidden">
         <Link
           href={`/products/${productId}`}
@@ -67,7 +67,7 @@ export default function OfferCard({ product }) {
         </Link>
 
         <div>
-          <p className="text-sm text-gray-400 line-through">
+          <p className="text-sm text-gray-400 line-through dark:text-gray-500">
             {formatPrice(product.price)}
           </p>
 

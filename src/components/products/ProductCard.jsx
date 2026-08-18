@@ -31,8 +31,8 @@ export default function ProductCard({ product }) {
   };
 
   return (
-    <div className="group rounded-2xl border bg-white p-4 transition hover:shadow-lg">
-      <div className="relative aspect-square overflow-hidden rounded-xl bg-gray-100">
+    <div className="group rounded-2xl border border-gray-200 bg-white p-4 transition hover:shadow-lg dark:border-gray-800 dark:bg-gray-900">
+      <div className="relative aspect-square overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800">
         <Image
           src={image}
           alt={product.title}
@@ -50,12 +50,15 @@ export default function ProductCard({ product }) {
             bg-white
             p-2
             shadow
+            dark:bg-gray-900
           "
         >
           <Heart
             size={20}
             className={
-              isInWishlist ? "fill-red-500 text-red-500" : "text-gray-500"
+              isInWishlist
+                ? "fill-red-500 text-red-500"
+                : "text-gray-500 dark:text-gray-400"
             }
           />
         </button>
@@ -68,14 +71,14 @@ export default function ProductCard({ product }) {
       <div className="mt-2 flex items-center gap-1 text-yellow-500">
         <Star size={16} fill="currentColor" />
 
-        <span className="text-sm text-gray-600">{product.rating || 0}</span>
+        <span className="text-sm text-gray-600 dark:text-gray-300">{product.rating || 0}</span>
       </div>
 
       <div className="mt-3 flex items-center justify-between">
         <div>
           {product.discountPrice ? (
             <>
-              <p className="text-sm text-gray-400 line-through">
+              <p className="text-sm text-gray-400 line-through dark:text-gray-500">
                 {formatPrice(product.price)}
               </p>
 

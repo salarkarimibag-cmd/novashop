@@ -53,8 +53,8 @@ export default function CheckoutPage() {
 
   if (!items.length) {
     return (
-      <main className="min-h-screen bg-gray-50 px-4 py-10">
-        <div className="mx-auto max-w-3xl rounded-2xl bg-white shadow-sm">
+      <main className="min-h-screen bg-gray-50 px-4 py-10 dark:bg-gray-950">
+        <div className="mx-auto max-w-3xl rounded-2xl bg-white shadow-sm dark:bg-gray-900">
           <EmptyCart />
         </div>
       </main>
@@ -68,19 +68,19 @@ export default function CheckoutPage() {
 
         <div className="grid gap-8 lg:grid-cols-3">
           <section className="space-y-6 lg:col-span-2">
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
+            <div className="rounded-2xl bg-white p-6 shadow-sm dark:bg-gray-900">
               <AddressPicker />
             </div>
 
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
+            <div className="rounded-2xl bg-white p-6 shadow-sm dark:bg-gray-900">
               <ShippingInfo />
             </div>
 
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
+            <div className="rounded-2xl bg-white p-6 shadow-sm dark:bg-gray-900">
               <OrderItems items={items} />
             </div>
 
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
+            <div className="rounded-2xl bg-white p-6 shadow-sm dark:bg-gray-900">
               <PaymentMethod />
             </div>
           </section>

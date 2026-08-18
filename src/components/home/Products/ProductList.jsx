@@ -5,7 +5,7 @@ import ProductCard from "./ProductCard";
 export default function ProductList({ products = [] }) {
   if (!products.length) {
     return (
-      <div className="py-10 text-center text-gray-500">محصولی پیدا نشد</div>
+      <div className="py-10 text-center text-gray-500 dark:text-gray-400">محصولی پیدا نشد</div>
     );
   }
 

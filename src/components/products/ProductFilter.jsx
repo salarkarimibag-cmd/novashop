@@ -39,9 +39,12 @@ export default function ProductFilter({ brands = [], categories = [] }) {
       className="
       rounded-2xl
       border
+      border-gray-200
       bg-white
       p-5
       space-y-8
+      dark:border-gray-800
+      dark:bg-gray-900
       "
     >
       {/* Header */}
@@ -55,6 +58,8 @@ export default function ProductFilter({ brands = [], categories = [] }) {
           text-sm
           text-red-500
           hover:text-red-700
+          dark:text-red-400
+          dark:hover:text-red-300
           "
         >
           حذف همه
@@ -135,6 +140,7 @@ export default function ProductFilter({ brands = [], categories = [] }) {
           justify-between
           text-sm
           text-gray-600
+          dark:text-gray-400
           "
         >
           <span>حداقل: {formatPrice(filters.minPrice)}</span>

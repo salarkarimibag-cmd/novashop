@@ -14,8 +14,11 @@ export default function CartSummary() {
       className="
         rounded-xl
         border
+        border-gray-200
         bg-white
         p-5
+        dark:border-gray-800
+        dark:bg-gray-900
       "
     >
       <h2
@@ -34,6 +37,7 @@ export default function CartSummary() {
           flex
           justify-between
           text-gray-600
+          dark:text-gray-400
         "
       >
         <span>تعداد کالا</span>

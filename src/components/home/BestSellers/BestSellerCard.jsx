@@ -40,8 +40,8 @@ export default function BestSellerCard({ product }) {
   };
 
   return (
-    <div className="group rounded-2xl border bg-white p-4 transition hover:shadow-lg">
-      <div className="overflow-hidden rounded-xl bg-gray-100">
+    <div className="group rounded-2xl border border-gray-200 bg-white p-4 transition hover:shadow-lg dark:border-gray-800 dark:bg-gray-900">
+      <div className="overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800">
         <Link href={`/products/${productId}`}>
           <Image
             src={image}
@@ -81,11 +81,15 @@ export default function BestSellerCard({ product }) {
           type="button"
           onClick={() => toggleWishlist(product)}
           aria-label={liked ? "حذف از علاقه‌مندی‌ها" : "افزودن به علاقه‌مندی‌ها"}
-          className="rounded-xl border p-2 transition hover:bg-gray-50"
+          className="rounded-xl border border-gray-200 p-2 transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
         >
           <Heart
             size={20}
-            className={liked ? "fill-red-500 text-red-500" : "text-gray-500"}
+            className={
+              liked
+                ? "fill-red-500 text-red-500"
+                : "text-gray-500 dark:text-gray-400"
+            }
           />
         </button>
       </div>

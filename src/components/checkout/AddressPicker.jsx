@@ -40,12 +40,12 @@ export default function AddressPicker() {
       <div>
         <h2 className="mb-6 text-xl font-bold">آدرس تحویل</h2>
 
-        <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-center">
+        <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-center dark:border-red-900/50 dark:bg-red-950/30">
           <AlertCircle size={28} className="mx-auto text-red-500" />
 
           <p className="mt-3 font-semibold">آدرس‌های شما بارگذاری نشد</p>
 
-          <p className="mt-1 text-sm text-gray-600">{error}</p>
+          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{error}</p>
 
           <button
             type="button"
@@ -54,6 +54,7 @@ export default function AddressPicker() {
               mt-4 inline-flex items-center gap-2 rounded-xl border
               border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold
               transition hover:border-gray-400
+              dark:border-gray-700 dark:bg-gray-900 dark:hover:border-gray-500
             "
           >
             <RotateCw size={18} />
@@ -69,12 +70,12 @@ export default function AddressPicker() {
       <div>
         <h2 className="mb-6 text-xl font-bold">آدرس تحویل</h2>
 
-        <div className="rounded-xl border border-dashed p-6 text-center">
-          <MapPin size={28} className="mx-auto text-gray-400" />
+        <div className="rounded-xl border border-dashed border-gray-300 p-6 text-center dark:border-gray-700">
+          <MapPin size={28} className="mx-auto text-gray-400 dark:text-gray-500" />
 
           <p className="mt-3 font-semibold">هنوز آدرسی ثبت نکرده‌اید</p>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             برای ثبت سفارش، اول باید یک آدرس تحویل اضافه کنید.
           </p>
 
@@ -84,6 +85,7 @@ export default function AddressPicker() {
               mt-4 inline-flex items-center gap-2 rounded-xl bg-black
               px-5 py-2.5 text-sm font-semibold text-white transition
               hover:bg-gray-800
+              dark:bg-white dark:text-black dark:hover:bg-gray-200
             "
           >
             <Plus size={18} />
@@ -101,7 +103,7 @@ export default function AddressPicker() {
 
         <Link
           href="/account/addresses"
-          className="text-sm font-medium text-gray-500 transition hover:text-black"
+          className="text-sm font-medium text-gray-500 transition hover:text-black dark:text-gray-400 dark:hover:text-white"
         >
           مدیریت آدرس‌ها
         </Link>
@@ -117,7 +119,11 @@ export default function AddressPicker() {
               htmlFor={`address-${address._id}`}
               className={`
                 flex cursor-pointer gap-4 rounded-xl border p-4 transition
-                ${active ? "border-black bg-gray-50" : "hover:border-gray-300"}
+                ${
+                  active
+                    ? "border-black bg-gray-50 dark:border-white dark:bg-gray-800"
+                    : "border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-500"
+                }
               `}
             >
               <input
@@ -135,21 +141,21 @@ export default function AddressPicker() {
                   <p className="font-semibold">{address.fullName}</p>
 
                   {address.isDefault && (
-                    <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                    <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700 dark:bg-green-950/40 dark:text-green-400">
                       پیش‌فرض
                     </span>
                   )}
                 </div>
 
-                <p className="text-gray-500">{address.phone}</p>
+                <p className="text-gray-500 dark:text-gray-400">{address.phone}</p>
 
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-400">
                   {address.province} - {address.city}
                 </p>
 
-                <p className="text-gray-700">{formatAddress(address)}</p>
+                <p className="text-gray-700 dark:text-gray-300">{formatAddress(address)}</p>
 
-                <p className="text-gray-500">کد پستی: {address.postalCode}</p>
+                <p className="text-gray-500 dark:text-gray-400">کد پستی: {address.postalCode}</p>
               </div>
             </label>
           );

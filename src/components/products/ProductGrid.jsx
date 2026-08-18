@@ -8,10 +8,14 @@ export default function ProductGrid({ products = [] }) {
         className="
           rounded-2xl
           border
+          border-gray-200
           bg-white
           p-10
           text-center
           text-gray-500
+          dark:border-gray-800
+          dark:bg-gray-900
+          dark:text-gray-400
         "
       >
         محصولی پیدا نشد

@@ -14,7 +14,7 @@ export default function Input({ label, error, className = "", ...props }) {
       <input
         id={props.name}
         {...props}
-        className={`w-full rounded-xl border p-3 outline-none transition focus:border-black ${className}`}
+        className={`w-full rounded-xl border border-gray-300 bg-white p-3 text-gray-900 outline-none transition focus:border-black dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-white ${className}`}
       />
 
       <FormError error={error} />

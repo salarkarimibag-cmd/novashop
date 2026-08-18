@@ -43,8 +43,8 @@ export default function NewArrivalCard({ product }) {
   };
 
   return (
-    <div className="group rounded-2xl border bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-      <div className="relative overflow-hidden rounded-xl bg-gray-100">
+    <div className="group rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900">
+      <div className="relative overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800">
         {isNewProduct(product) && (
           <span className="absolute right-3 top-3 z-10 rounded-full bg-black px-3 py-1 text-xs text-white">
             جدید
@@ -97,11 +97,15 @@ export default function NewArrivalCard({ product }) {
             aria-label={
               liked ? "حذف از علاقه‌مندی‌ها" : "افزودن به علاقه‌مندی‌ها"
             }
-            className="rounded-xl border p-2 transition hover:bg-gray-50"
+            className="rounded-xl border border-gray-200 p-2 transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
           >
             <Heart
               size={20}
-              className={liked ? "fill-red-500 text-red-500" : "text-gray-500"}
+              className={
+                liked
+                  ? "fill-red-500 text-red-500"
+                  : "text-gray-500 dark:text-gray-400"
+              }
             />
           </button>
         </div>

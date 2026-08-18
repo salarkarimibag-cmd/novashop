@@ -8,6 +8,7 @@ import useCheckoutStore from "@/store/checkoutStore";
 import useOrderStore from "@/store/orderStore";
 import useAddressStore from "@/store/addressStore";
 import useWishlistStore from "@/store/wishlistStore";
+import useThemeStore from "@/store/themeStore";
 
 const HydrationContext = createContext(false);
 
@@ -28,6 +29,7 @@ export default function HydrationProvider({ children }) {
           useOrderStore.persist.rehydrate(),
           useAddressStore.persist.rehydrate(),
           useWishlistStore.persist.rehydrate(),
+          useThemeStore.persist.rehydrate(),
         ]);
       } finally {
         setHydrated(true);

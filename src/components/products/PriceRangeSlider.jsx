@@ -169,12 +169,12 @@ export default function PriceRangeSlider({
         onClick={handleTrackClick}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
-        className="relative h-1.5 w-full cursor-pointer rounded-full bg-gray-200"
+        className="relative h-1.5 w-full cursor-pointer rounded-full bg-gray-200 dark:bg-gray-700"
       >
         {/* بازه‌ی انتخاب‌شده بین دو دسته */}
 
         <div
-          className="absolute h-full rounded-full bg-black"
+          className="absolute h-full rounded-full bg-black dark:bg-white"
           style={{
             left: `${maxLeftPct}%`,
             width: `${minLeftPct - maxLeftPct}%`,
@@ -205,6 +205,7 @@ export default function PriceRangeSlider({
             transition-transform
             hover:scale-110
             focus:scale-110 focus:outline-none focus:ring-4 focus:ring-black/10
+            dark:border-white dark:bg-gray-900 dark:focus:ring-white/10
             "
             style={{ left: `${leftPercentOf(localValue[thumb])}%` }}
           >

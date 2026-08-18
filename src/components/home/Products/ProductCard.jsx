@@ -87,12 +87,15 @@ export default function ProductCard({ product }) {
       transition-all duration-300
       hover:-translate-y-1
       hover:shadow-xl
+      dark:border-gray-800
+      dark:bg-gray-900
       "
     >
       <div
         className="
         relative aspect-square
         overflow-hidden bg-gray-50
+        dark:bg-gray-800
         "
       >
         <Link
@@ -128,6 +131,7 @@ export default function ProductCard({ product }) {
           flex h-10 w-10 items-center
           justify-center rounded-full
           bg-white shadow transition-all
+          dark:bg-gray-900
           ${
             liked
               ? "scale-110 text-red-500"
@@ -181,6 +185,7 @@ export default function ProductCard({ product }) {
             <span
               className="
                 text-sm text-gray-700
+                dark:text-gray-300
                 "
             >
               {product.rating}
@@ -194,6 +199,7 @@ export default function ProductCard({ product }) {
               className="
                 text-sm text-gray-400
                 line-through
+                dark:text-gray-500
                 "
             >
               {formatPrice(product.price)}

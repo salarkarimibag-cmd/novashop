@@ -13,7 +13,7 @@ export default function OrderItems({ items = [] }) {
         return (
           <div
             key={item._id || item.product?._id}
-            className="flex items-center gap-4 rounded-xl border p-4"
+            className="flex items-center gap-4 rounded-xl border border-gray-200 p-4 dark:border-gray-800"
           >
             <div className="relative h-20 w-20 overflow-hidden rounded-lg">
               <Image

@@ -66,7 +66,7 @@ export default function SearchBox() {
   };
 
   return (
-    <div className="border-b border-gray-200">
+    <div className="border-b border-gray-200 dark:border-gray-800">
       <Container className="flex h-20 items-center justify-between gap-6">
         <Logo />
 
@@ -82,9 +82,10 @@ export default function SearchBox() {
               transition
               focus-within:ring-2
               focus-within:ring-indigo-500
+              dark:bg-gray-800
             "
             >
-              <Search size={20} className="text-gray-500" />
+              <Search size={20} className="text-gray-500 dark:text-gray-400" />
 
               <input
                 type="search"
@@ -102,7 +103,9 @@ export default function SearchBox() {
                   px-3
                   py-3
                   text-sm
+                  text-gray-900
                   outline-none
+                  dark:text-gray-100
                 "
               />
             </div>
@@ -131,8 +134,12 @@ export default function SearchBox() {
               border
               border-gray-300
               p-2
+              text-gray-700
               transition
               hover:bg-gray-100
+              dark:border-gray-700
+              dark:text-gray-200
+              dark:hover:bg-gray-800
               "
             >
               <User size={20} />

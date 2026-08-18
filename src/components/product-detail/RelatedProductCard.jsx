@@ -10,9 +10,9 @@ export default function RelatedProductCard({ product }) {
   return (
     <Link
       href={`/products/${product._id}`}
-      className="group block overflow-hidden rounded-2xl border bg-white transition hover:-translate-y-1 hover:shadow-lg"
+      className="group block overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
     >
-      <div className="relative aspect-square overflow-hidden bg-gray-50">
+      <div className="relative aspect-square overflow-hidden bg-gray-50 dark:bg-gray-800">
         <Image
           src={image}
           alt={product.title}

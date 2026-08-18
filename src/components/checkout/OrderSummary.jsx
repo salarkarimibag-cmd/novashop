@@ -84,7 +84,7 @@ export default function OrderSummary() {
   };
 
   return (
-    <div className="sticky top-6 rounded-2xl border bg-white p-6 shadow-sm">
+    <div className="sticky top-6 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
       <h2 className="mb-6 text-xl font-bold">خلاصه سفارش</h2>
 
       <div className="space-y-4 text-sm">
@@ -116,7 +116,7 @@ export default function OrderSummary() {
           <span>{discount.toLocaleString("fa-IR")} تومان</span>
         </div>
 
-        <hr />
+        <hr className="border-gray-200 dark:border-gray-800" />
 
         <div className="flex justify-between text-lg font-bold">
           <span>مبلغ قابل پرداخت</span>

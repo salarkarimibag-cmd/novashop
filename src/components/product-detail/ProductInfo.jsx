@@ -113,14 +113,14 @@ export default function ProductInfo({ product }) {
         </div>
 
         {product.brand && (
-          <p className="mt-2 text-sm text-gray-500">برند: {product.brand}</p>
+          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">برند: {product.brand}</p>
         )}
       </div>
 
       <div>
         <div className="flex items-center gap-3">
           {product.discountPrice && product.discountPrice < product.price && (
-            <span className="text-lg text-gray-400 line-through">
+            <span className="text-lg text-gray-400 line-through dark:text-gray-500">
               {product.price.toLocaleString("fa-IR")}
               تومان
             </span>
@@ -157,7 +157,7 @@ export default function ProductInfo({ product }) {
                       h-10 w-10 rounded-full border
                       ${
                         selectedColor === color
-                          ? "ring-2 ring-black scale-110"
+                          ? "ring-2 ring-black scale-110 dark:ring-white"
                           : ""
                       }
                     `}
@@ -178,7 +178,11 @@ export default function ProductInfo({ product }) {
                 onClick={() => setSelectedSize(size)}
                 className={`
                       rounded-lg border px-4 py-2
-                      ${selectedSize === size ? "bg-black text-white" : ""}
+                      ${
+                        selectedSize === size
+                          ? "bg-black text-white dark:bg-white dark:text-black"
+                          : ""
+                      }
                     `}
               >
                 {size}
@@ -217,7 +221,7 @@ export default function ProductInfo({ product }) {
             flex flex-1 items-center justify-center
             gap-2 rounded-xl px-6 py-4 text-white
 
-            ${isInCart ? "bg-emerald-600" : "bg-black"}
+            ${isInCart ? "bg-emerald-600" : "bg-black dark:bg-white dark:text-black"}
 
           `}
         >
@@ -239,7 +243,7 @@ export default function ProductInfo({ product }) {
           className={`
             rounded-xl border p-4
 
-            ${liked ? "bg-red-50 text-red-500" : ""}
+            ${liked ? "bg-red-50 text-red-500 dark:bg-red-950/40 dark:text-red-400" : ""}
           `}
         >
           <Heart size={22} fill={liked ? "currentColor" : "none"} />

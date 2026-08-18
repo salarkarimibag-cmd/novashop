@@ -37,6 +37,7 @@ rounded-2xl
 bg-white
 p-5
 shadow-sm
+dark:bg-gray-900
 "
     >
       <h2 className="mb-6 text-xl font-bold">حساب کاربری</h2>
@@ -57,6 +58,7 @@ rounded-xl
 p-3
 transition
 hover:bg-gray-100
+dark:hover:bg-gray-800
 "
             >
               <Icon size={20} />

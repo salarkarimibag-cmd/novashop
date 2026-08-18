@@ -49,17 +49,17 @@ export default function NewArrivals() {
         <div>
           <h2 className="text-2xl font-bold">جدیدترین محصولات</h2>
 
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
             تازه‌ترین کالاهای اضافه شده به فروشگاه
           </p>
         </div>
 
         <div className="hidden gap-2 md:flex">
-          <button className="new-arrival-prev flex h-10 w-10 items-center justify-center rounded-full border bg-white transition hover:bg-black hover:text-white">
+          <button className="new-arrival-prev flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white transition hover:bg-black hover:text-white dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-white dark:hover:text-black">
             <ChevronRight size={20} />
           </button>
 
-          <button className="new-arrival-next flex h-10 w-10 items-center justify-center rounded-full border bg-white transition hover:bg-black hover:text-white">
+          <button className="new-arrival-next flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white transition hover:bg-black hover:text-white dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-white dark:hover:text-black">
             <ChevronLeft size={20} />
           </button>
         </div>

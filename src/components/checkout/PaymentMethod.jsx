@@ -36,7 +36,7 @@ export default function PaymentMethod() {
   );
 
   return (
-    <div className="rounded-2xl border bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
       <h2 className="mb-6 text-xl font-bold">روش پرداخت</h2>
 
       <div className="space-y-4">
@@ -52,7 +52,11 @@ export default function PaymentMethod() {
               className={`
                 flex cursor-pointer items-center justify-between
                 rounded-xl border p-4 transition
-                ${active ? "border-black bg-gray-50" : "hover:border-gray-300"}
+                ${
+                  active
+                    ? "border-black bg-gray-50 dark:border-white dark:bg-gray-800"
+                    : "border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-500"
+                }
               `}
             >
               <div className="flex items-center gap-4">
@@ -71,7 +75,7 @@ export default function PaymentMethod() {
                 <div>
                   <p className="font-semibold">{method.title}</p>
 
-                  <p className="text-sm text-gray-500">{method.description}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{method.description}</p>
                 </div>
               </div>
             </label>

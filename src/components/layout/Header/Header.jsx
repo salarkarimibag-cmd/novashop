@@ -4,7 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 
 export default function Header() {
   return (
-    <header className="w-full bg-white shadow-sm">
+    <header className="w-full bg-white shadow-sm dark:bg-gray-900 dark:shadow-none">
       <TopHeader />
       <SearchBox />
 
