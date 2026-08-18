@@ -72,6 +72,7 @@ export default function BestSellers() {
       </div>
 
       <Swiper
+        dir="rtl"
         modules={[Navigation, Autoplay]}
         navigation={{
           prevEl: ".best-prev",
