@@ -40,6 +40,12 @@ export async function getProducts(filters = {}, { signal } = {}) {
 
   return {
     products: result.products || result.data || [],
+    // فقط توسط صفحه‌ی لیست ادمین استفاده می‌شوند (برای Pagination)؛
+    // صدا‌زننده‌های دیگر همچنان فقط products را destructure می‌کنند،
+    // پس اضافه‌کردن این سه فیلد رفتار جایی را عوض نمی‌کند.
+    total: result.total,
+    page: result.page,
+    pages: result.pages,
   };
 }
 
