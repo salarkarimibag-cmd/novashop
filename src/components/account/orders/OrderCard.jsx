@@ -12,7 +12,7 @@ export default function OrderCard({ order }) {
   const orderId = order._id;
 
   return (
-    <div className="rounded-2xl border bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
       {/* Header */}
       <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
@@ -20,7 +20,7 @@ export default function OrderCard({ order }) {
             سفارش #{String(orderId).slice(-8)}
           </h2>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             {order.createdAt
               ? new Date(order.createdAt).toLocaleDateString("fa-IR")
               : "تاریخ نامشخص"}
@@ -36,6 +36,8 @@ export default function OrderCard({ order }) {
               py-2
               text-sm
               text-yellow-700
+              dark:bg-yellow-950/40
+              dark:text-yellow-400
             "
           >
             {ORDER_STATUS[status]?.title || "در انتظار بررسی"}
@@ -51,6 +53,9 @@ export default function OrderCard({ order }) {
               text-white
               transition
               hover:bg-gray-800
+              dark:bg-white
+              dark:text-black
+              dark:hover:bg-gray-200
             "
           >
             مشاهده جزئیات
@@ -74,10 +79,12 @@ export default function OrderCard({ order }) {
                 flex-col
                 gap-3
                 border-b
+                border-gray-200
                 pb-4
                 md:flex-row
                 md:items-center
                 md:justify-between
+                dark:border-gray-800
               "
             >
               <div>
@@ -85,18 +92,18 @@ export default function OrderCard({ order }) {
                   {item.product?.title || item.title || "محصول حذف شده"}
                 </p>
 
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                   تعداد: {item.quantity}
                 </p>
 
                 {item.selectedColor && (
-                  <p className="mt-1 text-xs text-gray-500">
+                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                     رنگ: {item.selectedColor}
                   </p>
                 )}
 
                 {item.selectedSize && (
-                  <p className="mt-1 text-xs text-gray-500">
+                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                     سایز: {item.selectedSize}
                   </p>
                 )}
@@ -110,7 +117,7 @@ export default function OrderCard({ order }) {
             </div>
           ))
         ) : (
-          <p className="text-gray-500">اطلاعات کالاهای سفارش موجود نیست.</p>
+          <p className="text-gray-500 dark:text-gray-400">اطلاعات کالاهای سفارش موجود نیست.</p>
         )}
       </div>
 
@@ -121,8 +128,10 @@ export default function OrderCard({ order }) {
           flex
           justify-between
           border-t
+          border-gray-200
           pt-5
           font-bold
+          dark:border-gray-800
         "
       >
         <span>مبلغ نهایی</span>
@@ -140,6 +149,8 @@ export default function OrderCard({ order }) {
             p-4
             text-sm
             text-gray-600
+            dark:bg-gray-800
+            dark:text-gray-400
           "
         >
           <p>گیرنده: {order.address.fullName}</p>

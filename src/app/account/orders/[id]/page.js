@@ -25,14 +25,14 @@ export default function OrderDetailPage() {
 
   if (!order) {
     return (
-      <main className="min-h-screen bg-gray-50 px-4 py-10">
-        <div className="mx-auto max-w-5xl rounded-2xl bg-white p-8 shadow">
+      <main className="min-h-screen bg-gray-50 px-4 py-10 dark:bg-gray-950">
+        <div className="mx-auto max-w-5xl rounded-2xl bg-white p-8 shadow dark:bg-gray-900">
           <div className="animate-pulse space-y-5">
-            <div className="h-8 w-64 rounded bg-gray-200" />
+            <div className="h-8 w-64 rounded bg-gray-200 dark:bg-gray-800" />
 
-            <div className="h-40 rounded-xl bg-gray-200" />
+            <div className="h-40 rounded-xl bg-gray-200 dark:bg-gray-800" />
 
-            <div className="h-40 rounded-xl bg-gray-200" />
+            <div className="h-40 rounded-xl bg-gray-200 dark:bg-gray-800" />
           </div>
         </div>
       </main>
@@ -78,7 +78,7 @@ export default function OrderDetailPage() {
           </h1>
 
           {order.createdAt && (
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               تاریخ سفارش:{" "}
               {new Date(order.createdAt).toLocaleDateString("fa-IR")}
             </p>
@@ -92,10 +92,13 @@ export default function OrderDetailPage() {
             className="
             rounded-2xl
             border
+            border-gray-200
             bg-white
             p-6
             shadow-sm
             lg:col-span-2
+            dark:border-gray-800
+            dark:bg-gray-900
             "
           >
             <h2 className="mb-6 text-xl font-bold">کالاهای سفارش</h2>
@@ -108,7 +111,9 @@ export default function OrderDetailPage() {
                   flex
                   gap-4
                   border-b
+                  border-gray-200
                   pb-5
+                  dark:border-gray-800
                   "
                 >
                   <div
@@ -119,6 +124,7 @@ export default function OrderDetailPage() {
                     overflow-hidden
                     rounded-xl
                     bg-gray-100
+                    dark:bg-gray-800
                     "
                   >
                     {item.image && (
@@ -141,7 +147,7 @@ export default function OrderDetailPage() {
                       {item.title || item.product?.title || "محصول"}
                     </p>
 
-                    <p className="mt-2 text-sm text-gray-500">
+                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                       تعداد: {item.quantity}
                     </p>
 
@@ -159,7 +165,9 @@ export default function OrderDetailPage() {
               mt-6
               space-y-3
               border-t
+              border-gray-200
               pt-5
+              dark:border-gray-800
             "
             >
               <div className="flex justify-between">
@@ -183,9 +191,11 @@ export default function OrderDetailPage() {
                 flex
                 justify-between
                 border-t
+                border-gray-200
                 pt-4
                 text-lg
                 font-bold
+                dark:border-gray-800
               "
               >
                 <span>مبلغ نهایی</span>
@@ -202,8 +212,11 @@ export default function OrderDetailPage() {
               className="
               rounded-2xl
               border
+              border-gray-200
               bg-white
               p-6
+              dark:border-gray-800
+              dark:bg-gray-900
             "
             >
               <h2 className="mb-5 font-bold">وضعیت سفارش</h2>
@@ -215,6 +228,8 @@ export default function OrderDetailPage() {
                 px-3
                 py-1
                 text-sm
+                dark:bg-yellow-950/40
+                dark:text-yellow-400
               "
               >
                 {ORDER_STATUS[status]?.title}
@@ -231,15 +246,18 @@ export default function OrderDetailPage() {
               className="
               rounded-2xl
               border
+              border-gray-200
               bg-white
               p-6
+              dark:border-gray-800
+              dark:bg-gray-900
             "
             >
               <h2 className="mb-4 font-bold">اطلاعات ارسال</h2>
 
               <p>{order.address?.fullName}</p>
 
-              <p className="mt-2 text-gray-500">{order.address?.phone}</p>
+              <p className="mt-2 text-gray-500 dark:text-gray-400">{order.address?.phone}</p>
 
               <p className="mt-3">
                 {order.address?.province}
@@ -247,11 +265,11 @@ export default function OrderDetailPage() {
                 {order.address?.city}
               </p>
 
-              <p className="mt-2 text-gray-600">
+              <p className="mt-2 text-gray-600 dark:text-gray-400">
                 {formatAddress(order.address)}
               </p>
 
-              <p className="mt-2 text-gray-500">
+              <p className="mt-2 text-gray-500 dark:text-gray-400">
                 کد پستی: {order.address?.postalCode}
               </p>
 
@@ -262,8 +280,11 @@ export default function OrderDetailPage() {
               className="
               rounded-2xl
               border
+              border-gray-200
               bg-white
               p-6
+              dark:border-gray-800
+              dark:bg-gray-900
             "
             >
               <h2 className="mb-4 font-bold">روش پرداخت</h2>
@@ -280,10 +301,14 @@ export default function OrderDetailPage() {
           inline-block
           rounded-xl
           border
+          border-gray-200
           bg-white
           px-5
           py-3
           hover:bg-gray-50
+          dark:border-gray-800
+          dark:bg-gray-900
+          dark:hover:bg-gray-800
           "
         >
           بازگشت به سفارش‌ها

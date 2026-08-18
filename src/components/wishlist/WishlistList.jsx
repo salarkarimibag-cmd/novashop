@@ -11,18 +11,18 @@ export default function WishlistList() {
 
   if (items.length === 0) {
     return (
-      <div className="rounded-2xl border bg-white p-10 text-center shadow-sm">
+      <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center shadow-sm dark:border-gray-800 dark:bg-gray-900">
         <div className="mb-4 text-6xl">❤️</div>
 
         <h2 className="mb-3 text-2xl font-bold">علاقه‌مندی‌های شما خالی است</h2>
 
-        <p className="mb-8 text-gray-500">
+        <p className="mb-8 text-gray-500 dark:text-gray-400">
           هنوز محصولی به علاقه‌مندی‌های خود اضافه نکرده‌اید.
         </p>
 
         <Link
           href="/products"
-          className="inline-flex rounded-xl bg-black px-6 py-3 text-white transition hover:bg-gray-800"
+          className="inline-flex rounded-xl bg-black px-6 py-3 text-white transition hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200"
         >
           مشاهده محصولات
         </Link>

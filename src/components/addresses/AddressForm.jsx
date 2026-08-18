@@ -47,7 +47,7 @@ export default function AddressForm() {
   const cities = iranCities[formik.values.province] || [];
 
   return (
-    <div className="rounded-2xl border bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
       <h2 className="mb-6 text-xl font-bold">افزودن آدرس جدید</h2>
 
       <form onSubmit={formik.handleSubmit} className="space-y-5">

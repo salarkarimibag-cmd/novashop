@@ -13,10 +13,13 @@ export default function OrderStatus({ order }) {
         className="
           rounded-xl
           border
+          border-gray-200
           bg-gray-50
           p-3
           text-center
           font-semibold
+          dark:border-gray-800
+          dark:bg-gray-800
         "
       >
         {ORDER_STATUS[status]?.title || "نامشخص"}

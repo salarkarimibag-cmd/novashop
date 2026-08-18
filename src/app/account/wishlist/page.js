@@ -9,7 +9,7 @@ export default function WishlistPage() {
         <div>
           <h1 className="text-3xl font-bold">علاقه‌مندی‌های من</h1>
 
-          <p className="mt-2 text-gray-500">
+          <p className="mt-2 text-gray-500 dark:text-gray-400">
             محصولاتی که برای خرید در آینده ذخیره کرده‌اید.
           </p>
         </div>

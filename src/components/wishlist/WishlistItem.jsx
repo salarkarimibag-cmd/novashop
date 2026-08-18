@@ -48,6 +48,8 @@ export default function WishlistItem({ item }) {
       bg-white p-5 shadow-sm
       transition hover:shadow-md
       md:flex-row md:items-center
+      dark:border-gray-800
+      dark:bg-gray-900
       "
     >
       {/* Image */}
@@ -60,6 +62,7 @@ export default function WishlistItem({ item }) {
           relative h-32 w-32
           overflow-hidden rounded-xl
           bg-gray-50
+          dark:bg-gray-800
           "
         >
           <Image
@@ -90,6 +93,7 @@ export default function WishlistItem({ item }) {
             className="
             mt-2 line-clamp-2
             text-sm text-gray-500
+            dark:text-gray-400
             "
           >
             {item.description}

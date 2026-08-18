@@ -14,7 +14,7 @@ export default function OrderTimeline({ status }) {
       <div className="relative flex justify-between">
         {/* Line */}
 
-        <div className="absolute right-0 left-0 top-5 h-1 bg-gray-200" />
+        <div className="absolute right-0 left-0 top-5 h-1 bg-gray-200 dark:bg-gray-700" />
 
         {steps.map(([key, item]) => {
           const completed = item.step <= currentStep;
@@ -28,8 +28,8 @@ export default function OrderTimeline({ status }) {
 
                   ${
                     completed
-                      ? "border-black bg-black text-white"
-                      : "border-gray-300 bg-white text-gray-400"
+                      ? "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black"
+                      : "border-gray-300 bg-white text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-500"
                   }
                 `}
               >
@@ -40,7 +40,11 @@ export default function OrderTimeline({ status }) {
                 className={`
                   mt-3 max-w-20 text-center text-xs
 
-                  ${completed ? "font-semibold text-black" : "text-gray-400"}
+                  ${
+                    completed
+                      ? "font-semibold text-black dark:text-white"
+                      : "text-gray-400 dark:text-gray-500"
+                  }
                 `}
               >
                 {item.title}

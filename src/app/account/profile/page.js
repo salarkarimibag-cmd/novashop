@@ -25,7 +25,7 @@ export default function ProfilePage() {
         <div className="space-y-6 lg:col-span-2">
           <ProfileForm />
 
-          <div className="rounded-2xl border bg-white p-6 shadow-sm">
+          <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
             <Button onClick={handleLogout} className="w-full">
               خروج از حساب
             </Button>

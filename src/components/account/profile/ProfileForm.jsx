@@ -38,7 +38,7 @@ export default function ProfileForm() {
   return (
     <form
       onSubmit={formik.handleSubmit}
-      className="rounded-2xl border bg-white p-6 shadow-sm"
+      className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900"
     >
       <h2 className="mb-6 text-xl font-bold">ویرایش اطلاعات</h2>
 

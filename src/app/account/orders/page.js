@@ -7,17 +7,17 @@ export default function OrdersPage() {
   const { orders = [], loading } = useOrders();
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-10">
+    <main className="min-h-screen bg-gray-50 px-4 py-10 dark:bg-gray-950">
       <div className="mx-auto max-w-6xl">
         <h1 className="mb-8 text-3xl font-bold">سفارش‌های من</h1>
 
         {loading ? (
-          <div className="rounded-2xl border bg-white p-8 text-center">
+          <div className="rounded-2xl border border-gray-200 bg-white p-8 text-center dark:border-gray-800 dark:bg-gray-900">
             در حال دریافت سفارش‌ها...
           </div>
         ) : orders.length === 0 ? (
-          <div className="rounded-2xl border bg-white p-8 text-center shadow-sm">
-            <p className="text-gray-500">هنوز سفارشی ثبت نکرده‌اید.</p>
+          <div className="rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-sm dark:border-gray-800 dark:bg-gray-900">
+            <p className="text-gray-500 dark:text-gray-400">هنوز سفارشی ثبت نکرده‌اید.</p>
           </div>
         ) : (
           <div className="space-y-6">
