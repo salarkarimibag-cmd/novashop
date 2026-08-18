@@ -18,7 +18,7 @@ export default function NewProductPage() {
   };
 
   return (
-    <div className="rounded-2xl border bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
       <h1 className="mb-6 text-2xl font-bold">افزودن محصول جدید</h1>
 
       <ProductForm onSubmit={handleCreate} submitLabel="ایجاد محصول" />

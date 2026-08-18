@@ -10,7 +10,7 @@ import AdminRoute from "@/components/auth/AdminRoute";
 export default function AdminLayout({ children }) {
   return (
     <AdminRoute>
-      <div className="min-h-screen bg-gray-50 px-4 py-10">
+      <div className="min-h-screen bg-gray-50 px-4 py-10 dark:bg-gray-950">
         <div className="mx-auto max-w-6xl">{children}</div>
       </div>
     </AdminRoute>

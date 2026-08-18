@@ -11,7 +11,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="flex h-9 w-9 items-center justify-center rounded-xl border bg-white transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
+        className="flex h-9 w-9 items-center justify-center rounded-xl border border-gray-200 bg-white transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
       >
         <ChevronRight size={18} />
       </button>
@@ -23,8 +23,8 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
           onClick={() => onPageChange(page)}
           className={`flex h-9 w-9 items-center justify-center rounded-xl border text-sm font-semibold transition ${
             currentPage === page
-              ? "border-black bg-black text-white"
-              : "bg-white hover:bg-gray-100"
+              ? "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black"
+              : "border-gray-200 bg-white hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
           }`}
         >
           {page}
@@ -35,7 +35,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="flex h-9 w-9 items-center justify-center rounded-xl border bg-white transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
+        className="flex h-9 w-9 items-center justify-center rounded-xl border border-gray-200 bg-white transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
       >
         <ChevronLeft size={18} />
       </button>

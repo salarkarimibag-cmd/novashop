@@ -23,18 +23,34 @@ export default function ThemeToggle({ className = "" }) {
       aria-label={isDark ? "تغییر به حالت روشن" : "تغییر به حالت تاریک"}
       title={isDark ? "حالت روشن" : "حالت تاریک"}
       className={`
-        flex h-9 w-9 items-center justify-center
-        rounded-lg
+        relative flex h-9 w-9 shrink-0 items-center justify-center
+        overflow-hidden rounded-full border border-gray-300
         text-gray-600
         transition
-        hover:bg-gray-100 hover:text-red-600
+        hover:border-red-300 hover:bg-red-50 hover:text-red-600
         disabled:cursor-not-allowed disabled:opacity-40
-        dark:text-gray-300
-        dark:hover:bg-gray-800 dark:hover:text-red-500
+        dark:border-gray-700 dark:text-gray-300
+        dark:hover:border-red-900/50 dark:hover:bg-red-950/30 dark:hover:text-red-500
         ${className}
       `}
     >
-      {isDark ? <Sun size={18} /> : <Moon size={18} />}
+      <Sun
+        size={18}
+        className={`absolute transition-all duration-300 ${
+          isDark
+            ? "rotate-0 scale-100 opacity-100"
+            : "-rotate-90 scale-50 opacity-0"
+        }`}
+      />
+
+      <Moon
+        size={18}
+        className={`absolute transition-all duration-300 ${
+          isDark
+            ? "rotate-90 scale-50 opacity-0"
+            : "rotate-0 scale-100 opacity-100"
+        }`}
+      />
     </button>
   );
 }

@@ -17,8 +17,7 @@ export default function BrandCard({ brand }) {
       border-gray-200
       bg-white
       p-6
-      dark:border-gray-800
-      dark:bg-gray-900
+      dark:border-gray-700
     "
     >
       {logo ? (
@@ -34,7 +33,7 @@ export default function BrandCard({ brand }) {
           className="h-10 w-auto object-contain opacity-70 transition hover:opacity-100"
         />
       ) : (
-        <span className="text-xl font-bold">{brand}</span>
+        <span className="text-xl font-bold text-gray-900">{brand}</span>
       )}
     </div>
   );

@@ -91,7 +91,7 @@ export default function AdminProductsPage() {
   };
 
   return (
-    <div className="rounded-2xl border bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">مدیریت محصولات</h1>
 
@@ -110,12 +110,12 @@ export default function AdminProductsPage() {
       )}
 
       {!loading && error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-8 text-center">
+        <div className="rounded-xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-900/50 dark:bg-red-950/30">
           <AlertCircle size={28} className="mx-auto text-red-500" />
 
           <p className="mt-3 font-semibold">محصولات بارگذاری نشد</p>
 
-          <p className="mt-1 text-sm text-gray-600">{error}</p>
+          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{error}</p>
 
           <Button
             variant="outline"
@@ -141,7 +141,7 @@ export default function AdminProductsPage() {
           <div className="overflow-x-auto">
             <table className="w-full min-w-max text-right">
               <thead>
-                <tr className="border-b text-sm text-gray-500">
+                <tr className="border-b border-gray-200 text-sm text-gray-500 dark:border-gray-800 dark:text-gray-400">
                   <th className="py-3 font-medium">محصول</th>
                   <th className="py-3 font-medium">قیمت</th>
                   <th className="py-3 font-medium">موجودی</th>
@@ -152,7 +152,7 @@ export default function AdminProductsPage() {
 
               <tbody>
                 {products.map((product) => (
-                  <tr key={product._id} className="border-b last:border-0">
+                  <tr key={product._id} className="border-b border-gray-200 last:border-0 dark:border-gray-800">
                     <td className="py-3">
                       <div className="flex items-center gap-3">
                         <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg">
@@ -170,7 +170,7 @@ export default function AdminProductsPage() {
                             {product.title}
                           </p>
 
-                          <p className="text-xs text-gray-500">
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
                             {product.brand}
                             {product.brand && product.category && " · "}
                             {product.category}
@@ -186,7 +186,7 @@ export default function AdminProductsPage() {
                             {formatPrice(product.discountPrice)}
                           </p>
 
-                          <p className="text-xs text-gray-400 line-through">
+                          <p className="text-xs text-gray-400 line-through dark:text-gray-500">
                             {formatPrice(product.price)}
                           </p>
                         </div>
@@ -200,7 +200,9 @@ export default function AdminProductsPage() {
                     <td className="py-3">
                       <span
                         className={
-                          product.stock > 0 ? "" : "font-medium text-red-500"
+                          product.stock > 0
+                            ? ""
+                            : "font-medium text-red-500 dark:text-red-400"
                         }
                       >
                         {product.stock}

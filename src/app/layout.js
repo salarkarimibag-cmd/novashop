@@ -53,7 +53,7 @@ const vazir = localFont({
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="fa" data-scroll-behavior="smooth" dir="rtl">
+    <html lang="fa" data-scroll-behavior="smooth" dir="rtl" suppressHydrationWarning>
       <body className={vazir.className}>
         <Script
           id="theme-init"

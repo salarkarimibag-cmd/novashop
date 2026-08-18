@@ -66,7 +66,7 @@ export default function EditProductPage() {
 
   if (loading) {
     return (
-      <div className="rounded-2xl border bg-white p-6 py-16 shadow-sm">
+      <div className="rounded-2xl border border-gray-200 bg-white p-6 py-16 shadow-sm dark:border-gray-800 dark:bg-gray-900">
         <Spinner />
       </div>
     );
@@ -74,14 +74,14 @@ export default function EditProductPage() {
 
   if (notFound || !product) {
     return (
-      <div className="rounded-2xl border bg-white p-6 py-16 text-center shadow-sm">
-        <p className="text-gray-500">محصول مورد نظر پیدا نشد.</p>
+      <div className="rounded-2xl border border-gray-200 bg-white p-6 py-16 text-center shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <p className="text-gray-500 dark:text-gray-400">محصول مورد نظر پیدا نشد.</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-2xl border bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
       <h1 className="mb-6 text-2xl font-bold">ویرایش محصول</h1>
 
       {/*
