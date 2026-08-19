@@ -26,15 +26,15 @@ export default function ProductTabs({ product }) {
 
   return (
     <section className="mt-16">
-      <div className="mb-8 flex flex-wrap gap-4 border-b">
+      <div className="mb-8 flex flex-wrap gap-4 border-b border-gray-200 dark:border-gray-800">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`border-b-2 px-4 py-3 transition ${
               activeTab === tab.id
-                ? "border-black font-semibold"
-                : "border-transparent text-gray-500 hover:text-black"
+                ? "border-black font-semibold dark:border-white"
+                : "border-transparent text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white"
             }`}
           >
             {tab.label}

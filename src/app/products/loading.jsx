@@ -47,6 +47,7 @@ export default function Loading() {
                 animate-pulse
                 rounded
                 bg-gray-200
+                dark:bg-gray-800
                 "
               />
             ))}
