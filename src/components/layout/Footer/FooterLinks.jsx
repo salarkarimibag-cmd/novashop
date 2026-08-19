@@ -25,8 +25,16 @@ export default function FooterLinks() {
               محصولات
             </Link>
           </li>
-          <li className="cursor-default text-gray-500">درباره ما</li>
-          <li className="cursor-default text-gray-500">تماس با ما</li>
+          <li>
+            <Link href="/about" className="transition hover:text-white">
+              درباره ما
+            </Link>
+          </li>
+          <li>
+            <Link href="/contact" className="transition hover:text-white">
+              تماس با ما
+            </Link>
+          </li>
         </ul>
       </div>
 
@@ -44,7 +52,7 @@ export default function FooterLinks() {
               href="mailto:info@novashop.ir"
               className="transition hover:text-white"
             >
-              info@novashop.ir
+              salarkarimi.bag@gmail.com
             </a>
           </li>
           <li>

@@ -12,7 +12,12 @@ export default function SocialLinks() {
       <a href="#" aria-label="لینکدین">
         <FaLinkedin className="transition hover:text-blue-500" />
       </a>
-      <a href="#" aria-label="گیت‌هاب">
+      <a
+        href="https://github.com/salarkarimibag-cmd"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="گیت‌هاب"
+      >
         <FaGithub className="transition hover:text-gray-300" />
       </a>
     </div>
