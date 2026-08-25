@@ -10,7 +10,7 @@ export default function PromoBanner() {
         <Link
           href="/products"
           className="
-          group flex items-center justify-between gap-4
+          group flex flex-col items-start gap-4
           overflow-hidden rounded-2xl
           bg-linear-to-l from-red-600 to-red-500
           px-6 py-5
@@ -18,6 +18,7 @@ export default function PromoBanner() {
           shadow-sm
           transition
           hover:from-red-700 hover:to-red-600
+          sm:flex-row sm:items-center sm:justify-between
           sm:px-8 sm:py-6
           dark:from-red-900 dark:to-red-800
           dark:shadow-none

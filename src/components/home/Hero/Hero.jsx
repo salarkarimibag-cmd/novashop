@@ -15,7 +15,7 @@ export default function Hero() {
           "
         >
           <div className="grid gap-4 lg:grid-cols-4">
-            <div className="lg:col-span-3">
+            <div className="min-w-0 lg:col-span-3">
               <HeroSlider />
             </div>
 
