@@ -11,6 +11,7 @@ import Badge from "@/components/ui/Badge/Badge";
 import Spinner from "@/components/ui/Spinner/Spinner";
 import EmptyState from "@/components/ui/EmptyState/EmptyState";
 import Pagination from "@/components/ui/Pagination/Pagination";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
 
 import { getProducts } from "@/services/productService";
 import adminProductService from "@/services/adminProductService";
@@ -34,6 +35,10 @@ export default function AdminProductsPage() {
   // تعریف شده هم داخل آرایه‌ی وابستگی‌هاست، به‌عنوان ریسکِ رندرهای
   // زنجیره‌ای رد می‌شود؛ تابعِ کاملاً محلی این ریسک را ندارد.
   const [retryToken, setRetryToken] = useState(0);
+
+  const [pendingDelete, setPendingDelete] = useState(null);
+
+  const [deleting, setDeleting] = useState(false);
 
   // لیست خواندنی است، پس عمداً از productService عمومی استفاده می‌کند
   // (fetch خام، بدون توکن) نه adminProductService — همان endpointی که
@@ -73,11 +78,12 @@ export default function AdminProductsPage() {
     };
   }, [page, retryToken]);
 
-  // بدون دیالوگ تأیید، هم‌راستا با AddressList.jsx که حذف آدرس را هم
-  // بی‌واسطه انجام می‌دهد؛ اگر بعداً یک کامپوننت تأیید عمومی به پروژه
-  // اضافه شد، این‌جا هم باید همان الگو را بگیرد.
-  const handleDelete = async (product) => {
+  const handleDelete = async () => {
+    const product = pendingDelete;
+
     try {
+      setDeleting(true);
+
       await adminProductService.remove(product._id);
 
       toast.success("محصول حذف شد");
@@ -85,8 +91,12 @@ export default function AdminProductsPage() {
       setProducts((current) =>
         current.filter((item) => item._id !== product._id),
       );
+
+      setPendingDelete(null);
     } catch (err) {
       toast.error(err.message || "حذف محصول انجام نشد");
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -231,7 +241,7 @@ export default function AdminProductsPage() {
                           variant="danger"
                           className="!px-3 !py-2"
                           aria-label="حذف محصول"
-                          onClick={() => handleDelete(product)}
+                          onClick={() => setPendingDelete(product)}
                         >
                           <Trash2 size={16} />
                         </Button>
@@ -246,6 +256,19 @@ export default function AdminProductsPage() {
           <Pagination currentPage={page} totalPages={pages} onPageChange={setPage} />
         </>
       )}
+
+      <ConfirmDialog
+        open={Boolean(pendingDelete)}
+        title="حذف محصول"
+        description={
+          pendingDelete
+            ? `«${pendingDelete.title}» برای همیشه حذف می‌شود. این عمل قابل بازگشت نیست.`
+            : ""
+        }
+        loading={deleting}
+        onConfirm={handleDelete}
+        onCancel={() => setPendingDelete(null)}
+      />
     </div>
   );
 }

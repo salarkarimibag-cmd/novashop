@@ -7,7 +7,8 @@ export default function FooterLinks() {
         <h3 className="mb-4 text-xl font-bold">NovaShop</h3>
 
         <p className="text-gray-400">
-          فروشگاه اینترنتی مدرن با بهترین قیمت و سریع‌ترین ارسال.
+          تجربه‌ای مدرن از خرید آنلاین؛ محصولات اصل، قیمت مناسب و ارسال سریع
+          به سراسر ایران.
         </p>
       </div>
 
@@ -49,7 +50,7 @@ export default function FooterLinks() {
           </li>
           <li>
             <a
-              href="mailto:info@novashop.ir"
+              href="mailto:salarkarimi.bag@gmail.com"
               className="transition hover:text-white"
             >
               salarkarimi.bag@gmail.com

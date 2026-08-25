@@ -51,9 +51,9 @@ export default function RegisterForm({ onSubmit }) {
         onBlur={formik.handleBlur}
         error={formik.touched.confirmPassword && formik.errors.confirmPassword}
       />{" "}
-      <Button type="submit" className="w-full">
+      <Button type="submit" disabled={formik.isSubmitting} className="w-full">
         {" "}
-        ثبت نام{" "}
+        {formik.isSubmitting ? "در حال ثبت‌نام..." : "ثبت نام"}{" "}
       </Button>{" "}
     </form>
   );

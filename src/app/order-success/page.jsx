@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useEffect } from "react";
-import { CheckCircle } from "lucide-react";
+import { Suspense, useEffect, useState } from "react";
+import { AlertCircle, CheckCircle } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
 import Skeleton from "@/components/ui/Skeleton";
@@ -44,6 +44,40 @@ function OrderSuccessSkeleton() {
   );
 }
 
+function OrderSuccessError({ message }) {
+  return (
+    <main className="min-h-screen bg-gray-50 px-4 py-10 dark:bg-gray-950">
+      <div className="mx-auto max-w-xl rounded-2xl bg-white p-8 text-center shadow dark:bg-gray-900">
+        <AlertCircle className="mx-auto h-20 w-20 text-red-500" />
+
+        <h1 className="mt-6 text-2xl font-bold">اطلاعات سفارش پیدا نشد</h1>
+
+        <p className="mt-3 text-gray-500 dark:text-gray-400">{message}</p>
+
+        <Link
+          href="/account/orders"
+          className="
+          mt-8
+          inline-block
+          rounded-xl
+          bg-black
+          px-6
+          py-3
+          text-white
+          transition
+          hover:bg-gray-800
+          dark:bg-white
+          dark:text-black
+          dark:hover:bg-gray-200
+          "
+        >
+          مشاهده سفارش‌های من
+        </Link>
+      </div>
+    </main>
+  );
+}
+
 function OrderSuccessContent() {
   const searchParams = useSearchParams();
 
@@ -55,12 +89,26 @@ function OrderSuccessContent() {
 
   const fetchOrderById = useOrderStore((state) => state.fetchOrderById);
 
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     // پیش از بازیابی توکن، درخواست بدون هدر Authorization می‌رفت و ۴۰۱ می‌گرفت
     if (!hydrated || !orderId) return;
 
-    fetchOrderById(orderId).catch(console.error);
+    fetchOrderById(orderId).catch((fetchError) => {
+      setError(fetchError.message || "دریافت اطلاعات سفارش انجام نشد.");
+    });
   }, [hydrated, orderId, fetchOrderById]);
+
+  // شناسه‌ی سفارش هیچ‌وقت از سرور نمی‌آید و به fetch نیازی ندارد، پس
+  // مستقیم در رندر تعیین می‌شود، نه با setState داخل افکت
+  if (hydrated && !orderId) {
+    return <OrderSuccessError message="شناسه‌ی سفارش در آدرس پیدا نشد." />;
+  }
+
+  if (error) {
+    return <OrderSuccessError message={error} />;
+  }
 
   if (!order) {
     return <OrderSuccessSkeleton />;

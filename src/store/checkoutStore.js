@@ -9,18 +9,11 @@ const useCheckoutStore = create(
     (set) => ({
       paymentMethod: "online",
 
-      discountCode: "",
-
       note: "",
 
       setPaymentMethod: (method) =>
         set({
           paymentMethod: method,
-        }),
-
-      setDiscountCode: (code) =>
-        set({
-          discountCode: code,
         }),
 
       setNote: (note) =>
@@ -31,8 +24,6 @@ const useCheckoutStore = create(
       clearCheckout: () =>
         set({
           paymentMethod: "online",
-
-          discountCode: "",
 
           note: "",
         }),

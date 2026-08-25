@@ -29,9 +29,9 @@ export default function LoginForm({ onSubmit }) {
         onBlur={formik.handleBlur}
         error={formik.touched.password && formik.errors.password}
       />{" "}
-      <Button type="submit" className="w-full">
+      <Button type="submit" disabled={formik.isSubmitting} className="w-full">
         {" "}
-        ورود{" "}
+        {formik.isSubmitting ? "در حال ورود..." : "ورود"}{" "}
       </Button>{" "}
     </form>
   );

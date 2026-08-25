@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { toast } from "sonner";
 import { AlertCircle, RotateCw } from "lucide-react";
 
 import Button from "@/components/ui/Button";
 import Spinner from "@/components/ui/Spinner/Spinner";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import useAddressStore from "@/store/addressStore";
 import formatAddress from "@/lib/formatAddress";
 
@@ -18,13 +20,25 @@ export default function AddressList() {
     setDefaultAddress,
   } = useAddressStore();
 
-  const handleDelete = async (id) => {
+  const [pendingDeleteId, setPendingDeleteId] = useState(null);
+
+  const [deleting, setDeleting] = useState(false);
+
+  const handleDelete = async () => {
+    const id = pendingDeleteId;
+
     try {
+      setDeleting(true);
+
       await removeAddress(id);
 
       toast.success("آدرس حذف شد");
+
+      setPendingDeleteId(null);
     } catch (error) {
       toast.error(error.message || "حذف آدرس انجام نشد");
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -119,7 +133,7 @@ export default function AddressList() {
 
               <Button
                 variant="danger"
-                onClick={() => handleDelete(address._id)}
+                onClick={() => setPendingDeleteId(address._id)}
               >
                 حذف
               </Button>
@@ -127,6 +141,15 @@ export default function AddressList() {
           </div>
         </div>
       ))}
+
+      <ConfirmDialog
+        open={Boolean(pendingDeleteId)}
+        title="حذف آدرس"
+        description="این آدرس برای همیشه حذف می‌شود. این عمل قابل بازگشت نیست."
+        loading={deleting}
+        onConfirm={handleDelete}
+        onCancel={() => setPendingDeleteId(null)}
+      />
     </div>
   );
 }
