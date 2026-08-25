@@ -10,6 +10,7 @@ import Container from "@/components/common/Container";
 import Logo from "@/components/common/Logo";
 import CartButton from "@/components/cart/CartButton";
 import WishlistButton from "@/components/wishlist/WishlistButton";
+import AddressNavItem from "./AddressNavItem";
 import SearchDropdown from "./SearchDropdown";
 import useSearchProducts from "@/hooks/useSearchProducts";
 import { useHydration } from "@/components/providers/HydrationProvider";
@@ -126,6 +127,10 @@ export default function SearchBox() {
         </div>
 
         <div className="flex items-center gap-4">
+          <div className="hidden md:block">
+            <AddressNavItem />
+          </div>
+
           {hydrated && (
             <Link
               href={user ? "/account" : "/login"}
