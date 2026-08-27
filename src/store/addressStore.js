@@ -131,6 +131,22 @@ const useAddressStore = create(
     {
       name: "nova-addresses",
       skipHydration: true,
+
+      // فقط داده‌ی واقعی آدرس‌ها ذخیره می‌شود، نه وضعیت موقتِ درخواست‌ها
+      partialize: (state) => ({
+        addresses: state.addresses,
+        selectedAddress: state.selectedAddress,
+      }),
+
+      // partialize فقط جلوی *نوشتنِ* فیلدهای موقت را می‌گیرد؛ localStorageِ
+      // ذخیره‌شده از قبل از این تغییر ممکن است isFetching/loading قدیمی
+      // داشته باشد که بدون merge دستی، همان مقدار خراب rehydrate می‌شود
+      merge: (persistedState, currentState) => ({
+        ...currentState,
+        addresses: persistedState?.addresses ?? currentState.addresses,
+        selectedAddress:
+          persistedState?.selectedAddress ?? currentState.selectedAddress,
+      }),
     },
   ),
 );

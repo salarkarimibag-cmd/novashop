@@ -110,7 +110,9 @@ function OrderSuccessContent() {
     return <OrderSuccessError message={error} />;
   }
 
-  if (!order) {
+  // بدون این چک، بعد از یک سفارشِ قبلی، currentOrder همان سفارش کهنه را
+  // نگه داشته و تا رسیدن پاسخِ fetch جدید، به‌جای اسکلتون نشان داده می‌شود
+  if (!order || order._id !== orderId) {
     return <OrderSuccessSkeleton />;
   }
 

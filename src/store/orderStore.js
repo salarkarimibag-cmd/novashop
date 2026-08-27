@@ -113,6 +113,23 @@ const useOrderStore = create(
       name: "nova-orders",
 
       skipHydration: true,
+
+      // currentOrder عمداً persist نمی‌شود: مخصوص صفحه‌ی جزئیات/order-success
+      // است و اگر بماند، بعد از رفرش یا در یک session جدید، سفارشِ یک
+      // کاربر یا بازدید قبلی برای یک لحظه (تا رسیدن پاسخ fetch جدید) روی
+      // صفحه‌ی اشتباه نشان داده می‌شود
+      partialize: (state) => ({
+        orders: state.orders,
+      }),
+
+      // partialize فقط جلوی *نوشتنِ* فیلدهای موقت (و currentOrder) را
+      // می‌گیرد؛ localStorageِ ذخیره‌شده از قبل از این تغییر ممکن است این
+      // فیلدها را داشته باشد که بدون merge دستی، همان مقدار قدیمی
+      // rehydrate می‌شود
+      merge: (persistedState, currentState) => ({
+        ...currentState,
+        orders: persistedState?.orders ?? currentState.orders,
+      }),
     },
   ),
 );

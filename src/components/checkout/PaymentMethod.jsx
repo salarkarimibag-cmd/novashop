@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { CreditCard, Wallet, Landmark } from "lucide-react";
+import { CreditCard, Wallet } from "lucide-react";
 import useCheckoutStore from "@/store/checkoutStore";
 
 export default function PaymentMethod() {
@@ -23,13 +23,6 @@ export default function PaymentMethod() {
         title: "پرداخت در محل",
         description: "پرداخت هنگام تحویل سفارش",
         icon: Wallet,
-      },
-
-      {
-        id: "card",
-        title: "کارت به کارت",
-        description: "واریز به شماره کارت فروشگاه",
-        icon: Landmark,
       },
     ],
     [],

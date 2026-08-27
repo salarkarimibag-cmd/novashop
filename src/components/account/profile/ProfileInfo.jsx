@@ -1,9 +1,31 @@
 "use client";
 
+import { useEffect } from "react";
+
 import useAuthStore from "@/store/authStore";
+import useOrderStore from "@/store/orderStore";
+import useAddressStore from "@/store/addressStore";
 
 export default function ProfileInfo() {
   const { user } = useAuthStore();
+
+  // این صفحه فقط زیر ProtectedRoute رندر می‌شود، که تا هیدریت‌شدنِ
+  // استورها و تأیید ورود صبر می‌کند؛ پس اینجا نیازی به چک هیدریشن نیست
+  const orders = useOrderStore((state) => state.orders);
+
+  const fetchOrders = useOrderStore((state) => state.fetchOrders);
+
+  const addresses = useAddressStore((state) => state.addresses);
+
+  const fetchAddresses = useAddressStore((state) => state.fetchAddresses);
+
+  useEffect(() => {
+    // هر دو fetch خطا را دوباره پرتاب می‌کنند؛ اینجا فقط شمارش نمایش
+    // داده می‌شود، پس شکست باید بی‌سروصدا باشد نه کل صفحه را بترکاند
+    fetchOrders().catch(() => {});
+
+    fetchAddresses().catch(() => {});
+  }, [fetchOrders, fetchAddresses]);
 
   if (!user) return null;
 
@@ -25,13 +47,13 @@ export default function ProfileInfo() {
         <div className="flex justify-between">
           <span>تعداد سفارش</span>
 
-          <span>0</span>
+          <span>{orders.length}</span>
         </div>
 
         <div className="flex justify-between">
           <span>آدرس‌های ذخیره شده</span>
 
-          <span>0</span>
+          <span>{addresses.length}</span>
         </div>
       </div>
     </div>

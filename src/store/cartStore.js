@@ -198,6 +198,22 @@ const useCartStore = create(
       name: "nova-cart",
 
       skipHydration: true,
+
+      // فقط داده‌ی واقعی سبد ذخیره می‌شود، نه وضعیت موقتِ درخواست‌ها
+      partialize: (state) => ({
+        items: state.items,
+        totalPrice: state.totalPrice,
+      }),
+
+      // partialize فقط جلوی *نوشتنِ* فیلدهای موقت را می‌گیرد؛ کاربرهایی که
+      // localStorage‌شان از قبل از این تغییر یک isFetching/loading قدیمی
+      // ذخیره‌شده دارند، بدون merge دستی همان مقدار خراب را rehydrate
+      // می‌کنند و fetchCart برای همیشه قفل می‌ماند
+      merge: (persistedState, currentState) => ({
+        ...currentState,
+        items: persistedState?.items ?? currentState.items,
+        totalPrice: persistedState?.totalPrice ?? currentState.totalPrice,
+      }),
     },
   ),
 );

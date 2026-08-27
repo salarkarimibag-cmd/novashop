@@ -59,10 +59,10 @@ export default function BestSellerCard({ product }) {
         </h3>
       </Link>
 
-      <div className="my-2 flex">
-        {Array.from({ length: product.rating }).map((_, i) => (
-          <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
-        ))}
+      <div className="my-2 flex items-center gap-1 text-yellow-500">
+        <Star size={16} fill="currentColor" />
+
+        <span>{product.rating || 0}</span>
       </div>
 
       <p className="font-bold">{formatPrice(product.price)}</p>

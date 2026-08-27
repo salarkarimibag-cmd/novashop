@@ -23,10 +23,10 @@ export default function ProfileForm() {
 
     onSubmit: async (values) => {
       try {
-        const updatedUser = await profileService.updateProfile(values);
+        const user = await profileService.updateProfile(values);
 
         // منبع حقیقت، پاسخ سرور است نه چیزی که فرستادیم
-        updateUser(updatedUser);
+        updateUser(user);
 
         toast.success("اطلاعات پروفایل با موفقیت بروزرسانی شد");
       } catch (error) {

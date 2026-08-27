@@ -27,6 +27,14 @@ export async function getProducts(filters = {}, { signal } = {}) {
     params.set("sort", filters.sort);
   }
 
+  if (filters.page !== undefined) {
+    params.set("page", filters.page);
+  }
+
+  if (filters.limit !== undefined) {
+    params.set("limit", filters.limit);
+  }
+
   const response = await fetch(`${API_URL}/api/products?${params.toString()}`, {
     cache: "no-store",
     signal,

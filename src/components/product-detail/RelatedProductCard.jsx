@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Star } from "lucide-react";
 
 import { getProductImage } from "@/constants/images";
+import formatPrice from "@/lib/formatPrice";
 
 export default function RelatedProductCard({ product }) {
   const image = getProductImage(product);
@@ -32,8 +33,7 @@ export default function RelatedProductCard({ product }) {
         </div>
 
         <p className="text-lg font-bold text-red-600">
-          {(product.discountPrice || product.price).toLocaleString("fa-IR")}{" "}
-          تومان
+          {formatPrice(product.discountPrice || product.price)}
         </p>
       </div>
     </Link>

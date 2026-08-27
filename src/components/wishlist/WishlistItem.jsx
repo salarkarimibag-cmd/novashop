@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button";
 
 import { useCartStore, useWishlistStore } from "@/store";
 import { getProductImage } from "@/constants/images";
+import formatPrice from "@/lib/formatPrice";
 
 export default function WishlistItem({ item }) {
   const addToCart = useCartStore((state) => state.addItem);
@@ -101,7 +102,7 @@ export default function WishlistItem({ item }) {
         )}
 
         <p className="mt-4 text-lg font-bold text-red-600">
-          {item.price?.toLocaleString("fa-IR")} تومان
+          {formatPrice(item.price)}
         </p>
       </div>
 

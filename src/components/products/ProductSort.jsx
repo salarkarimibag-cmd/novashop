@@ -22,9 +22,9 @@ export default function ProductSort() {
       >
         <option value="newest">جدیدترین</option>
 
-        <option value="cheap">ارزان‌ترین</option>
+        <option value="price_asc">ارزان‌ترین</option>
 
-        <option value="expensive">گران‌ترین</option>
+        <option value="price_desc">گران‌ترین</option>
       </select>
     </div>
   );

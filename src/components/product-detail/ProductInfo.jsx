@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 
 import useCartStore from "@/store/cartStore";
 import useWishlistStore from "@/store/wishlistStore";
+import formatPrice from "@/lib/formatPrice";
 
 export default function ProductInfo({ product }) {
   const router = useRouter();
@@ -121,14 +122,12 @@ export default function ProductInfo({ product }) {
         <div className="flex items-center gap-3">
           {product.discountPrice && product.discountPrice < product.price && (
             <span className="text-lg text-gray-400 line-through dark:text-gray-500">
-              {product.price.toLocaleString("fa-IR")}
-              تومان
+              {formatPrice(product.price)}
             </span>
           )}
 
           <span className="text-3xl font-bold text-red-600">
-            {finalPrice.toLocaleString("fa-IR")}
-            تومان
+            {formatPrice(finalPrice)}
           </span>
         </div>
 

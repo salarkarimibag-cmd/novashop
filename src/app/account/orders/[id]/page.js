@@ -9,6 +9,7 @@ import OrderTimeline from "@/components/account/orders/OrderTimeline";
 import OrderStatus from "@/components/account/orders/OrderStatus";
 import { ORDER_STATUS } from "@/constants/orderStatus";
 import formatAddress from "@/lib/formatAddress";
+import formatPrice from "@/lib/formatPrice";
 
 export default function OrderDetailPage() {
   const { id } = useParams();
@@ -23,7 +24,9 @@ export default function OrderDetailPage() {
     }
   }, [id, fetchOrderById]);
 
-  if (!order) {
+  // بدون این چک، رفتن از جزئیاتِ سفارش A به سفارش B، تا رسیدن پاسخِ
+  // fetch جدید، سفارشِ قبلی را زیر شناسه‌ی جدید نشان می‌دهد
+  if (!order || order._id !== id) {
     return (
       <main className="min-h-screen bg-gray-50 px-4 py-10 dark:bg-gray-950">
         <div className="mx-auto max-w-5xl rounded-2xl bg-white p-8 shadow dark:bg-gray-900">
@@ -41,12 +44,10 @@ export default function OrderDetailPage() {
 
   const status = order.status || "pending";
 
+  // بک‌اند فقط این دو مقدار را برای paymentMethod می‌پذیرد (enum روی مدل و
+  // اسکیمای اعتبارسنجی سفارش)، پس هیچ سفارش واقعی مقدار سومی ندارد
   const paymentTitle =
-    order.paymentMethod === "online"
-      ? "پرداخت آنلاین"
-      : order.paymentMethod === "cash"
-        ? "پرداخت در محل"
-        : "کارت به کارت";
+    order.paymentMethod === "online" ? "پرداخت آنلاین" : "پرداخت در محل";
 
   // فاکتور باید همان چیزی را نشان دهد که سرور ثبت کرده، نه چیزی که
   // فرانت دوباره حساب می‌کند؛ وگرنه جمع روی صفحه با مبلغ پرداختی نمی‌خواند.
@@ -152,8 +153,7 @@ export default function OrderDetailPage() {
                     </p>
 
                     <p className="mt-2 font-bold">
-                      {(item.price * item.quantity).toLocaleString("fa-IR")}{" "}
-                      تومان
+                      {formatPrice(item.price * item.quantity)}
                     </p>
                   </div>
                 </div>
@@ -173,16 +173,14 @@ export default function OrderDetailPage() {
               <div className="flex justify-between">
                 <span>مبلغ کالاها</span>
 
-                <span>{subtotal.toLocaleString("fa-IR")} تومان</span>
+                <span>{formatPrice(subtotal)}</span>
               </div>
 
               <div className="flex justify-between">
                 <span>هزینه ارسال</span>
 
                 <span>
-                  {shipping === 0
-                    ? "رایگان"
-                    : `${shipping.toLocaleString("fa-IR")} تومان`}
+                  {shipping === 0 ? "رایگان" : formatPrice(shipping)}
                 </span>
               </div>
 
@@ -200,7 +198,7 @@ export default function OrderDetailPage() {
               >
                 <span>مبلغ نهایی</span>
 
-                <span>{order.totalPrice?.toLocaleString("fa-IR")} تومان</span>
+                <span>{formatPrice(order.totalPrice)}</span>
               </div>
             </div>
           </section>

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import { useHydration } from "@/components/providers/HydrationProvider";
 import useAuthStore from "@/store/authStore";
+import useCartStore from "@/store/cartStore";
 import authService from "@/services/authService";
 import clearSession from "@/lib/session";
 
@@ -37,6 +38,11 @@ export default function AuthProvider({ children }) {
         }
 
         setUser(user);
+
+        // بج سبد خرید در هدر و وضعیت «در سبد هست» در کارت محصول هیچ‌وقت
+        // خودشان fetchCart صدا نمی‌زنند؛ اینجا تنها جایی‌ست که برای هر
+        // کاربر واردشده، صرف‌نظر از این‌که کدام صفحه را باز کرده، اجرا می‌شود
+        useCartStore.getState().fetchCart();
       } catch {
         clearSession();
       } finally {

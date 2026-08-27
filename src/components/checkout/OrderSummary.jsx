@@ -10,6 +10,7 @@ import useCheckoutStore from "@/store/checkoutStore";
 import useOrderStore from "@/store/orderStore";
 import useAddressStore from "@/store/addressStore";
 import { getShippingCost } from "@/constants/shipping";
+import formatPrice from "@/lib/formatPrice";
 
 export default function OrderSummary() {
   const router = useRouter();
@@ -97,23 +98,19 @@ export default function OrderSummary() {
         <div className="flex justify-between">
           <span>جمع خرید</span>
 
-          <span>{subtotal.toLocaleString("fa-IR")} تومان</span>
+          <span>{formatPrice(subtotal)}</span>
         </div>
 
         <div className="flex justify-between">
           <span>هزینه ارسال</span>
 
-          <span>
-            {shippingCost === 0
-              ? "رایگان"
-              : `${shippingCost.toLocaleString("fa-IR")} تومان`}
-          </span>
+          <span>{shippingCost === 0 ? "رایگان" : formatPrice(shippingCost)}</span>
         </div>
 
         <div className="flex justify-between">
           <span>تخفیف</span>
 
-          <span>{discount.toLocaleString("fa-IR")} تومان</span>
+          <span>{formatPrice(discount)}</span>
         </div>
 
         <hr className="border-gray-200 dark:border-gray-800" />
@@ -121,7 +118,7 @@ export default function OrderSummary() {
         <div className="flex justify-between text-lg font-bold">
           <span>مبلغ قابل پرداخت</span>
 
-          <span>{total.toLocaleString("fa-IR")} تومان</span>
+          <span>{formatPrice(total)}</span>
         </div>
       </div>
 
