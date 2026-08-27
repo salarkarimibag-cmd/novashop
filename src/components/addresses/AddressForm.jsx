@@ -143,12 +143,17 @@ export default function AddressForm() {
           error={formik.touched.postalCode && formik.errors.postalCode}
         />
 
-        <label className="flex items-center gap-2">
+        <label
+          htmlFor="isDefault"
+          className="flex cursor-pointer items-center gap-2 text-gray-900 dark:text-gray-100"
+        >
           <input
             type="checkbox"
+            id="isDefault"
             name="isDefault"
             checked={formik.values.isDefault}
             onChange={formik.handleChange}
+            className="h-5 w-5 rounded border-gray-300 accent-black outline-none focus:ring-2 focus:ring-black dark:border-gray-700 dark:accent-white dark:focus:ring-white"
           />
           آدرس پیش‌فرض
         </label>
