@@ -1,7 +1,7 @@
 import CartPage from "@/components/cart/CartPage";
 
 export const metadata = {
-  title: "سبد خرید | NovaShop",
+  title: "سبد خرید",
 };
 
 export default function Page() {

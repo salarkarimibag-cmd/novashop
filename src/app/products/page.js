@@ -8,7 +8,7 @@ import { getCategories } from "@/services/categoryService";
 import { parseProductFilters } from "@/lib/productFilters";
 
 export const metadata = {
-  title: "محصولات | NovaShop",
+  title: "محصولات",
 };
 
 export default async function ProductsPage({ searchParams }) {

@@ -2,7 +2,7 @@ import { Phone, Mail, MapPin } from "lucide-react";
 import Container from "@/components/common/Container";
 
 export const metadata = {
-  title: "تماس با ما | NovaShop",
+  title: "تماس با ما",
 };
 
 const contacts = [

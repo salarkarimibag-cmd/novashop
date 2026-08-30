@@ -2,7 +2,7 @@ import { ShieldCheck, Truck, Headset, CreditCard } from "lucide-react";
 import Container from "@/components/common/Container";
 
 export const metadata = {
-  title: "درباره ما | NovaShop",
+  title: "درباره ما",
 };
 
 const values = [

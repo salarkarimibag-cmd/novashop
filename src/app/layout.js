@@ -5,7 +5,28 @@ import { Toaster } from "sonner";
 import localFont from "next/font/local";
 import Script from "next/script";
 
+import { SITE_URL } from "@/constants/site";
+
 import "./globals.css";
+
+const SITE_DESCRIPTION =
+  "تجربه‌ای مدرن از خرید آنلاین؛ محصولات اصل، قیمت مناسب و ارسال سریع به سراسر ایران.";
+
+export const metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "NovaShop | فروشگاه آنلاین",
+    template: "%s | NovaShop",
+  },
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    locale: "fa_IR",
+    siteName: "NovaShop",
+    title: "NovaShop | فروشگاه آنلاین",
+    description: SITE_DESCRIPTION,
+  },
+};
 
 // قبل از هیدریت شدن ری‌اکت اجرا می‌شود تا کلاس "dark" روی <html> همان
 // لحظه‌ی اول (بدون چشمک لحظه‌ای تم اشتباه) تنظیم شود
