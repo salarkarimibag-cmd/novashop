@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import useCartStore from "@/store/cartStore";
 import useWishlistStore from "@/store/wishlistStore";
 import formatPrice from "@/lib/formatPrice";
+import getFinalPrice from "@/lib/getFinalPrice";
 
 export default function ProductInfo({ product }) {
   const router = useRouter();
@@ -97,10 +98,7 @@ export default function ProductInfo({ product }) {
     }
   };
 
-  const finalPrice =
-    product.discountPrice && product.discountPrice < product.price
-      ? product.discountPrice
-      : product.price;
+  const finalPrice = getFinalPrice(product);
 
   return (
     <div className="space-y-6">

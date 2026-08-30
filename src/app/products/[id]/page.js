@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 
 import { getProductById } from "@/services/productService";
 import { getProductImage } from "@/constants/images";
+import { SITE_URL } from "@/constants/site";
+import getFinalPrice from "@/lib/getFinalPrice";
 
 import ProductGallery from "@/components/product-detail/ProductGallery";
 import ProductInfo from "@/components/product-detail/ProductInfo";
@@ -24,6 +26,7 @@ export async function generateMetadata({ params }) {
   return {
     title: product.title,
     description,
+    alternates: { canonical: `/products/${id}` },
     openGraph: {
       title: product.title,
       description,
@@ -42,8 +45,39 @@ export default async function ProductDetailPage({ params }) {
     notFound();
   }
 
+  const productUrl = `${SITE_URL}/products/${id}`;
+
+  // schema.org برای aggregateRating به ratingCount نیاز دارد؛ چون بک‌اند
+  // تعداد نظرات را ذخیره نمی‌کند (فقط یک عدد rating)، از افزودنش پرهیز
+  // می‌شود تا داده‌ی ساختاریافته جعلی به گوگل داده نشود
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    image: [`${SITE_URL}${getProductImage(product)}`],
+    description: product.description || `خرید ${product.title} از NovaShop`,
+    ...(product.brand && { brand: { "@type": "Brand", name: product.brand } }),
+    offers: {
+      "@type": "Offer",
+      url: productUrl,
+      priceCurrency: "IRR",
+      price: getFinalPrice(product),
+      availability:
+        product.stock > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+    },
+  };
+
   return (
     <main className="container mx-auto px-4 py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
         <ProductGallery images={product.images} title={product.title} />
 
