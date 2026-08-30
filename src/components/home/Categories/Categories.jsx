@@ -2,7 +2,22 @@ import { getCategories } from "@/services/categoryService";
 import CategoryCard from "./CategoryCard";
 
 export default async function Categories() {
-  const categories = await getCategories();
+  let categories = [];
+
+  try {
+    categories = await getCategories();
+  } catch (error) {
+    // خطاهای کنترلی خود Next (رندر داینامیک، redirect، notFound) با digest
+    // مشخص می‌شوند؛ بلعیدن آن‌ها جریان داخلی Next را می‌شکند
+    if (error?.digest) {
+      throw error;
+    }
+
+    console.error(error);
+
+    // خطای این بخش نباید کل صفحه‌ی اصلی را از کار بیندازد
+    return null;
+  }
 
   if (!categories.length) {
     return null;

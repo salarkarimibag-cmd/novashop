@@ -2,7 +2,26 @@ import OfferCard from "./OfferCard";
 import { getDiscountProducts } from "@/services/productService";
 
 export default async function SpecialOffers() {
-  const products = await getDiscountProducts();
+  let products = [];
+
+  try {
+    products = await getDiscountProducts();
+  } catch (error) {
+    // خطاهای کنترلی خود Next (رندر داینامیک، redirect، notFound) با digest
+    // مشخص می‌شوند؛ بلعیدن آن‌ها جریان داخلی Next را می‌شکند
+    if (error?.digest) {
+      throw error;
+    }
+
+    console.error(error);
+
+    // خطای این بخش نباید کل صفحه‌ی اصلی را از کار بیندازد
+    return null;
+  }
+
+  if (!products.length) {
+    return null;
+  }
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-16">
