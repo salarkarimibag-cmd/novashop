@@ -20,7 +20,7 @@ export default async function ProductDetailPage({ params }) {
 
   return (
     <main className="container mx-auto px-4 py-10">
-      <div className="grid gap-10 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
         <ProductGallery images={product.images} title={product.title} />
 
         <ProductInfo product={product} />
