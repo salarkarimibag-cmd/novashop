@@ -1,10 +1,10 @@
 import Link from "next/link";
 
-export default function Logo() {
+export default function Logo({ className = "" }) {
   return (
     <Link
       href="/"
-      className="flex items-center gap-2 text-3xl font-extrabold tracking-tight text-red-600"
+      className={`flex items-center gap-2 text-3xl font-extrabold tracking-tight text-red-600 ${className}`}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

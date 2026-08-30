@@ -68,10 +68,13 @@ export default function SearchBox() {
 
   return (
     <div className="border-b border-gray-200 dark:border-gray-800">
-      <Container className="flex h-20 items-center justify-between gap-6">
-        <Logo />
+      <Container className="flex flex-wrap items-center justify-between gap-4 py-3 md:h-20 md:flex-nowrap md:gap-6 md:py-0">
+        <Logo className="order-1" />
 
-        <div ref={searchRef} className="relative flex-1">
+        <div
+          ref={searchRef}
+          className="relative order-3 w-full md:order-2 md:w-auto md:flex-1"
+        >
           <form onSubmit={handleSubmit}>
             <div
               className="
@@ -126,7 +129,7 @@ export default function SearchBox() {
           )}
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="order-2 flex items-center gap-4 md:order-3">
           <div className="hidden md:block">
             <AddressNavItem />
           </div>
