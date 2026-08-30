@@ -9,6 +9,9 @@ import { parseProductFilters } from "@/lib/productFilters";
 
 export const metadata = {
   title: "محصولات",
+  // مستقل از پارامترهای فیلتر (search/brand/...)، به آدرس پایه اشاره
+  // می‌کند تا گوگل ترکیب‌های مختلف فیلتر را محتوای تکراری نداند
+  alternates: { canonical: "/products" },
 };
 
 export default async function ProductsPage({ searchParams }) {

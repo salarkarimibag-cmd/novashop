@@ -3,6 +3,7 @@ import Container from "@/components/common/Container";
 
 export const metadata = {
   title: "درباره ما",
+  alternates: { canonical: "/about" },
 };
 
 const values = [

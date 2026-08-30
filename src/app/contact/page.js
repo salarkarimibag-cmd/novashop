@@ -3,6 +3,7 @@ import Container from "@/components/common/Container";
 
 export const metadata = {
   title: "تماس با ما",
+  alternates: { canonical: "/contact" },
 };
 
 const contacts = [
