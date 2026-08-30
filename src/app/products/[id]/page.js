@@ -1,12 +1,36 @@
 import { notFound } from "next/navigation";
 
 import { getProductById } from "@/services/productService";
+import { getProductImage } from "@/constants/images";
 
 import ProductGallery from "@/components/product-detail/ProductGallery";
 import ProductInfo from "@/components/product-detail/ProductInfo";
 import ProductDescription from "@/components/product-detail/ProductDescription";
 import ProductSpecifications from "@/components/product-detail/ProductSpecifications";
 import RelatedProducts from "@/components/product-detail/RelatedProducts";
+
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+
+  const product = await getProductById(id);
+
+  if (!product) {
+    return { title: "محصول یافت نشد" };
+  }
+
+  const description =
+    product.description?.trim() || `خرید ${product.title} از NovaShop`;
+
+  return {
+    title: product.title,
+    description,
+    openGraph: {
+      title: product.title,
+      description,
+      images: [getProductImage(product)],
+    },
+  };
+}
 
 export default async function ProductDetailPage({ params }) {
   const { id } = await params;
