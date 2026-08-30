@@ -209,18 +209,32 @@ export default function PriceRangeSlider({
             "
             style={{ left: `${leftPercentOf(localValue[thumb])}%` }}
           >
-            {dragging === thumb && (
-              <span
-                className="
-                pointer-events-none absolute -top-9
-                left-1/2 -translate-x-1/2
-                rounded-md bg-black px-2 py-1
-                text-xs whitespace-nowrap text-white
-                "
-              >
-                {formatPrice(localValue[thumb])}
-              </span>
-            )}
+            {dragging === thumb &&
+              (() => {
+                // نزدیک لبه‌های نوار، تولتیپ را به‌جای وسط‌چین‌کردن روی
+                // دسته، به همان لبه می‌چسبانیم تا از عرض صفحه بیرون نزند
+                const pct = leftPercentOf(localValue[thumb]);
+
+                const tooltipStyle =
+                  pct < 12
+                    ? { left: 0 }
+                    : pct > 88
+                      ? { right: 0 }
+                      : { left: "50%", transform: "translateX(-50%)" };
+
+                return (
+                  <span
+                    className="
+                    pointer-events-none absolute -top-9
+                    rounded-md bg-black px-2 py-1
+                    text-xs whitespace-nowrap text-white
+                    "
+                    style={tooltipStyle}
+                  >
+                    {formatPrice(localValue[thumb])}
+                  </span>
+                );
+              })()}
           </button>
         ))}
       </div>

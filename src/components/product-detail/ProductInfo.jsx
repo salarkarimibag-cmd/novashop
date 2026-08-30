@@ -144,7 +144,7 @@ export default function ProductInfo({ product }) {
         <div>
           <h3 className="mb-3 font-semibold">رنگ</h3>
 
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             {product.colors.map((color) => (
               <button
                 key={color}
@@ -170,7 +170,7 @@ export default function ProductInfo({ product }) {
         <div>
           <h3 className="mb-3 font-semibold">سایز</h3>
 
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             {product.sizes.map((size) => (
               <button
                 key={size}
