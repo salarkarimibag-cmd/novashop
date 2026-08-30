@@ -4,11 +4,11 @@ export default function Logo({ className = "" }) {
   return (
     <Link
       href="/"
-      className={`flex items-center gap-2 text-3xl font-extrabold tracking-tight text-red-600 ${className}`}
+      className={`flex items-center gap-2 text-xl font-extrabold tracking-tight text-red-600 md:text-3xl ${className}`}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-8 w-8 shrink-0"
+        className="h-6 w-6 shrink-0 md:h-8 md:w-8"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
