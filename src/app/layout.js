@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import { HydrationProvider, AuthProvider } from "@/components/providers";
+import SignupPrompt from "@/components/providers/SignupPrompt";
 import { Toaster } from "sonner";
 import localFont from "next/font/local";
 import Script from "next/script";
@@ -91,6 +92,8 @@ export default function RootLayout({ children }) {
             </main>
 
             <Footer />
+
+            <SignupPrompt />
 
             <Toaster position="top-center" richColors dir="rtl" />
           </AuthProvider>
