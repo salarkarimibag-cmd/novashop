@@ -3,11 +3,14 @@ import FooterLinks from "./FooterLinks";
 import SocialLinks from "./SocialLinks";
 import TrustBadges from "./TrustBadges";
 import BackToTop from "./BackToTop";
+import AppDownloadBar from "./AppDownloadBar";
 
 export default function Footer() {
   return (
     <footer className="mt-20 border-t bg-gray-900 text-white">
       <BackToTop />
+
+      <AppDownloadBar />
 
       <div className="mx-auto max-w-7xl px-4 py-14">
         <Newsletter />
